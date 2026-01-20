@@ -170,7 +170,7 @@
          * Show season selection for series
          */
         function showSeasonSelect(imdbId) {
-            var seasons = object.movie.number_of_seasons || object.movie.seasons?.length || 1;
+            var seasons = object.movie.number_of_seasons || (object.movie.seasons && object.movie.seasons.length) || 1;
             var items = [];
 
             for (var s = 1; s <= seasons; s++) {
@@ -181,13 +181,11 @@
                 });
             }
 
-            filter_items.season = items.map(function(i) { return i.title; });
-
             component.reset();
             component.loading(false);
 
             items.forEach(function (item) {
-                var element = Lampa.Template.get('onlines_item', {
+                var element = Lampa.Template.get('debrid_folder', {
                     title: item.title,
                     info: ''
                 });
@@ -206,10 +204,13 @@
          * Show episode selection
          */
         function showEpisodeSelect(imdbId, season) {
-            var seasonData = object.movie.seasons?.find(function(s) {
-                return s.season_number === season;
-            });
-            var episodes = seasonData?.episode_count || 20;
+            var seasonData = null;
+            if (object.movie.seasons) {
+                seasonData = object.movie.seasons.find(function(s) {
+                    return s.season_number === season;
+                });
+            }
+            var episodes = (seasonData && seasonData.episode_count) || 20;
             var items = [];
 
             for (var e = 1; e <= episodes; e++) {
@@ -225,7 +226,7 @@
             component.loading(false);
 
             items.forEach(function (item) {
-                var element = Lampa.Template.get('onlines_item', {
+                var element = Lampa.Template.get('debrid_folder', {
                     title: 'S' + String(item.season).padStart(2, '0') + 'E' + String(item.episode).padStart(2, '0'),
                     info: item.title
                 });
@@ -305,7 +306,7 @@
                         .filter(Boolean)
                         .join(' • ');
 
-                    var element = Lampa.Template.get('onlines_item', {
+                    var element = Lampa.Template.get('debrid_item', {
                         title: stream.title || stream.name || 'Stream ' + (item.index + 1),
                         info: info || 'Real Debrid'
                     });
@@ -496,7 +497,7 @@
         };
 
         function showSeasonSelect(imdbId) {
-            var seasons = object.movie.number_of_seasons || object.movie.seasons?.length || 1;
+            var seasons = object.movie.number_of_seasons || (object.movie.seasons && object.movie.seasons.length) || 1;
             var items = [];
 
             for (var s = 1; s <= seasons; s++) {
@@ -511,7 +512,7 @@
             component.loading(false);
 
             items.forEach(function (item) {
-                var element = Lampa.Template.get('onlines_item', {
+                var element = Lampa.Template.get('debrid_folder', {
                     title: item.title,
                     info: ''
                 });
@@ -527,10 +528,13 @@
         }
 
         function showEpisodeSelect(imdbId, season) {
-            var seasonData = object.movie.seasons?.find(function(s) {
-                return s.season_number === season;
-            });
-            var episodes = seasonData?.episode_count || 20;
+            var seasonData = null;
+            if (object.movie.seasons) {
+                seasonData = object.movie.seasons.find(function(s) {
+                    return s.season_number === season;
+                });
+            }
+            var episodes = (seasonData && seasonData.episode_count) || 20;
             var items = [];
 
             for (var e = 1; e <= episodes; e++) {
@@ -546,7 +550,7 @@
             component.loading(false);
 
             items.forEach(function (item) {
-                var element = Lampa.Template.get('onlines_item', {
+                var element = Lampa.Template.get('debrid_folder', {
                     title: 'S' + String(item.season).padStart(2, '0') + 'E' + String(item.episode).padStart(2, '0'),
                     info: item.title
                 });
@@ -618,7 +622,7 @@
                         .filter(Boolean)
                         .join(' • ');
 
-                    var element = Lampa.Template.get('onlines_item', {
+                    var element = Lampa.Template.get('debrid_item', {
                         title: stream.title || stream.name || 'Stream ' + (item.index + 1),
                         info: info || 'Real Debrid'
                     });
@@ -739,63 +743,70 @@
     // ==================== MAIN COMPONENT ====================
 
     function DebridComponent(object) {
+        var _this = this;
         var network = new Lampa.Reguest();
         var scroll = new Lampa.Scroll({ mask: true, over: true });
         var files = new Lampa.Explorer(object);
         var filter = new Lampa.Filter(object);
 
-        var sources = [];
+        var sources = {};
         var active_source = null;
         var balanser = Lampa.Storage.get('debrid_source', 'comet');
+        var initialized = false;
 
-        var filter_translate = {
-            source: 'Source',
-            quality: 'Quality'
-        };
-
-        // Initialize sources
-        var comet_url = Lampa.Storage.get('debrid_comet_url', '');
-        var torrentio_url = Lampa.Storage.get('debrid_torrentio_url', '');
-
-        if (comet_url) {
-            sources.push({
-                name: 'comet',
-                title: 'Comet',
-                source: new CometSource(this, object)
-            });
-        }
-
-        if (torrentio_url) {
-            sources.push({
-                name: 'torrentio',
-                title: 'Torrentio',
-                source: new TorrentioSource(this, object)
-            });
-        }
-
-        // If no sources configured
-        if (sources.length === 0) {
-            sources.push({
-                name: 'comet',
-                title: 'Comet',
-                source: new CometSource(this, object)
-            });
-        }
-
-        // Find active source
-        active_source = sources.find(function(s) { return s.name === balanser; }) || sources[0];
-
-        var filter_items = {
-            source: sources.map(function(s) { return s.title; })
-        };
-
+        var filter_sources = [];
         var choice = {
-            source: sources.findIndex(function(s) { return s.name === balanser; })
+            source: 0
         };
-        if (choice.source < 0) choice.source = 0;
+
+        // Initialize sources after component is ready
+        function initSources() {
+            if (initialized) return;
+            initialized = true;
+
+            var comet_url = Lampa.Storage.get('debrid_comet_url', '');
+            var torrentio_url = Lampa.Storage.get('debrid_torrentio_url', '');
+
+            if (comet_url) {
+                sources['comet'] = {
+                    name: 'comet',
+                    title: 'Comet',
+                    source: new CometSource(_this, object)
+                };
+                filter_sources.push('comet');
+            }
+
+            if (torrentio_url) {
+                sources['torrentio'] = {
+                    name: 'torrentio',
+                    title: 'Torrentio',
+                    source: new TorrentioSource(_this, object)
+                };
+                filter_sources.push('torrentio');
+            }
+
+            // If no sources configured, add comet as default
+            if (filter_sources.length === 0) {
+                sources['comet'] = {
+                    name: 'comet',
+                    title: 'Comet',
+                    source: new CometSource(_this, object)
+                };
+                filter_sources.push('comet');
+            }
+
+            // Find active source
+            if (!sources[balanser]) {
+                balanser = filter_sources[0];
+            }
+            active_source = sources[balanser];
+
+            choice.source = filter_sources.indexOf(balanser);
+            if (choice.source < 0) choice.source = 0;
+        }
 
         this.create = function () {
-            var _this = this;
+            initSources();
 
             this.activity.loader(true);
 
@@ -803,44 +814,64 @@
             scroll.body().addClass('torrent-list');
 
             filter.onSelect = function (type, a, b) {
-                if (a.stype === 'source') {
-                    choice.source = b.index;
-                    balanser = sources[b.index].name;
-                    active_source = sources[b.index];
-                    Lampa.Storage.set('debrid_source', balanser);
+                if (type === 'filter') {
+                    if (a.stype === 'source') {
+                        choice.source = b.index;
+                        balanser = filter_sources[b.index];
+                        active_source = sources[balanser];
+                        Lampa.Storage.set('debrid_source', balanser);
 
-                    _this.reset();
-                    _this.search();
-                } else if (active_source && active_source.source) {
-                    active_source.source.filter(type, a, b);
+                        _this.reset();
+                        _this.searchStremio();
+                    } else if (active_source && active_source.source && active_source.source.filter) {
+                        active_source.source.filter(type, a, b);
+                    }
+                } else if (type === 'sort') {
+                    if (a.source) {
+                        balanser = a.source;
+                        active_source = sources[balanser];
+                        Lampa.Storage.set('debrid_source', balanser);
+
+                        _this.reset();
+                        _this.searchStremio();
+                    }
                 }
             };
-
-            filter.render().find('.filter--sort').remove();
 
             filter.onBack = function () {
                 _this.start();
             };
 
-            filter.onFilter = function (type, a, b) {
-                if (active_source && active_source.source) {
-                    active_source.source.filter(type, a, b);
-                }
-            };
+            filter.render().find('.filter--sort span').text('Source');
 
-            this.search();
+            files.appendHead(filter.render());
+            files.appendFiles(scroll.render());
 
-            return this.render();
+            this.searchStremio();
+
+            return files.render();
         };
 
-        this.search = function () {
-            this.loading(true);
-            this.filter();
+        this.searchStremio = function () {
+            this.activity.loader(true);
 
-            var imdb_id = object.movie.imdb_id;
-            var kp_id = object.movie.kinopoisk_id || object.movie.kp_id;
+            var source_items = filter_sources.map(function(name, index) {
+                return {
+                    title: sources[name].title,
+                    source: name,
+                    selected: name === balanser,
+                    index: index
+                };
+            });
+
+            filter.set('sort', source_items);
+            filter.chosen('sort', [balanser]);
+
+            this.reset();
 
             if (active_source && active_source.source) {
+                var imdb_id = object.movie.imdb_id;
+                var kp_id = object.movie.kinopoisk_id || object.movie.kp_id;
                 active_source.source.search(object, imdb_id || kp_id);
             } else {
                 this.emptyForQuery('Source not found');
@@ -854,11 +885,6 @@
             } else {
                 this.activity.loader(false);
             }
-        };
-
-        this.filter = function () {
-            filter.set('source', filter_items.source);
-            filter.chosen('source', [filter_items.source[choice.source]]);
         };
 
         this.reset = function () {
@@ -875,6 +901,7 @@
         };
 
         this.emptyForQuery = function (message) {
+            this.activity.loader(false);
             scroll.clear();
 
             var empty = $('<div class="empty"><div class="empty__title">' + (message || 'Nothing found') + '</div></div>');
@@ -891,6 +918,7 @@
         };
 
         this.start = function (first_focus) {
+            var _self = this;
             var items = scroll.render().find('.selector');
 
             if (items.length) {
@@ -919,7 +947,9 @@
                     down: function () {
                         Lampa.Navigator.move('down');
                     },
-                    back: this.back
+                    back: function () {
+                        _self.back();
+                    }
                 });
 
                 Lampa.Controller.toggle('content');
@@ -934,7 +964,9 @@
                         Lampa.Controller.toggle('head');
                     },
                     down: function () {},
-                    back: this.back
+                    back: function () {
+                        _self.back();
+                    }
                 });
 
                 Lampa.Controller.toggle('content');
@@ -950,24 +982,57 @@
         };
 
         this.render = function () {
-            return scroll.render();
+            return files.render();
         };
 
         this.destroy = function () {
             network.clear();
             scroll.destroy();
 
-            sources.forEach(function(s) {
-                if (s.source && s.source.destroy) {
-                    s.source.destroy();
+            for (var key in sources) {
+                if (sources[key] && sources[key].source && sources[key].source.destroy) {
+                    sources[key].source.destroy();
                 }
-            });
+            }
         };
     }
 
     // ==================== PLUGIN REGISTRATION ====================
 
+    // Add templates
+    function addTemplates() {
+        Lampa.Template.add('debrid_item', '<div class="online selector">\
+            <div class="online__body">\
+                <div style="position: absolute;left: 0;top: -0.3em;width: 2.4em;height: 2.4em">\
+                    <svg style="height: 2.4em; width: 2.4em;" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">\
+                        <circle cx="64" cy="64" r="56" stroke="white" stroke-width="16"/>\
+                        <path d="M90.5 64.3827L50 87.7654L50 41L90.5 64.3827Z" fill="white"/>\
+                    </svg>\
+                </div>\
+                <div class="online__title" style="padding-left: 2.1em;">{title}</div>\
+                <div class="online__quality" style="padding-left: 3.4em;">{info}</div>\
+            </div>\
+        </div>');
+
+        Lampa.Template.add('debrid_folder', '<div class="online selector">\
+            <div class="online__body">\
+                <div style="position: absolute;left: 0;top: -0.3em;width: 2.4em;height: 2.4em">\
+                    <svg style="height: 2.4em; width: 2.4em;" viewBox="0 0 128 112" fill="none" xmlns="http://www.w3.org/2000/svg">\
+                        <rect y="20" width="128" height="92" rx="13" fill="white"/>\
+                        <path d="M29.9963 8H98.0037C96.0446 3.3021 91.4079 0 86 0H42C36.5921 0 31.9555 3.3021 29.9963 8Z" fill="white" fill-opacity="0.23"/>\
+                        <rect x="11" y="8" width="106" height="76" rx="13" fill="white" fill-opacity="0.51"/>\
+                    </svg>\
+                </div>\
+                <div class="online__title" style="padding-left: 2.1em;">{title}</div>\
+                <div class="online__quality" style="padding-left: 3.4em;">{info}</div>\
+            </div>\
+        </div>');
+    }
+
     function initPlugin() {
+        // Add templates first
+        addTemplates();
+
         // Add translations
         Lampa.Lang.add({
             debrid_title: {
