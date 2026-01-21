@@ -1,31 +1,31 @@
 /**
- * Lampa Real Debrid Plugin (Comet/Torrentino)
- * Version: 1.0.0
+ * Debrid Streams - Lampa Plugin
+ * Version: 1.1.0
  *
- * Plugin for integrating Stremio addons (Comet, Torrentino) with Real Debrid in Lampa
+ * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
  *
  * Installation:
  * 1. Add this plugin URL to Lampa settings
- * 2. Go to Settings -> Real Debrid
- * 3. Enter manifest URL from Comet or Torrentino
+ * 2. Go to Settings -> Debrid Streams
+ * 3. Enter manifest URL from Comet or Torrentio
  *
  * Getting manifest URL:
  * - Comet: https://comet.elfhosted.com/ -> configure and copy "Install" link
- * - Torrentino: similarly, copy manifest URL
+ * - Torrentio: https://torrentio.strem.fun/ -> configure and copy manifest URL
  */
 
 (function () {
     'use strict';
 
     var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.0.0';
-    var PLUGIN_TITLE = 'Real Debrid';
+    var PLUGIN_VERSION = '1.1.0';
+    var PLUGIN_TITLE = 'Debrid Streams';
 
     // Default settings
     var DEFAULT_SETTINGS = {
         comet_url: '',      // Comet manifest URL
         torrentio_url: '',  // Torrentio manifest URL
-        timeout: 15000      // Request timeout
+        timeout: 120000     // Request timeout - 2 minutes (debrid can be slow)
     };
 
     // ==================== UTILITIES ====================
@@ -149,7 +149,7 @@
             var type = getContentType(object.movie);
 
             if (!getBaseUrl()) {
-                component.emptyForQuery('Comet URL not configured. Go to Settings -> Real Debrid');
+                component.emptyForQuery('Comet URL not configured. Go to Settings -> Debrid Streams');
                 return;
             }
 
@@ -302,19 +302,19 @@
                     var stream = item.stream;
                     var parsed = item.parsed;
 
-                    var info = [parsed.quality, parsed.codec, parsed.size, parsed.audio]
-                        .filter(Boolean)
-                        .join(' • ');
+                    // Build info line with source tag
+                    var infoParts = ['[RD+ Comet]'];
+                    if (parsed.quality) infoParts.push(parsed.quality);
+                    if (parsed.codec) infoParts.push(parsed.codec);
+                    if (parsed.size) infoParts.push(parsed.size);
+                    if (parsed.audio) infoParts.push(parsed.audio);
+
+                    var info = infoParts.join(' • ');
 
                     var element = Lampa.Template.get('debrid_item', {
                         title: stream.title || stream.name || 'Stream ' + (item.index + 1),
-                        info: info || 'Real Debrid'
+                        info: info
                     });
-
-                    // Add quality icon
-                    if (parsed.quality) {
-                        element.find('.online__quality').text(parsed.quality);
-                    }
 
                     element.on('hover:enter', function () {
                         playStream(stream);
@@ -480,7 +480,7 @@
             var type = getContentType(object.movie);
 
             if (!getBaseUrl()) {
-                component.emptyForQuery('Torrentio URL not configured. Go to Settings -> Real Debrid');
+                component.emptyForQuery('Torrentio URL not configured. Go to Settings -> Debrid Streams');
                 return;
             }
 
@@ -618,18 +618,19 @@
                     var stream = item.stream;
                     var parsed = item.parsed;
 
-                    var info = [parsed.quality, parsed.codec, parsed.size, parsed.audio]
-                        .filter(Boolean)
-                        .join(' • ');
+                    // Build info line with source tag
+                    var infoParts = ['[RD+ Torrentio]'];
+                    if (parsed.quality) infoParts.push(parsed.quality);
+                    if (parsed.codec) infoParts.push(parsed.codec);
+                    if (parsed.size) infoParts.push(parsed.size);
+                    if (parsed.audio) infoParts.push(parsed.audio);
+
+                    var info = infoParts.join(' • ');
 
                     var element = Lampa.Template.get('debrid_item', {
                         title: stream.title || stream.name || 'Stream ' + (item.index + 1),
-                        info: info || 'Real Debrid'
+                        info: info
                     });
-
-                    if (parsed.quality) {
-                        element.find('.online__quality').text(parsed.quality);
-                    }
 
                     element.on('hover:enter', function () {
                         playStream(stream);
@@ -1036,14 +1037,14 @@
         // Add translations
         Lampa.Lang.add({
             debrid_title: {
-                ru: 'Real Debrid',
-                en: 'Real Debrid',
-                uk: 'Real Debrid'
+                ru: 'Debrid Streams',
+                en: 'Debrid Streams',
+                uk: 'Debrid Streams'
             },
             debrid_settings_title: {
-                ru: 'Настройки Real Debrid',
-                en: 'Real Debrid Settings',
-                uk: 'Налаштування Real Debrid'
+                ru: 'Настройки Debrid Streams',
+                en: 'Debrid Streams Settings',
+                uk: 'Налаштування Debrid Streams'
             },
             debrid_comet_url: {
                 ru: 'URL манифеста Comet',
@@ -1066,9 +1067,14 @@
                 uk: 'Вставте URL з налаштувань Torrentio'
             },
             debrid_watch: {
-                ru: 'Смотреть через Real Debrid',
-                en: 'Watch via Real Debrid',
-                uk: 'Дивитись через Real Debrid'
+                ru: 'Смотреть через Debrid',
+                en: 'Watch via Debrid',
+                uk: 'Дивитись через Debrid'
+            },
+            debrid_loading: {
+                ru: 'Загрузка стримов...',
+                en: 'Loading streams...',
+                uk: 'Завантаження стрімів...'
             }
         });
 
@@ -1103,7 +1109,7 @@
                                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>\
                             </svg>\
                         </div>\
-                        <div class="settings-folder__name">Real Debrid</div>\
+                        <div class="settings-folder__name">Debrid Streams</div>\
                     </div>\
                 ');
 
@@ -1154,12 +1160,12 @@
                     var torrentio_url = Lampa.Storage.get('debrid_torrentio_url', '');
 
                     if (!comet_url && !torrentio_url) {
-                        Lampa.Noty.show('Configure URL in Settings -> Real Debrid');
+                        Lampa.Noty.show('Configure URL in Settings -> Debrid Streams');
                         return;
                     }
 
                     if (!movie.imdb_id) {
-                        Lampa.Noty.show('IMDb ID not found for this content');
+                        Lampa.Noty.show('IMDb ID not found. Try another source.');
                         return;
                     }
 
@@ -1189,7 +1195,7 @@
             }
         });
 
-        console.log('Real Debrid Plugin', PLUGIN_VERSION, 'loaded');
+        console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
     }
 
     // Initialization
