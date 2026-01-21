@@ -1,6 +1,6 @@
 /**
  * Debrid Streams - Lampa Plugin
- * Version: 1.2.0
+ * Version: 1.2.1
  *
  * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
  *
@@ -18,7 +18,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.2.0';
+    var PLUGIN_VERSION = '1.2.1';
     var PLUGIN_TITLE = 'Debrid Streams';
 
     // Default settings
@@ -131,9 +131,9 @@
 
     /**
      * Get stream URL - handle different stream formats
+     * Note: No heavy logging here - called for every stream during display!
      */
     function getStreamUrl(stream) {
-        console.log('Debrid Streams: Getting stream URL for:', JSON.stringify(stream, null, 2));
         // Direct URL
         if (stream.url) {
             return stream.url;
@@ -146,7 +146,6 @@
 
         // Torrent stream (infoHash) - won't work directly, need debrid
         if (stream.infoHash) {
-            console.log('Debrid Streams: infoHash stream, needs debrid resolution:', stream.infoHash);
             return null;
         }
 
@@ -356,17 +355,23 @@
                     var stream = item.stream;
                     var parsed = item.parsed;
 
-                    // Build info line with source tag and languages
-                    var infoParts = ['[RD+ Comet]'];
-                    if (parsed.quality) infoParts.push(parsed.quality);
-                    if (parsed.codec) infoParts.push(parsed.codec);
-                    if (parsed.size) infoParts.push(parsed.size);
-                    if (parsed.languages && parsed.languages.length > 0) {
-                        infoParts.push(parsed.languages.join('/'));
+                    // Use stream.description if available (Comet provides rich descriptions)
+                    var info;
+                    if (stream.description) {
+                        // Replace newlines with separator for single-line display
+                        info = '[RD+ Comet] ' + stream.description.replace(/\n/g, ' • ');
+                    } else {
+                        // Fallback to parsed info
+                        var infoParts = ['[RD+ Comet]'];
+                        if (parsed.quality) infoParts.push(parsed.quality);
+                        if (parsed.codec) infoParts.push(parsed.codec);
+                        if (parsed.size) infoParts.push(parsed.size);
+                        if (parsed.languages && parsed.languages.length > 0) {
+                            infoParts.push(parsed.languages.join('/'));
+                        }
+                        if (parsed.audio) infoParts.push(parsed.audio);
+                        info = infoParts.join(' • ');
                     }
-                    if (parsed.audio) infoParts.push(parsed.audio);
-
-                    var info = infoParts.join(' • ');
 
                     // Check if stream has valid URL
                     var streamUrl = getStreamUrl(stream);
@@ -397,18 +402,18 @@
          * Play stream
          */
         function playStream(stream) {
-            // Log stream object for debugging
-            console.log('Debrid Streams: Playing stream:', JSON.stringify(stream, null, 2));
+            // Log stream object for debugging (only when user clicks play)
+            console.log('Debrid Streams [Comet]: Playing stream:', JSON.stringify(stream, null, 2));
 
             var url = getStreamUrl(stream);
 
             if (!url) {
-                console.log('Debrid Streams: No URL found in stream object');
+                console.log('Debrid Streams [Comet]: No URL found in stream object');
                 Lampa.Noty.show('Stream URL not found. Check console for details.');
                 return;
             }
 
-            console.log('Debrid Streams: Stream URL:', url);
+            console.log('Debrid Streams [Comet]: Stream URL:', url);
 
             var title = object.movie.title || object.movie.name || 'Video';
             var parsed = parseStreamTitle(stream);
@@ -423,8 +428,23 @@
             // Handle proxy headers if present (some debrid services need this)
             if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
                 playerData.headers = stream.behaviorHints.proxyHeaders.request;
-                console.log('Debrid Streams: Using headers:', playerData.headers);
             }
+
+            // Always ensure we have Referer and User-Agent headers
+            playerData.headers = playerData.headers || {};
+
+            // Extract domain from URL for Referer
+            var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
+            if (domainMatch && !playerData.headers['Referer']) {
+                playerData.headers['Referer'] = domainMatch[1] + '/';
+            }
+
+            // Add User-Agent if not set
+            if (!playerData.headers['User-Agent']) {
+                playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+            }
+
+            console.log('Debrid Streams [Comet]: Using headers:', playerData.headers);
 
             Lampa.Player.play(playerData);
 
@@ -733,7 +753,7 @@
         }
 
         function playStream(stream) {
-            // Log stream object for debugging
+            // Log stream object for debugging (only when user clicks play)
             console.log('Debrid Streams [Torrentio]: Playing stream:', JSON.stringify(stream, null, 2));
 
             var url = getStreamUrl(stream);
@@ -759,8 +779,23 @@
             // Handle proxy headers if present (some debrid services need this)
             if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
                 playerData.headers = stream.behaviorHints.proxyHeaders.request;
-                console.log('Debrid Streams [Torrentio]: Using headers:', playerData.headers);
             }
+
+            // Always ensure we have Referer and User-Agent headers
+            playerData.headers = playerData.headers || {};
+
+            // Extract domain from URL for Referer
+            var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
+            if (domainMatch && !playerData.headers['Referer']) {
+                playerData.headers['Referer'] = domainMatch[1] + '/';
+            }
+
+            // Add User-Agent if not set
+            if (!playerData.headers['User-Agent']) {
+                playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+            }
+
+            console.log('Debrid Streams [Torrentio]: Using headers:', playerData.headers);
 
             Lampa.Player.play(playerData);
 
