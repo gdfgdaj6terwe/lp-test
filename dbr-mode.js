@@ -1,6 +1,6 @@
 /**
  * Debrid Streams - Lampa Plugin
- * Version: 1.2.4
+ * Version: 1.2.5
  *
  * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
  *
@@ -18,7 +18,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.2.4';
+    var PLUGIN_VERSION = '1.2.5';
     var PLUGIN_TITLE = 'Debrid Streams';
 
     // Default settings
@@ -1033,6 +1033,9 @@
 
             filter.set('sort', source_items);
             filter.chosen('sort', [balanser]);
+            
+            // Initialize filter with sources
+            this.updateFilter();
 
             this.reset();
 
@@ -1116,7 +1119,7 @@
                         if (Navigator.canmove('up')) {
                             Navigator.move('up');
                         } else {
-                            Lampa.Controller.toggle('head');
+                            filter.show(Lampa.Lang.translate('title_filter'), 'filter');
                         }
                     },
                     down: function () {
@@ -1157,7 +1160,23 @@
         this.updateFilter = function (items) {
             var filters = [];
             
-            if (items.quality && items.quality.length) {
+            // Add source filter
+            if (filter_sources.length > 1) {
+                filters.push({
+                    title: 'Source',
+                    stype: 'source',
+                    items: filter_sources.map(function(name, index) {
+                        return {
+                            title: sources[name].title,
+                            selected: name === balanser,
+                            index: index
+                        };
+                    })
+                });
+            }
+            
+            // Add quality filter
+            if (items && items.quality && items.quality.length) {
                 filters.push({
                     title: 'Quality',
                     stype: 'quality',
