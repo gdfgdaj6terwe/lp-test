@@ -1,5 +1,5 @@
 /**
- * Debrid Streams - Lampa Plugin
+ * Debrid Streams - Lampa Plugin 
  * Version: 1.1.0
  *
  * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
