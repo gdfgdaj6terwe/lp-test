@@ -1,6 +1,6 @@
 /**
  * Debrid Streams - Lampa Plugin
- * Version: 1.2.3
+ * Version: 1.2.4
  *
  * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
  *
@@ -18,7 +18,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.2.3';
+    var PLUGIN_VERSION = '1.2.4';
     var PLUGIN_TITLE = 'Debrid Streams';
 
     // Default settings
@@ -339,6 +339,9 @@
             });
 
             filter_items.quality = Object.keys(qualities);
+
+            // Update filter with quality options
+            component.updateFilter(filter_items);
 
             // Sort by quality
             var qualityOrder = ['4K', '2160P', '1080P', '720P', '480P', 'UNKNOWN'];
@@ -709,6 +712,9 @@
             });
 
             filter_items.quality = Object.keys(qualities);
+
+            // Update filter with quality options
+            component.updateFilter(filter_items);
 
             var qualityOrder = ['4K', '2160P', '1080P', '720P', '480P', 'UNKNOWN'];
             var sortedQualities = Object.keys(qualities).sort(function(a, b) {
@@ -1102,6 +1108,8 @@
                     right: function () {
                         if (Navigator.canmove('right')) {
                             Navigator.move('right');
+                        } else {
+                            filter.show(Lampa.Lang.translate('title_filter'), 'filter');
                         }
                     },
                     up: function () {
@@ -1144,6 +1152,28 @@
 
         this.back = function () {
             Lampa.Activity.backward();
+        };
+
+        this.updateFilter = function (items) {
+            var filters = [];
+            
+            if (items.quality && items.quality.length) {
+                filters.push({
+                    title: 'Quality',
+                    stype: 'quality',
+                    items: items.quality.map(function(q, index) {
+                        return {
+                            title: q,
+                            selected: index === 0,
+                            index: index
+                        };
+                    })
+                });
+            }
+            
+            if (filters.length) {
+                filter.set('filter', filters);
+            }
         };
 
         this.saveChoice = function (ch) {
