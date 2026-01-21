@@ -1,6 +1,6 @@
 /**
  * Debrid Streams - Lampa Plugin
- * Version: 1.2.2
+ * Version: 1.2.3
  *
  * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
  *
@@ -18,7 +18,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.2.2';
+    var PLUGIN_VERSION = '1.2.3';
     var PLUGIN_TITLE = 'Debrid Streams';
 
     // Default settings
@@ -1093,27 +1093,27 @@
                         Lampa.Controller.collectionFocus(first_focus ? items.first() : false, scroll.render());
                     },
                     left: function () {
-                        if (Lampa.Navigator.canmove('left')) {
-                            Lampa.Navigator.move('left');
+                        if (Navigator.canmove('left')) {
+                            Navigator.move('left');
                         } else {
                             Lampa.Controller.toggle('menu');
                         }
                     },
                     right: function () {
-                        if (Lampa.Navigator.canmove('right')) {
-                            Lampa.Navigator.move('right');
+                        if (Navigator.canmove('right')) {
+                            Navigator.move('right');
                         }
                     },
                     up: function () {
-                        if (Lampa.Navigator.canmove('up')) {
-                            Lampa.Navigator.move('up');
+                        if (Navigator.canmove('up')) {
+                            Navigator.move('up');
                         } else {
                             Lampa.Controller.toggle('head');
                         }
                     },
                     down: function () {
-                        if (Lampa.Navigator.canmove('down')) {
-                            Lampa.Navigator.move('down');
+                        if (Navigator.canmove('down')) {
+                            Navigator.move('down');
                         }
                     },
                     back: function () {
