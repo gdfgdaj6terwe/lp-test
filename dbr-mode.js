@@ -1,6 +1,6 @@
 /**
  * Debrid Streams - Lampa Plugin
- * Version: 1.2.1
+ * Version: 1.2.2
  *
  * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
  *
@@ -18,7 +18,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.2.1';
+    var PLUGIN_VERSION = '1.2.2';
     var PLUGIN_TITLE = 'Debrid Streams';
 
     // Default settings
@@ -383,12 +383,20 @@
                     });
 
                     element.on('hover:enter', function () {
-                        playStream(stream);
+                        try {
+                            playStream(stream);
+                        } catch (error) {
+                            console.error('Debrid Streams [Comet]: playStream error:', error);
+                        }
                     });
 
                     // Long press - show details
                     element.on('hover:long', function () {
-                        showStreamDetails(stream, parsed);
+                        try {
+                            showStreamDetails(stream, parsed);
+                        } catch (error) {
+                            console.error('Debrid Streams [Comet]: showStreamDetails error:', error);
+                        }
                     });
 
                     component.append(element);
@@ -738,11 +746,19 @@
                     });
 
                     element.on('hover:enter', function () {
-                        playStream(stream);
+                        try {
+                            playStream(stream);
+                        } catch (error) {
+                            console.error('Debrid Streams [Torrentio]: playStream error:', error);
+                        }
                     });
 
                     element.on('hover:long', function () {
-                        showStreamDetails(stream, parsed);
+                        try {
+                            showStreamDetails(stream, parsed);
+                        } catch (error) {
+                            console.error('Debrid Streams [Torrentio]: showStreamDetails error:', error);
+                        }
                     });
 
                     component.append(element);
@@ -1057,7 +1073,11 @@
 
         this.append = function (element) {
             element.on('hover:focus', function () {
-                scroll.update($(this), true);
+                try {
+                    scroll.update($(this), true);
+                } catch (error) {
+                    console.error('Debrid Streams: scroll.update error:', error);
+                }
             });
             scroll.append(element);
         };
@@ -1080,7 +1100,9 @@
                         }
                     },
                     right: function () {
-                        Lampa.Navigator.move('right');
+                        if (Lampa.Navigator.canmove('right')) {
+                            Lampa.Navigator.move('right');
+                        }
                     },
                     up: function () {
                         if (Lampa.Navigator.canmove('up')) {
@@ -1090,7 +1112,9 @@
                         }
                     },
                     down: function () {
-                        Lampa.Navigator.move('down');
+                        if (Lampa.Navigator.canmove('down')) {
+                            Lampa.Navigator.move('down');
+                        }
                     },
                     back: function () {
                         _self.back();
