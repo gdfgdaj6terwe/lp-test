@@ -1,6 +1,6 @@
 /**
- * Debrid Streams - Lampa Plugin 
- * Version: 1.1.0
+ * Debrid Streams - Lampa Plugin
+ * Version: 1.2.0
  *
  * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
  *
@@ -18,7 +18,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.1.0';
+    var PLUGIN_VERSION = '1.2.0';
     var PLUGIN_TITLE = 'Debrid Streams';
 
     // Default settings
@@ -97,13 +97,60 @@
         var audioMatch = title.match(/\b(Atmos|DTS-HD|DTS|TrueHD|DD\+?5\.1|AAC|AC3)\b/i);
         if (audioMatch) audio = audioMatch[1];
 
+        // Extract languages (common patterns)
+        var languages = [];
+        var langPatterns = [
+            /\b(Russian|Русский|RUS|Рус)\b/i,
+            /\b(English|ENG|Англ)\b/i,
+            /\b(Ukrainian|Ukr|Укр)\b/i,
+            /\b(Multi|Dual|Много)\b/i,
+            /\b(German|Ger|Deu)\b/i,
+            /\b(French|Fre|Fra)\b/i,
+            /\b(Spanish|Spa|Esp)\b/i
+        ];
+        langPatterns.forEach(function(pattern) {
+            var match = title.match(pattern);
+            if (match) languages.push(match[1]);
+        });
+
+        // Extract source/release info
+        var source = '';
+        var sourceMatch = title.match(/\b(BluRay|BDRip|WEB-DL|WEBRip|HDTV|DVDRip|Remux)\b/i);
+        if (sourceMatch) source = sourceMatch[1];
+
         return {
             full: title,
             quality: quality,
             size: size,
             codec: codec,
-            audio: audio
+            audio: audio,
+            languages: languages,
+            source: source
         };
+    }
+
+    /**
+     * Get stream URL - handle different stream formats
+     */
+    function getStreamUrl(stream) {
+        console.log('Debrid Streams: Getting stream URL for:', JSON.stringify(stream, null, 2));
+        // Direct URL
+        if (stream.url) {
+            return stream.url;
+        }
+
+        // Some addons use different field names
+        if (stream.externalUrl) {
+            return stream.externalUrl;
+        }
+
+        // Torrent stream (infoHash) - won't work directly, need debrid
+        if (stream.infoHash) {
+            console.log('Debrid Streams: infoHash stream, needs debrid resolution:', stream.infoHash);
+            return null;
+        }
+
+        return null;
     }
 
     // ==================== COMET SOURCE ====================
@@ -251,21 +298,28 @@
                 return;
             }
 
+            console.log('Debrid Streams [Comet]: Fetching:', url);
+
             component.loading(true);
             network.clear();
             network.timeout(Lampa.Storage.get('debrid_timeout', DEFAULT_SETTINGS.timeout));
 
             network.silent(url, function (response) {
                 component.loading(false);
+                console.log('Debrid Streams [Comet]: Response received:', response);
 
                 if (response && response.streams && response.streams.length > 0) {
+                    console.log('Debrid Streams [Comet]: Found', response.streams.length, 'streams');
+                    console.log('Debrid Streams [Comet]: First stream:', JSON.stringify(response.streams[0], null, 2));
                     streams_data = response.streams;
                     displayStreams(streams_data);
                 } else {
+                    console.log('Debrid Streams [Comet]: No streams found');
                     component.emptyForQuery('Streams not found');
                 }
             }, function (error) {
                 component.loading(false);
+                console.log('Debrid Streams [Comet]: Error:', error);
                 component.emptyForQuery('Load error: ' + (error.statusText || 'Unknown'));
             });
         }
@@ -302,18 +356,25 @@
                     var stream = item.stream;
                     var parsed = item.parsed;
 
-                    // Build info line with source tag
+                    // Build info line with source tag and languages
                     var infoParts = ['[RD+ Comet]'];
                     if (parsed.quality) infoParts.push(parsed.quality);
                     if (parsed.codec) infoParts.push(parsed.codec);
                     if (parsed.size) infoParts.push(parsed.size);
+                    if (parsed.languages && parsed.languages.length > 0) {
+                        infoParts.push(parsed.languages.join('/'));
+                    }
                     if (parsed.audio) infoParts.push(parsed.audio);
 
                     var info = infoParts.join(' • ');
 
+                    // Check if stream has valid URL
+                    var streamUrl = getStreamUrl(stream);
+                    var hasUrl = !!streamUrl;
+
                     var element = Lampa.Template.get('debrid_item', {
                         title: stream.title || stream.name || 'Stream ' + (item.index + 1),
-                        info: info
+                        info: info + (hasUrl ? '' : ' [NO URL]')
                     });
 
                     element.on('hover:enter', function () {
@@ -336,26 +397,36 @@
          * Play stream
          */
         function playStream(stream) {
-            var url = stream.url;
+            // Log stream object for debugging
+            console.log('Debrid Streams: Playing stream:', JSON.stringify(stream, null, 2));
+
+            var url = getStreamUrl(stream);
 
             if (!url) {
-                Lampa.Noty.show('Stream URL not found');
+                console.log('Debrid Streams: No URL found in stream object');
+                Lampa.Noty.show('Stream URL not found. Check console for details.');
                 return;
             }
 
-            // Some streams may be in behaviorHints format
-            if (stream.behaviorHints && stream.behaviorHints.proxyHeaders) {
-                // Handle proxy headers if needed
-            }
+            console.log('Debrid Streams: Stream URL:', url);
 
             var title = object.movie.title || object.movie.name || 'Video';
             var parsed = parseStreamTitle(stream);
 
-            Lampa.Player.play({
+            // Build player object
+            var playerData = {
                 title: title + (parsed.quality ? ' [' + parsed.quality + ']' : ''),
                 url: url,
                 timeline: object.movie
-            });
+            };
+
+            // Handle proxy headers if present (some debrid services need this)
+            if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
+                playerData.headers = stream.behaviorHints.proxyHeaders.request;
+                console.log('Debrid Streams: Using headers:', playerData.headers);
+            }
+
+            Lampa.Player.play(playerData);
 
             // Mark as watched
             Lampa.Timeline.update(object.movie);
@@ -572,21 +643,28 @@
                 return;
             }
 
+            console.log('Debrid Streams [Torrentio]: Fetching:', url);
+
             component.loading(true);
             network.clear();
             network.timeout(Lampa.Storage.get('debrid_timeout', DEFAULT_SETTINGS.timeout));
 
             network.silent(url, function (response) {
                 component.loading(false);
+                console.log('Debrid Streams [Torrentio]: Response received:', response);
 
                 if (response && response.streams && response.streams.length > 0) {
+                    console.log('Debrid Streams [Torrentio]: Found', response.streams.length, 'streams');
+                    console.log('Debrid Streams [Torrentio]: First stream:', JSON.stringify(response.streams[0], null, 2));
                     streams_data = response.streams;
                     displayStreams(streams_data);
                 } else {
+                    console.log('Debrid Streams [Torrentio]: No streams found');
                     component.emptyForQuery('Streams not found');
                 }
             }, function (error) {
                 component.loading(false);
+                console.log('Debrid Streams [Torrentio]: Error:', error);
                 component.emptyForQuery('Load error: ' + (error.statusText || 'Unknown'));
             });
         }
@@ -618,18 +696,25 @@
                     var stream = item.stream;
                     var parsed = item.parsed;
 
-                    // Build info line with source tag
+                    // Build info line with source tag and languages
                     var infoParts = ['[RD+ Torrentio]'];
                     if (parsed.quality) infoParts.push(parsed.quality);
                     if (parsed.codec) infoParts.push(parsed.codec);
                     if (parsed.size) infoParts.push(parsed.size);
+                    if (parsed.languages && parsed.languages.length > 0) {
+                        infoParts.push(parsed.languages.join('/'));
+                    }
                     if (parsed.audio) infoParts.push(parsed.audio);
 
                     var info = infoParts.join(' • ');
 
+                    // Check if stream has valid URL
+                    var streamUrl = getStreamUrl(stream);
+                    var hasUrl = !!streamUrl;
+
                     var element = Lampa.Template.get('debrid_item', {
                         title: stream.title || stream.name || 'Stream ' + (item.index + 1),
-                        info: info
+                        info: info + (hasUrl ? '' : ' [NO URL]')
                     });
 
                     element.on('hover:enter', function () {
@@ -648,43 +733,59 @@
         }
 
         function playStream(stream) {
-            var url = stream.url;
+            // Log stream object for debugging
+            console.log('Debrid Streams [Torrentio]: Playing stream:', JSON.stringify(stream, null, 2));
+
+            var url = getStreamUrl(stream);
 
             if (!url) {
-                Lampa.Noty.show('Stream URL not found');
+                console.log('Debrid Streams [Torrentio]: No URL found in stream object');
+                Lampa.Noty.show('Stream URL not found. Check console for details.');
                 return;
             }
+
+            console.log('Debrid Streams [Torrentio]: Stream URL:', url);
 
             var title = object.movie.title || object.movie.name || 'Video';
             var parsed = parseStreamTitle(stream);
 
-            Lampa.Player.play({
+            // Build player object
+            var playerData = {
                 title: title + (parsed.quality ? ' [' + parsed.quality + ']' : ''),
                 url: url,
                 timeline: object.movie
-            });
+            };
+
+            // Handle proxy headers if present (some debrid services need this)
+            if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
+                playerData.headers = stream.behaviorHints.proxyHeaders.request;
+                console.log('Debrid Streams [Torrentio]: Using headers:', playerData.headers);
+            }
+
+            Lampa.Player.play(playerData);
 
             Lampa.Timeline.update(object.movie);
         }
 
         function showStreamDetails(stream, parsed) {
             var items = [];
+            var streamUrl = getStreamUrl(stream);
 
             items.push({
                 title: 'Play',
-                subtitle: stream.url ? 'Open in player' : 'URL unavailable',
+                subtitle: streamUrl ? 'Open in player' : 'URL unavailable',
                 action: function() {
                     Lampa.Modal.close();
                     playStream(stream);
                 }
             });
 
-            if (stream.url) {
+            if (streamUrl) {
                 items.push({
                     title: 'Copy URL',
                     subtitle: 'Copy link to clipboard',
                     action: function() {
-                        Lampa.Utils.copyTextToClipboard(stream.url, function() {
+                        Lampa.Utils.copyTextToClipboard(streamUrl, function() {
                             Lampa.Noty.show('URL copied');
                         }, function() {
                             Lampa.Noty.show('Copy error');
@@ -693,6 +794,14 @@
                     }
                 });
             }
+
+            items.push({
+                title: 'Information',
+                subtitle: parsed.full,
+                action: function() {
+                    Lampa.Modal.close();
+                }
+            });
 
             Lampa.Select.show({
                 title: 'Actions',
