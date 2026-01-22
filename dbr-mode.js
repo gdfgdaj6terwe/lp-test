@@ -108,7 +108,7 @@
             /\b(French|Fre|Fra)\b/i,
             /\b(Spanish|Spa|Esp)\b/i
         ];
-        langPatterns.forEach(function(pattern) {
+        langPatterns.forEach(function (pattern) {
             var match = title.match(pattern);
             if (match) languages.push(match[1]);
         });
@@ -252,7 +252,7 @@
         function showEpisodeSelect(imdbId, season) {
             var seasonData = null;
             if (object.movie.seasons) {
-                seasonData = object.movie.seasons.find(function(s) {
+                seasonData = object.movie.seasons.find(function (s) {
                     return s.season_number === season;
                 });
             }
@@ -345,7 +345,7 @@
 
             // Sort by quality
             var qualityOrder = ['4K', '2160P', '1080P', '720P', '480P', 'UNKNOWN'];
-            var sortedQualities = Object.keys(qualities).sort(function(a, b) {
+            var sortedQualities = Object.keys(qualities).sort(function (a, b) {
                 var aIdx = qualityOrder.indexOf(a.toUpperCase());
                 var bIdx = qualityOrder.indexOf(b.toUpperCase());
                 if (aIdx === -1) aIdx = 999;
@@ -457,9 +457,16 @@
 
             console.log('Debrid Streams [Comet]: Using headers:', playerData.headers);
 
+            // Save stream for Trakt sync on return
+            window.dbr_last_stream = {
+                item: object.movie,
+                stream: stream,
+                time: Date.now()
+            };
+
             Lampa.Player.play(playerData);
 
-            // Mark as watched
+            // Mark as watched (locally in Lampa)
             Lampa.Timeline.update(object.movie);
         }
 
@@ -472,7 +479,7 @@
             items.push({
                 title: 'Play',
                 subtitle: stream.url ? 'Open in player' : 'URL unavailable',
-                action: function() {
+                action: function () {
                     Lampa.Modal.close();
                     playStream(stream);
                 }
@@ -482,10 +489,10 @@
                 items.push({
                     title: 'Copy URL',
                     subtitle: 'Copy link to clipboard',
-                    action: function() {
-                        Lampa.Utils.copyTextToClipboard(stream.url, function() {
+                    action: function () {
+                        Lampa.Utils.copyTextToClipboard(stream.url, function () {
                             Lampa.Noty.show('URL copied');
-                        }, function() {
+                        }, function () {
                             Lampa.Noty.show('Copy error');
                         });
                         Lampa.Modal.close();
@@ -496,7 +503,7 @@
             items.push({
                 title: 'Information',
                 subtitle: parsed.full,
-                action: function() {
+                action: function () {
                     Lampa.Modal.close();
                 }
             });
@@ -504,10 +511,10 @@
             Lampa.Select.show({
                 title: 'Actions',
                 items: items,
-                onSelect: function(item) {
+                onSelect: function (item) {
                     if (item.action) item.action();
                 },
-                onBack: function() {
+                onBack: function () {
                     Lampa.Controller.toggle('content');
                 }
             });
@@ -532,7 +539,7 @@
 
             if (filter_items.quality && filter_items.quality[b.index]) {
                 var selectedQuality = filter_items.quality[b.index];
-                var filtered = streams_data.filter(function(stream) {
+                var filtered = streams_data.filter(function (stream) {
                     var parsed = parseStreamTitle(stream);
                     return parsed.quality === selectedQuality;
                 });
@@ -632,7 +639,7 @@
         function showEpisodeSelect(imdbId, season) {
             var seasonData = null;
             if (object.movie.seasons) {
-                seasonData = object.movie.seasons.find(function(s) {
+                seasonData = object.movie.seasons.find(function (s) {
                     return s.season_number === season;
                 });
             }
@@ -717,7 +724,7 @@
             component.updateFilter(filter_items);
 
             var qualityOrder = ['4K', '2160P', '1080P', '720P', '480P', 'UNKNOWN'];
-            var sortedQualities = Object.keys(qualities).sort(function(a, b) {
+            var sortedQualities = Object.keys(qualities).sort(function (a, b) {
                 var aIdx = qualityOrder.indexOf(a.toUpperCase());
                 var bIdx = qualityOrder.indexOf(b.toUpperCase());
                 if (aIdx === -1) aIdx = 999;
@@ -819,6 +826,13 @@
 
             console.log('Debrid Streams [Torrentio]: Using headers:', playerData.headers);
 
+            // Save stream for Trakt sync on return
+            window.dbr_last_stream = {
+                item: object.movie,
+                stream: stream,
+                time: Date.now()
+            };
+
             Lampa.Player.play(playerData);
 
             Lampa.Timeline.update(object.movie);
@@ -831,7 +845,7 @@
             items.push({
                 title: 'Play',
                 subtitle: streamUrl ? 'Open in player' : 'URL unavailable',
-                action: function() {
+                action: function () {
                     Lampa.Modal.close();
                     playStream(stream);
                 }
@@ -841,10 +855,10 @@
                 items.push({
                     title: 'Copy URL',
                     subtitle: 'Copy link to clipboard',
-                    action: function() {
-                        Lampa.Utils.copyTextToClipboard(streamUrl, function() {
+                    action: function () {
+                        Lampa.Utils.copyTextToClipboard(streamUrl, function () {
                             Lampa.Noty.show('URL copied');
-                        }, function() {
+                        }, function () {
                             Lampa.Noty.show('Copy error');
                         });
                         Lampa.Modal.close();
@@ -855,7 +869,7 @@
             items.push({
                 title: 'Information',
                 subtitle: parsed.full,
-                action: function() {
+                action: function () {
                     Lampa.Modal.close();
                 }
             });
@@ -863,10 +877,10 @@
             Lampa.Select.show({
                 title: 'Actions',
                 items: items,
-                onSelect: function(item) {
+                onSelect: function (item) {
                     if (item.action) item.action();
                 },
-                onBack: function() {
+                onBack: function () {
                     Lampa.Controller.toggle('content');
                 }
             });
@@ -891,7 +905,7 @@
 
             if (filter_items.quality && filter_items.quality[b.index]) {
                 var selectedQuality = filter_items.quality[b.index];
-                var filtered = streams_data.filter(function(stream) {
+                var filtered = streams_data.filter(function (stream) {
                     var parsed = parseStreamTitle(stream);
                     return parsed.quality === selectedQuality;
                 });
@@ -1022,7 +1036,7 @@
         this.searchStremio = function () {
             this.activity.loader(true);
 
-            var source_items = filter_sources.map(function(name, index) {
+            var source_items = filter_sources.map(function (name, index) {
                 return {
                     title: sources[name].title,
                     source: name,
@@ -1033,7 +1047,7 @@
 
             filter.set('sort', source_items);
             filter.chosen('sort', [balanser]);
-            
+
             // Initialize filter with sources
             this.updateFilter();
 
@@ -1135,15 +1149,15 @@
                 Lampa.Controller.toggle('content');
             } else {
                 Lampa.Controller.add('content', {
-                    toggle: function () {},
+                    toggle: function () { },
                     left: function () {
                         Lampa.Controller.toggle('menu');
                     },
-                    right: function () {},
+                    right: function () { },
                     up: function () {
                         Lampa.Controller.toggle('head');
                     },
-                    down: function () {},
+                    down: function () { },
                     back: function () {
                         _self.back();
                     }
@@ -1159,13 +1173,13 @@
 
         this.updateFilter = function (items) {
             var filters = [];
-            
+
             // Add source filter
             if (filter_sources.length > 1) {
                 filters.push({
                     title: 'Source',
                     stype: 'source',
-                    items: filter_sources.map(function(name, index) {
+                    items: filter_sources.map(function (name, index) {
                         return {
                             title: sources[name].title,
                             selected: name === balanser,
@@ -1174,13 +1188,13 @@
                     })
                 });
             }
-            
+
             // Add quality filter
             if (items && items.quality && items.quality.length) {
                 filters.push({
                     title: 'Quality',
                     stype: 'quality',
-                    items: items.quality.map(function(q, index) {
+                    items: items.quality.map(function (q, index) {
                         return {
                             title: q,
                             selected: index === 0,
@@ -1189,7 +1203,7 @@
                     })
                 });
             }
-            
+
             if (filters.length) {
                 filter.set('filter', filters);
             }
@@ -1415,12 +1429,85 @@
         console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
     }
 
+    // ==================== TRAKT SYNC HANDLER ====================
+
+    // Listen for app resume (return from external player)
+    var syncListenerAttached = false;
+    function attachSyncListener() {
+        if (syncListenerAttached) return;
+
+        document.addEventListener('visibilitychange', function () {
+            if (!document.hidden && window.dbr_last_stream) {
+                var last = window.dbr_last_stream;
+                var now = Date.now();
+
+                // Should be at least 10 seconds to avoid accidental triggers
+                if (now - last.time > 10000) {
+                    var item = last.item;
+                    var title = (item.title || item.name || 'Video');
+
+                    Lampa.Select.show({
+                        title: 'Trakt TV',
+                        items: [
+                            {
+                                title: 'Да, отметить как просмотренное',
+                                subtitle: 'Вы закончили просмотр ' + title + '?',
+                                action: function () {
+                                    markAsWatched(item);
+                                    window.dbr_last_stream = null;
+                                    Lampa.Modal.close();
+                                }
+                            },
+                            {
+                                title: 'Нет, еще смотрю',
+                                subtitle: 'Просмотр не окончен',
+                                action: function () {
+                                    window.dbr_last_stream = null;
+                                    Lampa.Modal.close();
+                                }
+                            }
+                        ]
+                    });
+                } else {
+                    // Too short duration, ignore
+                    window.dbr_last_stream = null;
+                }
+            }
+        });
+        syncListenerAttached = true;
+    }
+
+    function markAsWatched(item) {
+        if (window.TraktTV && window.TraktTV.api) {
+            var data = {
+                method: item.first_air_date ? 'show' : 'movie',
+                id: item.id,
+                ids: item.ids
+            };
+
+            // Using the API directly
+            window.TraktTV.api.addToHistory(data)
+                .then(function () {
+                    Lampa.Noty.show('Отмечено как просмотренное в Trakt');
+                })
+                .catch(function (e) {
+                    Lampa.Noty.show('Ошибка Trakt: ' + (e.message || 'Unknown error'));
+                });
+        } else {
+            Lampa.Noty.show('Плагин Trakt TV не активен или старая версия');
+        }
+    }
+
     // Initialization
     if (window.appready) {
         initPlugin();
+        attachSyncListener();
     } else {
         Lampa.Listener.follow('app', function (e) {
-            if (e.type === 'ready') initPlugin();
+            if (e.type === 'ready') {
+                initPlugin();
+                attachSyncListener();
+            }
         });
     }
 
