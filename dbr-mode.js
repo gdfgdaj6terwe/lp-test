@@ -1471,32 +1471,10 @@
         console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
     }
 
-    // ==================== URL RESOLVER (CORS Fix) ====================
+    // ==================== URL RESOLVER (Disabled) ====================
 
     function resolveRedirect(url) {
-        return new Promise(function (resolve) {
-            // Only try to resolve on Web platform
-            if (!Lampa.Platform.is('web')) return resolve(url);
-
-            console.log('Debrid Streams: Resolving URL...', url);
-
-            // Try to fetch with HEAD to get the final URL
-            // We use no-cors mode expecting opacity, but we can't read URL in no-cors.
-            // If standard fetch fails (CORS), we just resolve original.
-            fetch(url, { method: 'HEAD' })
-                .then(function (response) {
-                    if (response.url && response.url !== url) {
-                        console.log('Debrid Streams: Resolved URL to:', response.url);
-                        resolve(response.url);
-                    } else {
-                        resolve(url);
-                    }
-                })
-                .catch(function (err) {
-                    console.error('Debrid Streams: Resolution failed', err);
-                    resolve(url);
-                });
-        });
+        return Promise.resolve(url);
     }
 
     // ==================== TRAKT SYNC ====================
@@ -1557,7 +1535,8 @@
                     if (res && res[0] && res[0][type === 'series' ? 'show' : 'movie']) {
                         var traktId = res[0][type === 'series' ? 'show' : 'movie'].ids.trakt;
                         console.log('Debrid Streams: Found Trakt ID:', traktId);
-                        return api.get('/sync/history/' + (type === 'series' ? 'shows' : 'movies') + '/' + traktId + '?extended=full');
+                        // Add limit=1000 to get full history
+                        return api.get('/sync/history/' + (type === 'series' ? 'shows' : 'movies') + '/' + traktId + '?extended=full&limit=1000');
                     }
                     console.warn('Debrid Streams: Trakt ID not found for TMDB ID:', tmdbId);
                     return null;
