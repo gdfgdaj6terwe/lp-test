@@ -239,13 +239,15 @@
 
                 // Check watched status for season
                 if (object.trakt_history && Array.isArray(object.trakt_history)) {
+                    // console.log('Debrid Streams: Checking season', item.season, 'History length:', object.trakt_history.length);
                     var seasonEpisodes = object.trakt_history.filter(function (h) {
-                        return h.episode && h.episode.season === item.season;
+                        // Some history items might be movies or have different structure
+                        return h.type === 'episode' && h.episode && h.episode.season === item.season;
                     });
                     if (seasonEpisodes.length > 0) {
+                        console.log('Debrid Streams: Season', item.season, 'watched count:', seasonEpisodes.length);
                         item.title += ' ✓';
-                        info = seasonEpisodes.length + ' / ' + item.epoch; // epoch usually implies count in this context if available, otherwise just count
-                        if (!item.epoch) info = seasonEpisodes.length + ' watched';
+                        info = seasonEpisodes.length + ' смотрели';
                     }
                 }
 
@@ -464,10 +466,6 @@
             };
 
             // Handle proxy headers if present (Comet often sends them)
-            if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
-                playerData.headers = stream.behaviorHints.proxyHeaders.request;
-            }
-
             // CORS Fix: Do not force Referer/User-Agent in browser.
             // Only add headers if we are strictly not in a browser.
             if (!Lampa.Platform.is('web')) {
@@ -485,15 +483,16 @@
                 }
             }
 
-            console.log('Debrid Streams [Comet]: Using headers:', playerData.headers);
+            console.log('Debrid Streams [Comet]: Resolving URL for playback...');
+            resolveRedirect(url).then(function (resolvedUrl) {
+                playerData.url = resolvedUrl;
+                console.log('Debrid Streams [Comet]: Final URL:', playerData.url);
+                console.log('Debrid Streams [Comet]: Headers:', playerData.headers);
 
-            Lampa.Player.play(playerData);
-
-            // Show immediate sync modal
-            showSyncModal(object.movie);
-
-            // Mark as watched (locally in Lampa)
-            Lampa.Timeline.update(object.movie);
+                Lampa.Player.play(playerData);
+                showSyncModal(object.movie);
+                Lampa.Timeline.update(object.movie);
+            });
         }
 
         /**
@@ -1466,6 +1465,36 @@
         });
 
         console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
+    }
+
+    // ==================== URL RESOLVER (CORS Fix) ====================
+
+    function resolveRedirect(url) {
+        return new Promise(function (resolve) {
+            // Only try to resolve on Web platform
+            if (!Lampa.Platform.is('web')) return resolve(url);
+
+            console.log('Debrid Streams: Resolving URL...', url);
+
+            // Try to fetch with HEAD to get the final URL
+            // We use no-cors mode initially if standard fails, but no-cors won't give us the final URL easily in JS.
+            // Actually, fetch follows redirects by default. If we can just get the final URL from the response object.
+            fetch(url, { method: 'HEAD', redirect: 'follow' })
+                .then(function (response) {
+                    if (response.url && response.url !== url) {
+                        console.log('Debrid Streams: Resolved URL to:', response.url);
+                        resolve(response.url);
+                    } else {
+                        console.log('Debrid Streams: URL did not change or no redirect info');
+                        resolve(url);
+                    }
+                })
+                .catch(function (err) {
+                    console.error('Debrid Streams: Resolution failed', err);
+                    // Fallback to original URL
+                    resolve(url);
+                });
+        });
     }
 
     // ==================== TRAKT SYNC ====================
