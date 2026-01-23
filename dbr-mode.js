@@ -206,7 +206,11 @@
 
             // For series, need to select season/episode
             if (type === 'series') {
-                showSeasonSelect(imdbId);
+                // Fetch history for indicators
+                getTraktHistory(object.movie.id, 'series').then(function (history) {
+                    object.trakt_history = history;
+                    showSeasonSelect(imdbId);
+                });
             } else {
                 fetchStreams(imdbId, 'movie');
             }
@@ -457,14 +461,10 @@
 
             console.log('Debrid Streams [Comet]: Using headers:', playerData.headers);
 
-            // Save stream for Trakt sync on return
-            window.dbr_last_stream = {
-                item: object.movie,
-                stream: stream,
-                time: Date.now()
-            };
-
             Lampa.Player.play(playerData);
+
+            // Show immediate sync modal
+            showSyncModal(object.movie);
 
             // Mark as watched (locally in Lampa)
             Lampa.Timeline.update(object.movie);
@@ -599,7 +599,11 @@
             }
 
             if (type === 'series') {
-                showSeasonSelect(imdbId);
+                // Fetch history
+                getTraktHistory(object.movie.id, 'series').then(function (history) {
+                    object.trakt_history = history;
+                    showSeasonSelect(imdbId);
+                });
             } else {
                 fetchStreams(imdbId, 'movie');
             }
@@ -826,14 +830,10 @@
 
             console.log('Debrid Streams [Torrentio]: Using headers:', playerData.headers);
 
-            // Save stream for Trakt sync on return
-            window.dbr_last_stream = {
-                item: object.movie,
-                stream: stream,
-                time: Date.now()
-            };
-
             Lampa.Player.play(playerData);
+
+            // Show immediate sync modal
+            showSyncModal(object.movie);
 
             Lampa.Timeline.update(object.movie);
         }
