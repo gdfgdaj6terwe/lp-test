@@ -463,23 +463,26 @@
                 timeline: object.movie
             };
 
-            // Handle proxy headers if present (some debrid services need this)
+            // Handle proxy headers if present (Comet often sends them)
             if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
                 playerData.headers = stream.behaviorHints.proxyHeaders.request;
             }
 
-            // Always ensure we have Referer and User-Agent headers
-            playerData.headers = playerData.headers || {};
+            // CORS Fix: Do not force Referer/User-Agent in browser.
+            // Only add headers if we are strictly not in a browser.
+            if (!Lampa.Platform.is('web')) {
+                playerData.headers = playerData.headers || {};
 
-            // Extract domain from URL for Referer
-            var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
-            if (domainMatch && !playerData.headers['Referer']) {
-                playerData.headers['Referer'] = domainMatch[1] + '/';
-            }
+                // Extract domain from URL for Referer
+                var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
+                if (domainMatch && !playerData.headers['Referer']) {
+                    playerData.headers['Referer'] = domainMatch[1] + '/';
+                }
 
-            // Add User-Agent if not set
-            if (!playerData.headers['User-Agent']) {
-                playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+                // Add User-Agent if not set
+                if (!playerData.headers['User-Agent']) {
+                    playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+                }
             }
 
             console.log('Debrid Streams [Comet]: Using headers:', playerData.headers);
@@ -833,22 +836,35 @@
             };
 
             // Handle proxy headers if present (some debrid services need this)
+            // Handle proxy headers if present (some debrid services need this)
             if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
                 playerData.headers = stream.behaviorHints.proxyHeaders.request;
             }
 
-            // Always ensure we have Referer and User-Agent headers
-            playerData.headers = playerData.headers || {};
+            // CORS Fix: Do not force Referer/User-Agent in browser unless necessary.
+            // Many Debrid servers block requests with custom Referers if they don't match exactly.
+            // Lampa player usually handles this.
 
-            // Extract domain from URL for Referer
-            var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
-            if (domainMatch && !playerData.headers['Referer']) {
-                playerData.headers['Referer'] = domainMatch[1] + '/';
-            }
+            // Only add headers if we are strictly not in a browser (e.g. Android app might need them, but Web player hates them)
+            // Lampa.Platform.is('web') is the check.
+            if (!Lampa.Platform.is('web')) {
+                playerData.headers = playerData.headers || {};
 
-            // Add User-Agent if not set
-            if (!playerData.headers['User-Agent']) {
-                playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+                // Extract domain from URL for Referer
+                var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
+                if (domainMatch && !playerData.headers['Referer']) {
+                    playerData.headers['Referer'] = domainMatch[1] + '/';
+                }
+
+                // Add User-Agent if not set
+                if (!playerData.headers['User-Agent']) {
+                    playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+                }
+            } else {
+                // For web, we might want to CLEAR headers if they cause CORS issues, 
+                // but behaviorHints might be needed. Use with caution.
+                // Actually, Streamio addons send headers that often cause this.
+                // Let's rely on behaviorHints only.
             }
 
             console.log('Debrid Streams [Torrentio]: Using headers:', playerData.headers);
