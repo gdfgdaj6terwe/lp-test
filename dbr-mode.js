@@ -1429,11 +1429,10 @@
         console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
     }
 
-    // ==================== TRAKT SYNC & HISTORY HANDLER ====================
+    // ==================== TRAKT SYNC ====================
 
     function showSyncModal(item) {
         var title = (item.title || item.name || 'Video');
-
         Lampa.Select.show({
             title: 'Trakt TV',
             items: [
@@ -1441,7 +1440,6 @@
                     title: 'Да, отметить как просмотренное',
                     subtitle: 'Нажмите, если вы закончили просмотр',
                     action: function () {
-                        // Close modal immediately to prevent freeze
                         Lampa.Modal.close();
                         markAsWatched(item);
                     }
@@ -1464,29 +1462,20 @@
                 id: item.id,
                 ids: item.ids
             };
-
-            window.TraktTV.api.addToHistory(data)
-                .then(function () {
-                    Lampa.Noty.show('Отмечено как просмотренное в Trakt');
-                })
-                .catch(function (e) {
-                    console.error('Trakt Sync Error:', e);
-                    Lampa.Noty.show('Ошибка Trakt: ' + (e.message || 'Unknown error'));
-                });
+            window.TraktTV.api.addToHistory(data).then(function () {
+                Lampa.Noty.show('Отмечено в Trakt');
+            }).catch(function (e) {
+                Lampa.Noty.show('Ошибка: ' + (e.message || 'Error'));
+            });
         } else {
-            Lampa.Noty.show('Плагин Trakt TV не активен');
+            Lampa.Noty.show('Trakt API не доступен');
         }
     }
 
-    /**
-     * Fetch history for a show/movie to determine watched status
-     */
     function getTraktHistory(tmdbId, type) {
         return new Promise(function (resolve) {
             if (!window.TraktTV || !window.TraktTV.api) return resolve(null);
-
             var api = window.TraktTV.api;
-            // Use search to find Trakt ID from TMDB ID
             api.get('/search/tmdb/' + tmdbId + '?type=' + (type === 'series' ? 'show' : 'movie'))
                 .then(function (res) {
                     if (res && res[0] && res[0][type === 'series' ? 'show' : 'movie']) {
@@ -1495,31 +1484,25 @@
                     }
                     return null;
                 })
-                .then(function (history) {
-                    resolve(history);
-                })
-                .catch(function () {
-                    resolve(null);
-                });
+                .then(resolve)
+                .catch(function () { resolve(null); });
         });
     }
 
-    // ==================== INITIALIZATION ====================
+    // ==================== INIT ====================
 
-    function startPlugin() {
-        window.plugin_debrid_streams_ready = true;
-        Lampa.Component.add('debrid_streams', CometSource);
-
-        // Add settings
-        Lampa.Settings.listener.follow('open', function (e) {
-            if (e.name === 'debrid_streams') {
-                e.body.append(Lampa.Template.get('debrid_settings', {}));
+    if (window.appready) {
+        if (!window.plugin_debrid_streams_ready) {
+            window.plugin_debrid_streams_ready = true;
+            initPlugin();
+        }
+    } else {
+        Lampa.Listener.follow('app', function (e) {
+            if (e.type === 'ready' && !window.plugin_debrid_streams_ready) {
+                window.plugin_debrid_streams_ready = true;
+                initPlugin();
             }
         });
-    }
-
-    if (!window.plugin_debrid_streams_ready) {
-        startPlugin();
     }
 
 })();
