@@ -239,10 +239,12 @@
 
                 // Check watched status for season
                 if (object.trakt_history && Array.isArray(object.trakt_history)) {
-                    // console.log('Debrid Streams: Checking season', item.season, 'History length:', object.trakt_history.length);
+                    if (items.indexOf(item) === 0 && object.trakt_history.length > 0) {
+                        console.log('Debrid Streams: First history item structure:', JSON.stringify(object.trakt_history[0]));
+                    }
                     var seasonEpisodes = object.trakt_history.filter(function (h) {
-                        // Some history items might be movies or have different structure
-                        return h.type === 'episode' && h.episode && h.episode.season === item.season;
+                        // Relaxed check: just ensure episode data exists
+                        return h.episode && h.episode.season === item.season;
                     });
                     if (seasonEpisodes.length > 0) {
                         console.log('Debrid Streams: Season', item.season, 'watched count:', seasonEpisodes.length);
@@ -866,14 +868,16 @@
                 // Let's rely on behaviorHints only.
             }
 
-            console.log('Debrid Streams [Torrentio]: Using headers:', playerData.headers);
+            console.log('Debrid Streams [Torrentio]: Resolving URL for playback...');
+            resolveRedirect(url).then(function (resolvedUrl) {
+                playerData.url = resolvedUrl;
+                console.log('Debrid Streams [Torrentio]: Final URL:', playerData.url);
+                console.log('Debrid Streams [Torrentio]: Headers:', playerData.headers);
 
-            Lampa.Player.play(playerData);
-
-            // Show immediate sync modal
-            showSyncModal(object.movie);
-
-            Lampa.Timeline.update(object.movie);
+                Lampa.Player.play(playerData);
+                showSyncModal(object.movie);
+                Lampa.Timeline.update(object.movie);
+            });
         }
 
         function showStreamDetails(stream, parsed) {
@@ -1477,21 +1481,19 @@
             console.log('Debrid Streams: Resolving URL...', url);
 
             // Try to fetch with HEAD to get the final URL
-            // We use no-cors mode initially if standard fails, but no-cors won't give us the final URL easily in JS.
-            // Actually, fetch follows redirects by default. If we can just get the final URL from the response object.
-            fetch(url, { method: 'HEAD', redirect: 'follow' })
+            // We use no-cors mode expecting opacity, but we can't read URL in no-cors.
+            // If standard fetch fails (CORS), we just resolve original.
+            fetch(url, { method: 'HEAD' })
                 .then(function (response) {
                     if (response.url && response.url !== url) {
                         console.log('Debrid Streams: Resolved URL to:', response.url);
                         resolve(response.url);
                     } else {
-                        console.log('Debrid Streams: URL did not change or no redirect info');
                         resolve(url);
                     }
                 })
                 .catch(function (err) {
                     console.error('Debrid Streams: Resolution failed', err);
-                    // Fallback to original URL
                     resolve(url);
                 });
         });
