@@ -235,9 +235,23 @@
             component.loading(false);
 
             items.forEach(function (item) {
+                var info = '';
+
+                // Check watched status for season
+                if (object.trakt_history && Array.isArray(object.trakt_history)) {
+                    var seasonEpisodes = object.trakt_history.filter(function (h) {
+                        return h.episode && h.episode.season === item.season;
+                    });
+                    if (seasonEpisodes.length > 0) {
+                        item.title += ' ✓';
+                        info = seasonEpisodes.length + ' / ' + item.epoch; // epoch usually implies count in this context if available, otherwise just count
+                        if (!item.epoch) info = seasonEpisodes.length + ' watched';
+                    }
+                }
+
                 var element = Lampa.Template.get('debrid_folder', {
                     title: item.title,
-                    info: ''
+                    info: info
                 });
 
                 element.on('hover:enter', function () {
@@ -276,8 +290,17 @@
             component.loading(false);
 
             items.forEach(function (item) {
+                // Check watched status
+                var isWatched = false;
+                if (object.trakt_history && Array.isArray(object.trakt_history)) {
+                    var found = object.trakt_history.find(function (h) {
+                        return h.episode && h.episode.season === item.season && h.episode.number === item.episode;
+                    });
+                    if (found) isWatched = true;
+                }
+
                 var element = Lampa.Template.get('debrid_folder', {
-                    title: 'S' + String(item.season).padStart(2, '0') + 'E' + String(item.episode).padStart(2, '0'),
+                    title: 'S' + String(item.season).padStart(2, '0') + 'E' + String(item.episode).padStart(2, '0') + (isWatched ? ' ✓' : ''),
                     info: item.title
                 });
 
@@ -1474,18 +1497,32 @@
 
     function getTraktHistory(tmdbId, type) {
         return new Promise(function (resolve) {
-            if (!window.TraktTV || !window.TraktTV.api) return resolve(null);
+            if (!window.TraktTV || !window.TraktTV.api) {
+                console.warn('Debrid Streams: TraktAPI not available');
+                return resolve(null);
+            }
             var api = window.TraktTV.api;
+            console.log('Debrid Streams: Fetching Trakt history for TMDB ID:', tmdbId, 'Type:', type);
+
             api.get('/search/tmdb/' + tmdbId + '?type=' + (type === 'series' ? 'show' : 'movie'))
                 .then(function (res) {
+                    // console.log('Debrid Streams: Trakt Search Result:', res);
                     if (res && res[0] && res[0][type === 'series' ? 'show' : 'movie']) {
                         var traktId = res[0][type === 'series' ? 'show' : 'movie'].ids.trakt;
+                        console.log('Debrid Streams: Found Trakt ID:', traktId);
                         return api.get('/sync/history/' + (type === 'series' ? 'shows' : 'movies') + '/' + traktId + '?extended=full');
                     }
+                    console.warn('Debrid Streams: Trakt ID not found for TMDB ID:', tmdbId);
                     return null;
                 })
-                .then(resolve)
-                .catch(function () { resolve(null); });
+                .then(function (history) {
+                    console.log('Debrid Streams: History fetched. Items:', history ? history.length : 0);
+                    resolve(history);
+                })
+                .catch(function (e) {
+                    console.error('Debrid Streams: History fetch error:', e);
+                    resolve(null);
+                });
         });
     }
 
