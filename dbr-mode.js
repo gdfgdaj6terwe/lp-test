@@ -1429,52 +1429,32 @@
         console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
     }
 
-    // ==================== TRAKT SYNC HANDLER ====================
+    // ==================== TRAKT SYNC & HISTORY HANDLER ====================
 
-    // Listen for app resume (return from external player)
-    var syncListenerAttached = false;
-    function attachSyncListener() {
-        if (syncListenerAttached) return;
+    function showSyncModal(item) {
+        var title = (item.title || item.name || 'Video');
 
-        document.addEventListener('visibilitychange', function () {
-            if (!document.hidden && window.dbr_last_stream) {
-                var last = window.dbr_last_stream;
-                var now = Date.now();
-
-                // Should be at least 10 seconds to avoid accidental triggers
-                if (now - last.time > 10000) {
-                    var item = last.item;
-                    var title = (item.title || item.name || 'Video');
-
-                    Lampa.Select.show({
-                        title: 'Trakt TV',
-                        items: [
-                            {
-                                title: 'Да, отметить как просмотренное',
-                                subtitle: 'Вы закончили просмотр ' + title + '?',
-                                action: function () {
-                                    markAsWatched(item);
-                                    window.dbr_last_stream = null;
-                                    Lampa.Modal.close();
-                                }
-                            },
-                            {
-                                title: 'Нет, еще смотрю',
-                                subtitle: 'Просмотр не окончен',
-                                action: function () {
-                                    window.dbr_last_stream = null;
-                                    Lampa.Modal.close();
-                                }
-                            }
-                        ]
-                    });
-                } else {
-                    // Too short duration, ignore
-                    window.dbr_last_stream = null;
+        Lampa.Select.show({
+            title: 'Trakt TV',
+            items: [
+                {
+                    title: 'Да, отметить как просмотренное',
+                    subtitle: 'Нажмите, если вы закончили просмотр',
+                    action: function () {
+                        // Close modal immediately to prevent freeze
+                        Lampa.Modal.close();
+                        markAsWatched(item);
+                    }
+                },
+                {
+                    title: 'Закрыть',
+                    subtitle: 'Просто закрыть окно',
+                    action: function () {
+                        Lampa.Modal.close();
+                    }
                 }
-            }
+            ]
         });
-        syncListenerAttached = true;
     }
 
     function markAsWatched(item) {
@@ -1485,30 +1465,61 @@
                 ids: item.ids
             };
 
-            // Using the API directly
             window.TraktTV.api.addToHistory(data)
                 .then(function () {
                     Lampa.Noty.show('Отмечено как просмотренное в Trakt');
                 })
                 .catch(function (e) {
+                    console.error('Trakt Sync Error:', e);
                     Lampa.Noty.show('Ошибка Trakt: ' + (e.message || 'Unknown error'));
                 });
         } else {
-            Lampa.Noty.show('Плагин Trakt TV не активен или старая версия');
+            Lampa.Noty.show('Плагин Trakt TV не активен');
         }
     }
 
-    // Initialization
-    if (window.appready) {
-        initPlugin();
-        attachSyncListener();
-    } else {
-        Lampa.Listener.follow('app', function (e) {
-            if (e.type === 'ready') {
-                initPlugin();
-                attachSyncListener();
+    /**
+     * Fetch history for a show/movie to determine watched status
+     */
+    function getTraktHistory(tmdbId, type) {
+        return new Promise(function (resolve) {
+            if (!window.TraktTV || !window.TraktTV.api) return resolve(null);
+
+            var api = window.TraktTV.api;
+            // Use search to find Trakt ID from TMDB ID
+            api.get('/search/tmdb/' + tmdbId + '?type=' + (type === 'series' ? 'show' : 'movie'))
+                .then(function (res) {
+                    if (res && res[0] && res[0][type === 'series' ? 'show' : 'movie']) {
+                        var traktId = res[0][type === 'series' ? 'show' : 'movie'].ids.trakt;
+                        return api.get('/sync/history/' + (type === 'series' ? 'shows' : 'movies') + '/' + traktId + '?extended=full');
+                    }
+                    return null;
+                })
+                .then(function (history) {
+                    resolve(history);
+                })
+                .catch(function () {
+                    resolve(null);
+                });
+        });
+    }
+
+    // ==================== INITIALIZATION ====================
+
+    function startPlugin() {
+        window.plugin_debrid_streams_ready = true;
+        Lampa.Component.add('debrid_streams', CometSource);
+
+        // Add settings
+        Lampa.Settings.listener.follow('open', function (e) {
+            if (e.name === 'debrid_streams') {
+                e.body.append(Lampa.Template.get('debrid_settings', {}));
             }
         });
+    }
+
+    if (!window.plugin_debrid_streams_ready) {
+        startPlugin();
     }
 
 })();
