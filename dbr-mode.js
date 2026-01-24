@@ -165,54 +165,17 @@
             return;
         }
 
-        // On web platform, show choice dialog
-        var items = [
-            {
-                title: 'Внутренний плеер',
-                subtitle: 'Воспроизвести в браузере',
-                internal: true
-            },
-            {
-                title: 'Внешний плеер',
-                subtitle: 'Открыть в плеере для торрентов',
-                external: true
-            },
-            {
-                title: 'Копировать ссылку',
-                subtitle: playerData.url,
-                copy: true
-            }
-        ];
+        // On web platform, default to external player (torrent player)
+        // Use the torrent player setting for external playback
+        var torrentPlayer = Lampa.Storage.get('player_torrent', '');
+        if (torrentPlayer) {
+            playerData.player = torrentPlayer;
+        }
 
-        Lampa.Select.show({
-            title: 'Выберите действие',
-            items: items,
-            onSelect: function (item) {
-                if (item.copy) {
-                    Lampa.Utils.copyTextToClipboard(playerData.url, function () {
-                        Lampa.Noty.show('Ссылка скопирована');
-                    }, function () {
-                        Lampa.Noty.show('Ошибка копирования');
-                    });
-                } else if (item.external) {
-                    // Use the torrent player setting for external playback
-                    var torrentPlayer = Lampa.Storage.get('player_torrent', '');
-                    if (torrentPlayer) {
-                        playerData.player = torrentPlayer;
-                    }
-                    Lampa.Player.play(playerData);
-                    showSyncModal(movie);
-                    if (movie) Lampa.Timeline.update(movie);
-                } else if (item.internal) {
-                    Lampa.Player.play(playerData);
-                    showSyncModal(movie);
-                    if (movie) Lampa.Timeline.update(movie);
-                }
-            },
-            onBack: function () {
-                Lampa.Controller.toggle('content');
-            }
-        });
+        console.log('Debrid Streams: Opening in external player:', torrentPlayer || 'default');
+        Lampa.Player.play(playerData);
+        showSyncModal(movie);
+        if (movie) Lampa.Timeline.update(movie);
     }
 
     // ==================== COMET SOURCE ====================
@@ -1508,6 +1471,26 @@
             }
         });
 
+        // Move TraktTV menu item to top (with delay to ensure it's loaded)
+        setTimeout(function () {
+            try {
+                var menuList = $('.menu .menu__list').eq(0);
+                if (menuList.length) {
+                    // Find TraktTV menu item by its text content
+                    var traktItem = menuList.find('.menu__item').filter(function () {
+                        return $(this).find('.menu__text').text().toLowerCase().indexOf('trakt') !== -1;
+                    });
+
+                    if (traktItem.length) {
+                        menuList.prepend(traktItem);
+                        console.log('Debrid Streams: Moved TraktTV menu item to top');
+                    }
+                }
+            } catch (e) {
+                console.warn('Debrid Streams: Could not reorder menu:', e);
+            }
+        }, 2000); // 2 second delay to ensure TraktTV addon is loaded
+
         console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
     }
 
@@ -1520,44 +1503,62 @@
     // ==================== TRAKT SYNC ====================
 
     function showSyncModal(item) {
+        if (!item) return;
+
         var title = (item.title || item.name || 'Video');
         Lampa.Select.show({
             title: 'Trakt TV',
             items: [
                 {
                     title: 'Да, отметить как просмотренное',
-                    subtitle: 'Нажмите, если вы закончили просмотр',
-                    action: function () {
-                        Lampa.Modal.close();
-                        markAsWatched(item);
-                    }
+                    subtitle: title
                 },
                 {
-                    title: 'Закрыть',
-                    subtitle: 'Просто закрыть окно',
-                    action: function () {
-                        Lampa.Modal.close();
-                    }
+                    title: 'Нет',
+                    subtitle: 'Закрыть'
                 }
-            ]
+            ],
+            onSelect: function (a) {
+                Lampa.Controller.toggle('content');
+                if (a.title.indexOf('Да') === 0) {
+                    markAsWatched(item);
+                }
+            },
+            onBack: function () {
+                Lampa.Controller.toggle('content');
+            }
         });
     }
 
     function markAsWatched(item) {
-        if (window.TraktTV && window.TraktTV.api) {
-            var data = {
-                method: item.first_air_date ? 'show' : 'movie',
-                id: item.id,
-                ids: item.ids
-            };
-            window.TraktTV.api.addToHistory(data).then(function () {
-                Lampa.Noty.show('Отмечено в Trakt');
-            }).catch(function (e) {
-                Lampa.Noty.show('Ошибка: ' + (e.message || 'Error'));
-            });
-        } else {
+        if (!window.TraktTV || !window.TraktTV.api) {
             Lampa.Noty.show('Trakt API не доступен');
+            return;
         }
+
+        // Determine content type - TV shows have first_air_date or number_of_seasons
+        var isTV = item.first_air_date || item.number_of_seasons || item.seasons;
+        var method = isTV ? 'show' : 'movie';
+
+        var data = {
+            method: method,
+            id: item.id
+        };
+
+        // Add ids if available
+        if (item.ids) {
+            data.ids = item.ids;
+        }
+
+        console.log('Debrid Streams: Marking as watched:', data);
+
+        window.TraktTV.api.addToHistory(data).then(function () {
+            Lampa.Noty.show('Отмечено в Trakt');
+            console.log('Debrid Streams: Successfully marked as watched');
+        }).catch(function (e) {
+            console.error('Debrid Streams: Trakt error:', e);
+            Lampa.Noty.show('Ошибка: ' + (e.message || 'Error'));
+        });
     }
 
     function getTraktHistory(tmdbId, type) {
