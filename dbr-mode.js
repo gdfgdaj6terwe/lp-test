@@ -185,6 +185,8 @@
         var object = _object;
         var streams_data = [];
         var filter_items = {};
+        var current_season = null;
+        var current_episode = null;
         var choice = {
             quality: 0
         };
@@ -352,6 +354,17 @@
             if (!url) {
                 component.emptyForQuery('URL build error');
                 return;
+            }
+
+            // Store current season/episode for filter display
+            current_season = season || null;
+            current_episode = episode || null;
+
+            // Update filter display with current season/episode
+            if (current_season && current_episode) {
+                component.updateFilterInfo('S' + current_season + 'E' + current_episode);
+            } else {
+                component.updateFilterInfo(null);
             }
 
             console.log('Debrid Streams [Comet]: Fetching:', url);
@@ -588,6 +601,8 @@
         var object = _object;
         var streams_data = [];
         var filter_items = {};
+        var current_season = null;
+        var current_episode = null;
         var choice = {
             quality: 0
         };
@@ -709,6 +724,17 @@
             if (!url) {
                 component.emptyForQuery('URL build error');
                 return;
+            }
+
+            // Store current season/episode for filter display
+            current_season = season || null;
+            current_episode = episode || null;
+
+            // Update filter display with current season/episode
+            if (current_season && current_episode) {
+                component.updateFilterInfo('S' + current_season + 'E' + current_episode);
+            } else {
+                component.updateFilterInfo(null);
             }
 
             console.log('Debrid Streams [Torrentio]: Fetching:', url);
@@ -1254,6 +1280,17 @@
             }
         };
 
+        /**
+         * Update filter display with season/episode info
+         */
+        this.updateFilterInfo = function (info) {
+            var select = [];
+            if (info) {
+                select.push(info);
+            }
+            filter.chosen('filter', select);
+        };
+
         this.saveChoice = function (ch) {
             // Save user choice
         };
@@ -1510,6 +1547,9 @@
             return;
         }
 
+        // CRITICAL: Capture current controller state BEFORE showing Select
+        var enabled = Lampa.Controller.enabled().name;
+
         var title = (item.title || item.name || 'Video');
         Lampa.Select.show({
             title: 'Trakt TV',
@@ -1526,13 +1566,15 @@
                 }
             ],
             onSelect: function (a) {
+                // Restore controller to previous state
+                Lampa.Controller.toggle(enabled);
                 if (a.mark) {
                     markAsWatched(item);
                 }
-                // Do NOT toggle controller - let Select handle it
             },
             onBack: function () {
-                // Do NOT toggle controller - let Select handle it
+                // Restore controller to previous state
+                Lampa.Controller.toggle(enabled);
             }
         });
     }
