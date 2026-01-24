@@ -1505,27 +1505,34 @@
     function showSyncModal(item) {
         if (!item) return;
 
+        // Check if TraktTV is available before showing modal
+        if (!window.TraktTV || !window.TraktTV.api) {
+            return;
+        }
+
         var title = (item.title || item.name || 'Video');
         Lampa.Select.show({
             title: 'Trakt TV',
             items: [
                 {
                     title: 'Да, отметить как просмотренное',
-                    subtitle: title
+                    subtitle: title,
+                    mark: true
                 },
                 {
                     title: 'Нет',
-                    subtitle: 'Закрыть'
+                    subtitle: 'Закрыть',
+                    mark: false
                 }
             ],
             onSelect: function (a) {
-                Lampa.Controller.toggle('content');
-                if (a.title.indexOf('Да') === 0) {
+                if (a.mark) {
                     markAsWatched(item);
                 }
+                // Do NOT toggle controller - let Select handle it
             },
             onBack: function () {
-                Lampa.Controller.toggle('content');
+                // Do NOT toggle controller - let Select handle it
             }
         });
     }
