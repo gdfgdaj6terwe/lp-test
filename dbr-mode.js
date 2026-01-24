@@ -152,6 +152,69 @@
         return null;
     }
 
+    /**
+     * Show player choice dialog for web platform
+     * Allows user to choose between internal/external player
+     */
+    function showPlayerChoiceDialog(playerData, movie) {
+        // If not on web platform, play directly with internal player
+        if (!Lampa.Platform.is('web')) {
+            Lampa.Player.play(playerData);
+            showSyncModal(movie);
+            if (movie) Lampa.Timeline.update(movie);
+            return;
+        }
+
+        // On web platform, show choice dialog
+        var items = [
+            {
+                title: 'Внутренний плеер',
+                subtitle: 'Воспроизвести в браузере',
+                internal: true
+            },
+            {
+                title: 'Внешний плеер',
+                subtitle: 'Открыть в плеере для торрентов',
+                external: true
+            },
+            {
+                title: 'Копировать ссылку',
+                subtitle: playerData.url,
+                copy: true
+            }
+        ];
+
+        Lampa.Select.show({
+            title: 'Выберите действие',
+            items: items,
+            onSelect: function (item) {
+                if (item.copy) {
+                    Lampa.Utils.copyTextToClipboard(playerData.url, function () {
+                        Lampa.Noty.show('Ссылка скопирована');
+                    }, function () {
+                        Lampa.Noty.show('Ошибка копирования');
+                    });
+                } else if (item.external) {
+                    // Use the torrent player setting for external playback
+                    var torrentPlayer = Lampa.Storage.get('player_torrent', '');
+                    if (torrentPlayer) {
+                        playerData.player = torrentPlayer;
+                    }
+                    Lampa.Player.play(playerData);
+                    showSyncModal(movie);
+                    if (movie) Lampa.Timeline.update(movie);
+                } else if (item.internal) {
+                    Lampa.Player.play(playerData);
+                    showSyncModal(movie);
+                    if (movie) Lampa.Timeline.update(movie);
+                }
+            },
+            onBack: function () {
+                Lampa.Controller.toggle('content');
+            }
+        });
+    }
+
     // ==================== COMET SOURCE ====================
 
     function CometSource(component, _object) {
@@ -444,7 +507,6 @@
          * Play stream
          */
         function playStream(stream) {
-            // Log stream object for debugging (only when user clicks play)
             console.log('Debrid Streams [Comet]: Playing stream:', JSON.stringify(stream, null, 2));
 
             var url = getStreamUrl(stream);
@@ -467,34 +529,8 @@
                 timeline: object.movie
             };
 
-            // Handle proxy headers if present (Comet often sends them)
-            // CORS Fix: Do not force Referer/User-Agent in browser.
-            // Only add headers if we are strictly not in a browser.
-            if (!Lampa.Platform.is('web')) {
-                playerData.headers = playerData.headers || {};
-
-                // Extract domain from URL for Referer
-                var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
-                if (domainMatch && !playerData.headers['Referer']) {
-                    playerData.headers['Referer'] = domainMatch[1] + '/';
-                }
-
-                // Add User-Agent if not set
-                if (!playerData.headers['User-Agent']) {
-                    playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-                }
-            }
-
-            console.log('Debrid Streams [Comet]: Resolving URL for playback...');
-            resolveRedirect(url).then(function (resolvedUrl) {
-                playerData.url = resolvedUrl;
-                console.log('Debrid Streams [Comet]: Final URL:', playerData.url);
-                console.log('Debrid Streams [Comet]: Headers:', playerData.headers);
-
-                Lampa.Player.play(playerData);
-                showSyncModal(object.movie);
-                Lampa.Timeline.update(object.movie);
-            });
+            // Show player choice dialog
+            showPlayerChoiceDialog(playerData, object.movie);
         }
 
         /**
@@ -874,9 +910,8 @@
                 console.log('Debrid Streams [Torrentio]: Final URL:', playerData.url);
                 console.log('Debrid Streams [Torrentio]: Headers:', playerData.headers);
 
-                Lampa.Player.play(playerData);
-                showSyncModal(object.movie);
-                Lampa.Timeline.update(object.movie);
+                // Show player choice dialog
+                showPlayerChoiceDialog(playerData, object.movie);
             });
         }
 
@@ -1077,6 +1112,11 @@
 
         this.searchStremio = function () {
             this.activity.loader(true);
+
+            // Show loading text
+            scroll.clear();
+            var loading = $('<div class="empty"><div class="empty__title">Загрузка стримов...</div></div>');
+            scroll.append(loading);
 
             var source_items = filter_sources.map(function (name, index) {
                 return {
