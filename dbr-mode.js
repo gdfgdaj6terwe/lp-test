@@ -1169,9 +1169,32 @@
     /**
      * Register ContentRow for a catalog
      */
+    /**
+     * Create AIOStreams title with icon (DOM element)
+     */
+    function createAIOTitle(text) {
+        var root = document.createElement('span');
+        root.style.cssText = 'display:inline-flex;align-items:center;gap:0.4em;';
+
+        var img = document.createElement('img');
+        img.src = PLUGIN_LOGO;
+        img.style.cssText = 'width:1.1em;height:1.1em;border-radius:50%;';
+
+        var label = document.createElement('span');
+        label.textContent = text;
+
+        root.appendChild(img);
+        root.appendChild(label);
+
+        return root;
+    }
+
+    /**
+     * Register ContentRow for a catalog
+     */
     function registerCatalogContentRow(catalog, index) {
         var rowName = 'AIOCatalog_' + catalog.id.replace(/[^a-zA-Z0-9]/g, '_');
-        var title = getCatalogTranslatedName(catalog) + ' (' + getTypeDisplayName(catalog.type) + ')';
+        var titleText = getCatalogTranslatedName(catalog) + ' (' + getTypeDisplayName(catalog.type) + ')';
 
         // Skip search catalogs
         if (catalog.name === 'Search') return;
@@ -1181,7 +1204,7 @@
 
         Lampa.ContentRows.add({
             name: rowName,
-            title: title,
+            title: titleText, // Fallback title
             index: 10 + index, // Start after Trakt rows (index 1-2) and standard Lampa rows
             screen: ['main'],
             call: function (params, screen) {
@@ -1196,15 +1219,12 @@
                             }
 
                             call({
-                                title: '<span style="display:inline-flex;align-items:center;gap:0.4em;">' +
-                                    '<img src="' + PLUGIN_LOGO + '" style="width:1.1em;height:1.1em;border-radius:50%;">' +
-                                    '<span>' + title + '</span>' +
-                                    '</span>',
+                                title: createAIOTitle(titleText),
                                 results: results,
                                 onMore: function () {
                                     // Open category view with pagination
                                     Lampa.Activity.push({
-                                        title: title,
+                                        title: titleText,
                                         component: 'aiostreams_catalog',
                                         catalog_id: catalog.id,
                                         catalog_type: catalog.type,
