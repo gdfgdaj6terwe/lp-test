@@ -1321,20 +1321,17 @@
         };
 
         this.back = function () {
-            console.log('Debrid Component: Back pressed. Balanser:', balanser);
             // Try internal navigation first (for series: streams → episodes → seasons)
-            if (sources[balanser] && sources[balanser].goBack) {
-                if (sources[balanser].goBack()) {
-                    console.log('Debrid Component: Handled internally by source');
+            // Access wrapper.source.goBack() 
+            if (sources[balanser] && sources[balanser].source && sources[balanser].source.goBack) {
+                if (sources[balanser].source.goBack()) {
                     return; // Handled internally
                 }
-            } else {
-                console.log('Debrid Component: Source not found or no goBack method. Sources keys:', Object.keys(sources));
             }
             // Otherwise exit activity
-            console.log('Debrid Component: Exiting activity');
             Lampa.Activity.backward();
         };
+
 
         this.updateFilter = function (items) {
             var filters = [];
