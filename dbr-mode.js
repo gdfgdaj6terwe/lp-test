@@ -1,38 +1,33 @@
 /**
- * Debrid Streams - Lampa Plugin
- * Version: 1.2.5
+ * AIOStreams - Lampa Plugin
+ * Version: 2.0.0
  *
- * Plugin for integrating Stremio addons (Comet, Torrentio) with Real Debrid in Lampa
+ * Plugin for integrating AIOStreams (Stremio aggregator) with Lampa
  *
  * Installation:
  * 1. Add this plugin URL to Lampa settings
- * 2. Go to Settings -> Debrid Streams
- * 3. Enter manifest URL from Comet or Torrentio
- *
- * Getting manifest URL:
- * - Comet: https://comet.elfhosted.com/ -> configure and copy "Install" link
- * - Torrentio: https://torrentio.strem.fun/ -> configure and copy manifest URL
+ * 2. Go to Settings -> AIOStreams
+ * 3. Verify manifest URL
  */
 
 (function () {
     'use strict';
 
-    var PLUGIN_NAME = 'debrid_streams';
-    var PLUGIN_VERSION = '1.2.5';
-    var PLUGIN_TITLE = 'Debrid Streams';
+    var PLUGIN_NAME = 'aiostreams';
+    var PLUGIN_VERSION = '2.0.0';
+    var PLUGIN_TITLE = 'AIOStreams';
+    var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
     // Default settings
     var DEFAULT_SETTINGS = {
-        comet_url: '',      // Comet manifest URL
-        torrentio_url: '',  // Torrentio manifest URL
-        timeout: 120000     // Request timeout - 2 minutes (debrid can be slow)
+        aiostreams_url: '',
+        timeout: 120000     // Request timeout - 2 minutes
     };
 
     // ==================== UTILITIES ====================
 
     /**
      * Extract base URL from manifest URL
-     * Example: https://comet.elfhosted.com/ABC123/manifest.json -> https://comet.elfhosted.com/ABC123
      */
     function extractBaseUrl(manifestUrl) {
         if (!manifestUrl) return '';
@@ -58,17 +53,6 @@
      */
     function getImdbId(movie) {
         return movie.imdb_id || '';
-    }
-
-    /**
-     * Format file size
-     */
-    function formatSize(bytes) {
-        if (!bytes) return '';
-        var gb = bytes / (1024 * 1024 * 1024);
-        if (gb >= 1) return gb.toFixed(2) + ' GB';
-        var mb = bytes / (1024 * 1024);
-        return mb.toFixed(0) + ' MB';
     }
 
     /**
@@ -131,7 +115,6 @@
 
     /**
      * Get stream URL - handle different stream formats
-     * Note: No heavy logging here - called for every stream during display!
      */
     function getStreamUrl(stream) {
         // Direct URL
@@ -144,17 +127,11 @@
             return stream.externalUrl;
         }
 
-        // Torrent stream (infoHash) - won't work directly, need debrid
-        if (stream.infoHash) {
-            return null;
-        }
-
         return null;
     }
 
     /**
      * Show player choice dialog for web platform
-     * Allows user to choose between internal/external player
      */
     function showPlayerChoiceDialog(playerData, movie) {
         // If not on web platform, play directly with internal player
@@ -166,43 +143,36 @@
         }
 
         // On web platform, default to external player (torrent player)
-        // Use the torrent player setting for external playback
         var torrentPlayer = Lampa.Storage.get('player_torrent', '');
         if (torrentPlayer) {
             playerData.player = torrentPlayer;
         }
 
-        console.log('Debrid Streams: Opening in external player:', torrentPlayer || 'default');
+        console.log('AIOStreams: Opening in external player:', torrentPlayer || 'default');
         Lampa.Player.play(playerData);
         showSyncModal(movie);
         if (movie) Lampa.Timeline.update(movie);
     }
 
-    // ==================== COMET SOURCE ====================
+    // ==================== AIOSTREAMS SOURCE ====================
 
-    function CometSource(component, _object) {
+    function AIOStreamsSource(component, _object) {
         var network = new Lampa.Reguest();
         var object = _object;
         var streams_data = [];
         var filter_items = {};
         var current_season = null;
         var current_episode = null;
-        var navStack = []; // Navigation stack: [{type: 'seasons'}, {type: 'episodes', imdbId, season}, ...]
+        var navStack = []; // Navigation stack for back navigation
         var choice = {
             quality: 0
         };
 
-        /**
-         * Get base URL from settings
-         */
         function getBaseUrl() {
-            var url = Lampa.Storage.get('debrid_comet_url', '');
+            var url = Lampa.Storage.get('debrid_aiostreams_url', DEFAULT_SETTINGS.aiostreams_url);
             return extractBaseUrl(url);
         }
 
-        /**
-         * Build URL for stream request
-         */
         function buildStreamUrl(imdbId, type, season, episode) {
             var base = getBaseUrl();
             if (!base) return '';
@@ -215,16 +185,13 @@
             return base + '/stream/' + type + '/' + id + '.json';
         }
 
-        /**
-         * Search streams
-         */
         this.search = function (_object, kinopoisk_id) {
             object = _object;
             var imdbId = getImdbId(object.movie);
             var type = getContentType(object.movie);
 
             if (!getBaseUrl()) {
-                component.emptyForQuery('Comet URL not configured. Go to Settings -> Debrid Streams');
+                component.emptyForQuery('AIOStreams URL not configured. Go to Settings -> AIOStreams');
                 return;
             }
 
@@ -233,9 +200,8 @@
                 return;
             }
 
-            // For series, need to select season/episode
             if (type === 'series') {
-                // Fetch history for indicators
+                // Fetch history
                 getTraktHistory(object.movie.id, 'series').then(function (history) {
                     object.trakt_history = history;
                     showSeasonSelect(imdbId);
@@ -245,9 +211,6 @@
             }
         };
 
-        /**
-         * Show season selection for series
-         */
         function showSeasonSelect(imdbId) {
             // Push navigation state
             navStack = [{ type: 'seasons', imdbId: imdbId }];
@@ -274,15 +237,10 @@
 
                 // Check watched status for season
                 if (object.trakt_history && Array.isArray(object.trakt_history)) {
-                    if (items.indexOf(item) === 0 && object.trakt_history.length > 0) {
-                        console.log('Debrid Streams: First history item structure:', JSON.stringify(object.trakt_history[0]));
-                    }
                     var seasonEpisodes = object.trakt_history.filter(function (h) {
-                        // Relaxed check: just ensure episode data exists
                         return h.episode && h.episode.season === item.season;
                     });
                     if (seasonEpisodes.length > 0) {
-                        console.log('Debrid Streams: Season', item.season, 'watched count:', seasonEpisodes.length);
                         item.title += ' ✓';
                         info = seasonEpisodes.length + ' смотрели';
                     }
@@ -303,9 +261,6 @@
             component.start(true);
         }
 
-        /**
-         * Show episode selection
-         */
         function showEpisodeSelect(imdbId, season) {
             // Push navigation state
             navStack.push({ type: 'episodes', imdbId: imdbId, season: season });
@@ -359,9 +314,6 @@
             component.start(true);
         }
 
-        /**
-         * Fetch streams from API
-         */
         function fetchStreams(imdbId, type, season, episode) {
             var url = buildStreamUrl(imdbId, type, season, episode);
             if (!url) {
@@ -385,7 +337,7 @@
                 component.updateFilterInfo(null);
             }
 
-            console.log('Debrid Streams [Comet]: Fetching:', url);
+            console.log('AIOStreams: Fetching:', url);
 
             component.loading(true);
             network.clear();
@@ -393,431 +345,19 @@
 
             network.silent(url, function (response) {
                 component.loading(false);
-                console.log('Debrid Streams [Comet]: Response received:', response);
+                console.log('AIOStreams: Response received:', response);
 
                 if (response && response.streams && response.streams.length > 0) {
-                    console.log('Debrid Streams [Comet]: Found', response.streams.length, 'streams');
-                    console.log('Debrid Streams [Comet]: First stream:', JSON.stringify(response.streams[0], null, 2));
+                    console.log('AIOStreams: Found', response.streams.length, 'streams');
                     streams_data = response.streams;
                     displayStreams(streams_data);
                 } else {
-                    console.log('Debrid Streams [Comet]: No streams found');
+                    console.log('AIOStreams: No streams found');
                     component.emptyForQuery('Streams not found');
                 }
             }, function (error) {
                 component.loading(false);
-                console.log('Debrid Streams [Comet]: Error:', error);
-                component.emptyForQuery('Load error: ' + (error.statusText || 'Unknown'));
-            });
-        }
-
-        /**
-         * Display stream list
-         */
-        function displayStreams(streams) {
-            component.reset();
-
-            // Group by quality
-            var qualities = {};
-            streams.forEach(function (stream, index) {
-                var parsed = parseStreamTitle(stream);
-                var q = parsed.quality || 'Unknown';
-                if (!qualities[q]) qualities[q] = [];
-                qualities[q].push({ stream: stream, index: index, parsed: parsed });
-            });
-
-            filter_items.quality = Object.keys(qualities);
-
-            // Update filter with quality options
-            component.updateFilter(filter_items);
-
-            // Sort by quality
-            var qualityOrder = ['4K', '2160P', '1080P', '720P', '480P', 'UNKNOWN'];
-            var sortedQualities = Object.keys(qualities).sort(function (a, b) {
-                var aIdx = qualityOrder.indexOf(a.toUpperCase());
-                var bIdx = qualityOrder.indexOf(b.toUpperCase());
-                if (aIdx === -1) aIdx = 999;
-                if (bIdx === -1) bIdx = 999;
-                return aIdx - bIdx;
-            });
-
-            sortedQualities.forEach(function (quality) {
-                qualities[quality].forEach(function (item) {
-                    var stream = item.stream;
-                    var parsed = item.parsed;
-
-                    // Use stream.description if available (Comet provides rich descriptions)
-                    var info;
-                    if (stream.description) {
-                        // Replace newlines with separator for single-line display
-                        info = '[RD+ Comet] ' + stream.description.replace(/\n/g, ' • ');
-                    } else {
-                        // Fallback to parsed info
-                        var infoParts = ['[RD+ Comet]'];
-                        if (parsed.quality) infoParts.push(parsed.quality);
-                        if (parsed.codec) infoParts.push(parsed.codec);
-                        if (parsed.size) infoParts.push(parsed.size);
-                        if (parsed.languages && parsed.languages.length > 0) {
-                            infoParts.push(parsed.languages.join('/'));
-                        }
-                        if (parsed.audio) infoParts.push(parsed.audio);
-                        info = infoParts.join(' • ');
-                    }
-
-                    // Check if stream has valid URL
-                    var streamUrl = getStreamUrl(stream);
-                    var hasUrl = !!streamUrl;
-
-                    var element = Lampa.Template.get('debrid_item', {
-                        title: stream.title || stream.name || 'Stream ' + (item.index + 1),
-                        info: info + (hasUrl ? '' : ' [NO URL]')
-                    });
-
-                    element.on('hover:enter', function () {
-                        try {
-                            playStream(stream);
-                        } catch (error) {
-                            console.error('Debrid Streams [Comet]: playStream error:', error);
-                        }
-                    });
-
-                    // Long press - show details
-                    element.on('hover:long', function () {
-                        try {
-                            showStreamDetails(stream, parsed);
-                        } catch (error) {
-                            console.error('Debrid Streams [Comet]: showStreamDetails error:', error);
-                        }
-                    });
-
-                    component.append(element);
-                });
-            });
-
-            component.start(true);
-        }
-
-        /**
-         * Play stream
-         */
-        function playStream(stream) {
-            console.log('Debrid Streams [Comet]: Playing stream:', JSON.stringify(stream, null, 2));
-
-            var url = getStreamUrl(stream);
-
-            if (!url) {
-                console.log('Debrid Streams [Comet]: No URL found in stream object');
-                Lampa.Noty.show('Stream URL not found. Check console for details.');
-                return;
-            }
-
-            console.log('Debrid Streams [Comet]: Stream URL:', url);
-
-            var title = object.movie.title || object.movie.name || 'Video';
-            var parsed = parseStreamTitle(stream);
-
-            // Build player object
-            var playerData = {
-                title: title + (parsed.quality ? ' [' + parsed.quality + ']' : ''),
-                url: url,
-                timeline: object.movie
-            };
-
-            // Show player choice dialog
-            showPlayerChoiceDialog(playerData, object.movie);
-        }
-
-        /**
-         * Show stream details
-         */
-        function showStreamDetails(stream, parsed) {
-            var items = [];
-
-            items.push({
-                title: 'Play',
-                subtitle: stream.url ? 'Open in player' : 'URL unavailable',
-                action: function () {
-                    Lampa.Modal.close();
-                    playStream(stream);
-                }
-            });
-
-            if (stream.url) {
-                items.push({
-                    title: 'Copy URL',
-                    subtitle: 'Copy link to clipboard',
-                    action: function () {
-                        Lampa.Utils.copyTextToClipboard(stream.url, function () {
-                            Lampa.Noty.show('URL copied');
-                        }, function () {
-                            Lampa.Noty.show('Copy error');
-                        });
-                        Lampa.Modal.close();
-                    }
-                });
-            }
-
-            items.push({
-                title: 'Information',
-                subtitle: parsed.full,
-                action: function () {
-                    Lampa.Modal.close();
-                }
-            });
-
-            Lampa.Select.show({
-                title: 'Actions',
-                items: items,
-                onSelect: function (item) {
-                    if (item.action) item.action();
-                },
-                onBack: function () {
-                    Lampa.Controller.toggle('content');
-                }
-            });
-        }
-
-        this.extendChoice = function (saved) {
-            Lampa.Arrays.extend(choice, saved, true);
-        };
-
-        this.reset = function () {
-            component.reset();
-            choice = { quality: 0 };
-            if (streams_data.length) {
-                displayStreams(streams_data);
-            }
-            component.saveChoice(choice);
-        };
-
-        this.filter = function (type, a, b) {
-            choice[a.stype] = b.index;
-            component.reset();
-
-            if (filter_items.quality && filter_items.quality[b.index]) {
-                var selectedQuality = filter_items.quality[b.index];
-                var filtered = streams_data.filter(function (stream) {
-                    var parsed = parseStreamTitle(stream);
-                    return parsed.quality === selectedQuality;
-                });
-                displayStreams(filtered.length ? filtered : streams_data);
-            }
-
-            component.saveChoice(choice);
-        };
-
-        this.destroy = function () {
-            network.clear();
-            streams_data = [];
-            navStack = [];
-        };
-
-        /**
-         * Go back in navigation hierarchy
-         * @returns {boolean} true if handled internally, false if should exit activity
-         */
-        this.goBack = function () {
-            if (navStack.length > 1) {
-                var current = navStack.pop();
-                var prev = navStack[navStack.length - 1];
-
-                if (prev.type === 'seasons') {
-                    navStack = []; // Reset and show seasons
-                    showSeasonSelect(prev.imdbId);
-                    return true;
-                } else if (prev.type === 'episodes') {
-                    navStack.pop(); // Remove episodes from stack, showEpisodeSelect will push it again
-                    showEpisodeSelect(prev.imdbId, prev.season);
-                    return true;
-                }
-            }
-            return false; // Exit activity
-        };
-    }
-
-    // ==================== TORRENTIO SOURCE ====================
-
-    function TorrentioSource(component, _object) {
-        var network = new Lampa.Reguest();
-        var object = _object;
-        var streams_data = [];
-        var filter_items = {};
-        var current_season = null;
-        var current_episode = null;
-        var navStack = []; // Navigation stack for back navigation
-        var choice = {
-            quality: 0
-        };
-
-        function getBaseUrl() {
-            var url = Lampa.Storage.get('debrid_torrentio_url', '');
-            return extractBaseUrl(url);
-        }
-
-        function buildStreamUrl(imdbId, type, season, episode) {
-            var base = getBaseUrl();
-            if (!base) return '';
-
-            var id = imdbId;
-            if (type === 'series' && season && episode) {
-                id = imdbId + ':' + season + ':' + episode;
-            }
-
-            return base + '/stream/' + type + '/' + id + '.json';
-        }
-
-        this.search = function (_object, kinopoisk_id) {
-            object = _object;
-            var imdbId = getImdbId(object.movie);
-            var type = getContentType(object.movie);
-
-            if (!getBaseUrl()) {
-                component.emptyForQuery('Torrentio URL not configured. Go to Settings -> Debrid Streams');
-                return;
-            }
-
-            if (!imdbId) {
-                component.emptyForQuery('IMDb ID not found for this content');
-                return;
-            }
-
-            if (type === 'series') {
-                // Fetch history
-                getTraktHistory(object.movie.id, 'series').then(function (history) {
-                    object.trakt_history = history;
-                    showSeasonSelect(imdbId);
-                });
-            } else {
-                fetchStreams(imdbId, 'movie');
-            }
-        };
-
-        function showSeasonSelect(imdbId) {
-            // Push navigation state
-            navStack = [{ type: 'seasons', imdbId: imdbId }];
-
-            var seasons = object.movie.number_of_seasons || (object.movie.seasons && object.movie.seasons.length) || 1;
-            var items = [];
-
-            for (var s = 1; s <= seasons; s++) {
-                items.push({
-                    title: 'Season ' + s,
-                    season: s,
-                    imdb_id: imdbId
-                });
-            }
-
-            // Clear filter info when on seasons
-            component.updateFilterInfo(null);
-
-            component.reset();
-            component.loading(false);
-
-            items.forEach(function (item) {
-                var element = Lampa.Template.get('debrid_folder', {
-                    title: item.title,
-                    info: ''
-                });
-
-                element.on('hover:enter', function () {
-                    showEpisodeSelect(item.imdb_id, item.season);
-                });
-
-                component.append(element);
-            });
-
-            component.start(true);
-        }
-
-        function showEpisodeSelect(imdbId, season) {
-            // Push navigation state
-            navStack.push({ type: 'episodes', imdbId: imdbId, season: season });
-
-            var seasonData = null;
-            if (object.movie.seasons) {
-                seasonData = object.movie.seasons.find(function (s) {
-                    return s.season_number === season;
-                });
-            }
-            var episodes = (seasonData && seasonData.episode_count) || 20;
-            var items = [];
-
-            for (var e = 1; e <= episodes; e++) {
-                items.push({
-                    title: 'Episode ' + e,
-                    season: season,
-                    episode: e,
-                    imdb_id: imdbId
-                });
-            }
-
-            // Update filter info with current season
-            component.updateFilterInfo('S' + season);
-
-            component.reset();
-            component.loading(false);
-
-            items.forEach(function (item) {
-                var element = Lampa.Template.get('debrid_folder', {
-                    title: 'S' + String(item.season).padStart(2, '0') + 'E' + String(item.episode).padStart(2, '0'),
-                    info: item.title
-                });
-
-                element.on('hover:enter', function () {
-                    fetchStreams(item.imdb_id, 'series', item.season, item.episode);
-                });
-
-                component.append(element);
-            });
-
-            component.start(true);
-        }
-
-        function fetchStreams(imdbId, type, season, episode) {
-            var url = buildStreamUrl(imdbId, type, season, episode);
-            if (!url) {
-                component.emptyForQuery('URL build error');
-                return;
-            }
-
-            // Store current season/episode for filter display
-            current_season = season || null;
-            current_episode = episode || null;
-
-            // Push navigation state for streams
-            if (season && episode) {
-                navStack.push({ type: 'streams', imdbId: imdbId, season: season, episode: episode });
-            }
-
-            // Update filter display with current season/episode
-            if (current_season && current_episode) {
-                component.updateFilterInfo('S' + current_season + 'E' + current_episode);
-            } else {
-                component.updateFilterInfo(null);
-            }
-
-            console.log('Debrid Streams [Torrentio]: Fetching:', url);
-
-            component.loading(true);
-            network.clear();
-            network.timeout(Lampa.Storage.get('debrid_timeout', DEFAULT_SETTINGS.timeout));
-
-            network.silent(url, function (response) {
-                component.loading(false);
-                console.log('Debrid Streams [Torrentio]: Response received:', response);
-
-                if (response && response.streams && response.streams.length > 0) {
-                    console.log('Debrid Streams [Torrentio]: Found', response.streams.length, 'streams');
-                    console.log('Debrid Streams [Torrentio]: First stream:', JSON.stringify(response.streams[0], null, 2));
-                    streams_data = response.streams;
-                    displayStreams(streams_data);
-                } else {
-                    console.log('Debrid Streams [Torrentio]: No streams found');
-                    component.emptyForQuery('Streams not found');
-                }
-            }, function (error) {
-                component.loading(false);
-                console.log('Debrid Streams [Torrentio]: Error:', error);
+                console.log('AIOStreams: Error:', error);
                 component.emptyForQuery('Load error: ' + (error.statusText || 'Unknown'));
             });
         }
@@ -853,7 +393,7 @@
                     var parsed = item.parsed;
 
                     // Build info line with source tag and languages
-                    var infoParts = ['[RD+ Torrentio]'];
+                    var infoParts = ['[AIOS]'];
                     if (parsed.quality) infoParts.push(parsed.quality);
                     if (parsed.codec) infoParts.push(parsed.codec);
                     if (parsed.size) infoParts.push(parsed.size);
@@ -874,19 +414,11 @@
                     });
 
                     element.on('hover:enter', function () {
-                        try {
-                            playStream(stream);
-                        } catch (error) {
-                            console.error('Debrid Streams [Torrentio]: playStream error:', error);
-                        }
+                        playStream(stream);
                     });
 
                     element.on('hover:long', function () {
-                        try {
-                            showStreamDetails(stream, parsed);
-                        } catch (error) {
-                            console.error('Debrid Streams [Torrentio]: showStreamDetails error:', error);
-                        }
+                        showStreamDetails(stream, parsed);
                     });
 
                     component.append(element);
@@ -897,18 +429,17 @@
         }
 
         function playStream(stream) {
-            // Log stream object for debugging (only when user clicks play)
-            console.log('Debrid Streams [Torrentio]: Playing stream:', JSON.stringify(stream, null, 2));
+            console.log('AIOStreams: Playing stream:', JSON.stringify(stream, null, 2));
 
             var url = getStreamUrl(stream);
 
             if (!url) {
-                console.log('Debrid Streams [Torrentio]: No URL found in stream object');
-                Lampa.Noty.show('Stream URL not found. Check console for details.');
+                console.log('AIOStreams: No URL found in stream object');
+                Lampa.Noty.show('Stream URL not found');
                 return;
             }
 
-            console.log('Debrid Streams [Torrentio]: Stream URL:', url);
+            console.log('AIOStreams: Stream URL:', url);
 
             var title = object.movie.title || object.movie.name || 'Video';
             var parsed = parseStreamTitle(stream);
@@ -920,47 +451,23 @@
                 timeline: object.movie
             };
 
-            // Handle proxy headers if present (some debrid services need this)
-            // Handle proxy headers if present (some debrid services need this)
+            // Handle proxy headers
             if (stream.behaviorHints && stream.behaviorHints.proxyHeaders && stream.behaviorHints.proxyHeaders.request) {
                 playerData.headers = stream.behaviorHints.proxyHeaders.request;
             }
 
-            // CORS Fix: Do not force Referer/User-Agent in browser unless necessary.
-            // Many Debrid servers block requests with custom Referers if they don't match exactly.
-            // Lampa player usually handles this.
-
-            // Only add headers if we are strictly not in a browser (e.g. Android app might need them, but Web player hates them)
-            // Lampa.Platform.is('web') is the check.
             if (!Lampa.Platform.is('web')) {
                 playerData.headers = playerData.headers || {};
-
-                // Extract domain from URL for Referer
                 var domainMatch = url.match(/^(https?:\/\/[^\/]+)/);
                 if (domainMatch && !playerData.headers['Referer']) {
                     playerData.headers['Referer'] = domainMatch[1] + '/';
                 }
-
-                // Add User-Agent if not set
                 if (!playerData.headers['User-Agent']) {
                     playerData.headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
                 }
-            } else {
-                // For web, we might want to CLEAR headers if they cause CORS issues, 
-                // but behaviorHints might be needed. Use with caution.
-                // Actually, Streamio addons send headers that often cause this.
-                // Let's rely on behaviorHints only.
             }
 
-            console.log('Debrid Streams [Torrentio]: Resolving URL for playback...');
-            resolveRedirect(url).then(function (resolvedUrl) {
-                playerData.url = resolvedUrl;
-                console.log('Debrid Streams [Torrentio]: Final URL:', playerData.url);
-                console.log('Debrid Streams [Torrentio]: Headers:', playerData.headers);
-
-                // Show player choice dialog
-                showPlayerChoiceDialog(playerData, object.movie);
-            });
+            showPlayerChoiceDialog(playerData, object.movie);
         }
 
         function showStreamDetails(stream, parsed) {
@@ -1048,7 +555,6 @@
 
         /**
          * Go back in navigation hierarchy
-         * @returns {boolean} true if handled internally, false if should exit activity
          */
         this.goBack = function () {
             if (navStack.length > 1) {
@@ -1060,7 +566,7 @@
                     showSeasonSelect(prev.imdbId);
                     return true;
                 } else if (prev.type === 'episodes') {
-                    navStack.pop(); // Remove episodes from stack, showEpisodeSelect will push it again
+                    navStack.pop(); // Remove episodes from stack
                     showEpisodeSelect(prev.imdbId, prev.season);
                     return true;
                 }
@@ -1073,14 +579,11 @@
 
     function DebridComponent(object) {
         var _this = this;
-        var network = new Lampa.Reguest();
         var scroll = new Lampa.Scroll({ mask: true, over: true });
         var files = new Lampa.Explorer(object);
         var filter = new Lampa.Filter(object);
 
-        var sources = {};
-        var active_source = null;
-        var balanser = Lampa.Storage.get('debrid_source', 'comet');
+        var source = null;
         var initialized = false;
 
         var filter_sources = [];
@@ -1088,50 +591,11 @@
             source: 0
         };
 
-        // Initialize sources after component is ready
         function initSources() {
             if (initialized) return;
             initialized = true;
 
-            var comet_url = Lampa.Storage.get('debrid_comet_url', '');
-            var torrentio_url = Lampa.Storage.get('debrid_torrentio_url', '');
-
-            if (comet_url) {
-                sources['comet'] = {
-                    name: 'comet',
-                    title: 'Comet',
-                    source: new CometSource(_this, object)
-                };
-                filter_sources.push('comet');
-            }
-
-            if (torrentio_url) {
-                sources['torrentio'] = {
-                    name: 'torrentio',
-                    title: 'Torrentio',
-                    source: new TorrentioSource(_this, object)
-                };
-                filter_sources.push('torrentio');
-            }
-
-            // If no sources configured, add comet as default
-            if (filter_sources.length === 0) {
-                sources['comet'] = {
-                    name: 'comet',
-                    title: 'Comet',
-                    source: new CometSource(_this, object)
-                };
-                filter_sources.push('comet');
-            }
-
-            // Find active source
-            if (!sources[balanser]) {
-                balanser = filter_sources[0];
-            }
-            active_source = sources[balanser];
-
-            choice.source = filter_sources.indexOf(balanser);
-            if (choice.source < 0) choice.source = 0;
+            source = new AIOStreamsSource(_this, object);
         }
 
         this.create = function () {
@@ -1144,25 +608,8 @@
 
             filter.onSelect = function (type, a, b) {
                 if (type === 'filter') {
-                    if (a.stype === 'source') {
-                        choice.source = b.index;
-                        balanser = filter_sources[b.index];
-                        active_source = sources[balanser];
-                        Lampa.Storage.set('debrid_source', balanser);
-
-                        _this.reset();
-                        _this.searchStremio();
-                    } else if (active_source && active_source.source && active_source.source.filter) {
-                        active_source.source.filter(type, a, b);
-                    }
-                } else if (type === 'sort') {
-                    if (a.source) {
-                        balanser = a.source;
-                        active_source = sources[balanser];
-                        Lampa.Storage.set('debrid_source', balanser);
-
-                        _this.reset();
-                        _this.searchStremio();
+                    if (source && source.filter) {
+                        source.filter(type, a, b);
                     }
                 }
             };
@@ -1171,7 +618,7 @@
                 _this.start();
             };
 
-            filter.render().find('.filter--sort span').text('Source');
+            filter.render().find('.filter--sort span').text('Filter');
 
             files.appendHead(filter.render());
             files.appendFiles(scroll.render());
@@ -1189,29 +636,17 @@
             var loading = $('<div class="empty"><div class="empty__title">Загрузка стримов...</div></div>');
             scroll.append(loading);
 
-            var source_items = filter_sources.map(function (name, index) {
-                return {
-                    title: sources[name].title,
-                    source: name,
-                    selected: name === balanser,
-                    index: index
-                };
-            });
-
-            filter.set('sort', source_items);
-            filter.chosen('sort', [balanser]);
-
-            // Initialize filter with sources
+            // Initialize filter (only quality now)
             this.updateFilter();
 
             this.reset();
 
-            if (active_source && active_source.source) {
+            if (source) {
                 var imdb_id = object.movie.imdb_id;
                 var kp_id = object.movie.kinopoisk_id || object.movie.kp_id;
-                active_source.source.search(object, imdb_id || kp_id);
+                source.search(object, imdb_id || kp_id);
             } else {
-                this.emptyForQuery('Source not found');
+                this.emptyForQuery('Source not initialized');
             }
         };
 
@@ -1230,20 +665,16 @@
 
         this.empty = function () {
             scroll.clear();
-
             var empty = Lampa.Template.get('list_empty');
             scroll.append(empty);
-
             this.start();
         };
 
         this.emptyForQuery = function (message) {
             this.activity.loader(false);
             scroll.clear();
-
             var empty = $('<div class="empty"><div class="empty__title">' + (message || 'Nothing found') + '</div></div>');
             scroll.append(empty);
-
             this.start();
         };
 
@@ -1251,9 +682,7 @@
             element.on('hover:focus', function () {
                 try {
                     scroll.update($(this), true);
-                } catch (error) {
-                    console.error('Debrid Streams: scroll.update error:', error);
-                }
+                } catch (error) { }
             });
             scroll.append(element);
         };
@@ -1269,87 +698,48 @@
                         Lampa.Controller.collectionFocus(first_focus ? items.first() : false, scroll.render());
                     },
                     left: function () {
-                        if (Navigator.canmove('left')) {
-                            Navigator.move('left');
-                        } else {
-                            Lampa.Controller.toggle('menu');
-                        }
+                        if (Navigator.canmove('left')) Navigator.move('left');
+                        else Lampa.Controller.toggle('menu');
                     },
                     right: function () {
-                        if (Navigator.canmove('right')) {
-                            Navigator.move('right');
-                        } else {
-                            filter.show(Lampa.Lang.translate('title_filter'), 'filter');
-                        }
+                        if (Navigator.canmove('right')) Navigator.move('right');
+                        else filter.show(Lampa.Lang.translate('title_filter'), 'filter');
                     },
                     up: function () {
-                        if (Navigator.canmove('up')) {
-                            Navigator.move('up');
-                        } else {
-                            filter.show(Lampa.Lang.translate('title_filter'), 'filter');
-                        }
+                        if (Navigator.canmove('up')) Navigator.move('up');
+                        else filter.show(Lampa.Lang.translate('title_filter'), 'filter');
                     },
                     down: function () {
-                        if (Navigator.canmove('down')) {
-                            Navigator.move('down');
-                        }
+                        if (Navigator.canmove('down')) Navigator.move('down');
                     },
                     back: function () {
                         _self.back();
                     }
                 });
-
                 Lampa.Controller.toggle('content');
             } else {
                 Lampa.Controller.add('content', {
                     toggle: function () { },
-                    left: function () {
-                        Lampa.Controller.toggle('menu');
-                    },
+                    left: function () { Lampa.Controller.toggle('menu'); },
                     right: function () { },
-                    up: function () {
-                        Lampa.Controller.toggle('head');
-                    },
+                    up: function () { Lampa.Controller.toggle('head'); },
                     down: function () { },
-                    back: function () {
-                        _self.back();
-                    }
+                    back: function () { _self.back(); }
                 });
-
                 Lampa.Controller.toggle('content');
             }
         };
 
         this.back = function () {
-            // Try internal navigation first (for series: streams → episodes → seasons)
-            // Access wrapper.source.goBack() 
-            if (sources[balanser] && sources[balanser].source && sources[balanser].source.goBack) {
-                if (sources[balanser].source.goBack()) {
-                    return; // Handled internally
-                }
+            if (source && source.goBack && source.goBack()) {
+                return;
             }
-            // Otherwise exit activity
             Lampa.Activity.backward();
         };
 
 
         this.updateFilter = function (items) {
             var filters = [];
-
-            // Add source filter
-            if (filter_sources.length > 1) {
-                filters.push({
-                    title: 'Source',
-                    stype: 'source',
-                    items: filter_sources.map(function (name, index) {
-                        return {
-                            title: sources[name].title,
-                            selected: name === balanser,
-                            index: index
-                        };
-                    })
-                });
-            }
 
             // Add quality filter
             if (items && items.quality && items.quality.length) {
@@ -1371,48 +761,31 @@
             }
         };
 
-        /**
-         * Update filter display with season/episode info
-         */
         this.updateFilterInfo = function (info) {
             var select = [];
-            if (info) {
-                select.push(info);
-            }
+            if (info) select.push(info);
             filter.chosen('filter', select);
         };
 
-        this.saveChoice = function (ch) {
-            // Save user choice
-        };
+        this.saveChoice = function (ch) { };
 
         this.render = function () {
             return files.render();
         };
 
         this.destroy = function () {
-            network.clear();
             scroll.destroy();
-
-            for (var key in sources) {
-                if (sources[key] && sources[key].source && sources[key].source.destroy) {
-                    sources[key].source.destroy();
-                }
-            }
+            if (source && source.destroy) source.destroy();
         };
     }
 
     // ==================== PLUGIN REGISTRATION ====================
 
-    // Add templates
     function addTemplates() {
         Lampa.Template.add('debrid_item', '<div class="online selector">\
             <div class="online__body">\
-                <div style="position: absolute;left: 0;top: -0.3em;width: 2.4em;height: 2.4em">\
-                    <svg style="height: 2.4em; width: 2.4em;" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">\
-                        <circle cx="64" cy="64" r="56" stroke="white" stroke-width="16"/>\
-                        <path d="M90.5 64.3827L50 87.7654L50 41L90.5 64.3827Z" fill="white"/>\
-                    </svg>\
+                <div style="position: absolute;left: 0;top: -0.3em;width: 2.4em;height: 2.4em; padding: 0.4em; box-sizing: border-box;">\
+                    <img src="' + PLUGIN_LOGO + '" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%;">\
                 </div>\
                 <div class="online__title" style="padding-left: 2.1em;">{title}</div>\
                 <div class="online__quality" style="padding-left: 3.4em;">{info}</div>\
@@ -1421,8 +794,8 @@
 
         Lampa.Template.add('debrid_folder', '<div class="online selector">\
             <div class="online__body">\
-                <div style="position: absolute;left: 0;top: -0.3em;width: 2.4em;height: 2.4em">\
-                    <svg style="height: 2.4em; width: 2.4em;" viewBox="0 0 128 112" fill="none" xmlns="http://www.w3.org/2000/svg">\
+                <div style="position: absolute;left: 0;top: -0.3em;width: 2.4em;height: 2.4em; padding: 0.4em; box-sizing: border-box;">\
+                   <svg style="height: 100%; width: 100%;" viewBox="0 0 128 112" fill="none" xmlns="http://www.w3.org/2000/svg">\
                         <rect y="20" width="128" height="92" rx="13" fill="white"/>\
                         <path d="M29.9963 8H98.0037C96.0446 3.3021 91.4079 0 86 0H42C36.5921 0 31.9555 3.3021 29.9963 8Z" fill="white" fill-opacity="0.23"/>\
                         <rect x="11" y="8" width="106" height="76" rx="13" fill="white" fill-opacity="0.51"/>\
@@ -1435,85 +808,62 @@
     }
 
     function initPlugin() {
-        // Add templates first
         addTemplates();
 
-        // Add translations
         Lampa.Lang.add({
             debrid_title: {
-                ru: 'Debrid Streams',
-                en: 'Debrid Streams',
-                uk: 'Debrid Streams'
+                ru: 'AIOStreams',
+                en: 'AIOStreams',
+                uk: 'AIOStreams'
+            },
+            debrid_title_short: {
+                ru: 'AIOS',
+                en: 'AIOS',
+                uk: 'AIOS'
             },
             debrid_settings_title: {
-                ru: 'Настройки Debrid Streams',
-                en: 'Debrid Streams Settings',
-                uk: 'Налаштування Debrid Streams'
+                ru: 'Настройки AIOStreams',
+                en: 'AIOStreams Settings',
+                uk: 'Налаштування AIOStreams'
             },
-            debrid_comet_url: {
-                ru: 'URL манифеста Comet',
-                en: 'Comet manifest URL',
-                uk: 'URL маніфесту Comet'
+            debrid_aiostreams_url: {
+                ru: 'URL манифеста AIOStreams',
+                en: 'AIOStreams manifest URL',
+                uk: 'URL маніфесту AIOStreams'
             },
-            debrid_torrentio_url: {
-                ru: 'URL манифеста Torrentio',
-                en: 'Torrentio manifest URL',
-                uk: 'URL маніфесту Torrentio'
-            },
-            debrid_comet_url_descr: {
-                ru: 'Вставьте URL из настроек Comet (Install ссылка)',
-                en: 'Paste URL from Comet settings (Install link)',
-                uk: 'Вставте URL з налаштувань Comet (Install посилання)'
-            },
-            debrid_torrentio_url_descr: {
-                ru: 'Вставьте URL из настроек Torrentio',
-                en: 'Paste URL from Torrentio settings',
-                uk: 'Вставте URL з налаштувань Torrentio'
+            debrid_aiostreams_url_descr: {
+                ru: 'Вставьте URL манифеста AIOStreams',
+                en: 'Paste AIOStreams manifest URL',
+                uk: 'Вставте URL маніфесту AIOStreams'
             },
             debrid_watch: {
-                ru: 'Смотреть через Debrid',
-                en: 'Watch via Debrid',
-                uk: 'Дивитись через Debrid'
-            },
-            debrid_loading: {
-                ru: 'Загрузка стримов...',
-                en: 'Loading streams...',
-                uk: 'Завантаження стрімів...'
+                ru: 'Смотреть через AIOStreams',
+                en: 'Watch via AIOStreams',
+                uk: 'Дивитись через AIOStreams'
             }
         });
 
-        // Add settings parameters
-        Lampa.Params.select('debrid_comet_url', '', '');
-        Lampa.Params.select('debrid_torrentio_url', '', '');
-        Lampa.Params.select('debrid_source', 'comet', '');
+        // Initialize parameters
+        Lampa.Params.select('debrid_aiostreams_url', '', '');
 
-        // Add settings template
         Lampa.Template.add('settings_debrid', '\
             <div>\
-                <div class="settings-param selector" data-name="debrid_comet_url" data-type="input" placeholder="https://comet.elfhosted.com/xxx/manifest.json">\
-                    <div class="settings-param__name">#{debrid_comet_url}</div>\
+                <div class="settings-param selector" data-name="debrid_aiostreams_url" data-type="input" placeholder="https://...">\
+                    <div class="settings-param__name">#{debrid_aiostreams_url}</div>\
                     <div class="settings-param__value"></div>\
-                    <div class="settings-param__descr">#{debrid_comet_url_descr}</div>\
-                </div>\
-                <div class="settings-param selector" data-name="debrid_torrentio_url" data-type="input" placeholder="https://torrentio.strem.fun/xxx/manifest.json">\
-                    <div class="settings-param__name">#{debrid_torrentio_url}</div>\
-                    <div class="settings-param__value"></div>\
-                    <div class="settings-param__descr">#{debrid_torrentio_url_descr}</div>\
+                    <div class="settings-param__descr">#{debrid_aiostreams_url_descr}</div>\
                 </div>\
             </div>\
         ');
 
-        // Add settings section
         function addSettings() {
             if (Lampa.Settings.main && Lampa.Settings.main() && !Lampa.Settings.main().render().find('[data-component="debrid"]').length) {
                 var field = $('\
                     <div class="settings-folder selector" data-component="debrid">\
                         <div class="settings-folder__icon">\
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">\
-                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>\
-                            </svg>\
+                            <img src="' + PLUGIN_LOGO + '" style="width: 1.2em; height: 1.2em; border-radius: 50%;">\
                         </div>\
-                        <div class="settings-folder__name">Debrid Streams</div>\
+                        <div class="settings-folder__name">AIOStreams</div>\
                     </div>\
                 ');
 
@@ -1530,42 +880,26 @@
             });
         }
 
-        // Register component
         Lampa.Component.add(PLUGIN_NAME, DebridComponent);
 
-        // Create plugin manifest
-        var manifest = {
-            type: 'video',
-            version: PLUGIN_VERSION,
-            name: PLUGIN_TITLE + ' - ' + PLUGIN_VERSION,
-            description: Lampa.Lang.translate('debrid_watch'),
-            component: PLUGIN_NAME
-        };
-
-        // Add button to movie page
         var buttonHtml = '\
-            <div class="full-start__button selector view--debrid" data-subtitle="Real Debrid ' + PLUGIN_VERSION + '">\
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:1.3em;height:1.3em">\
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>\
-                </svg>\
-                <span>#{debrid_title}</span>\
+            <div class="full-start__button selector view--debrid" data-subtitle="Stremio Aggregator">\
+                <img src="' + PLUGIN_LOGO + '" style="width:1.3em;height:1.3em;border-radius:50%;margin-right:0.4em;">\
+                <span>#{title_key}</span>\
             </div>\
         ';
 
         Lampa.Listener.follow('full', function (e) {
             if (e.type === 'complite') {
-                // Create two buttons: Short (RD) and Full (Debrid Streams)
-                var btnRd = $(Lampa.Lang.translate(buttonHtml.replace('#{debrid_title}', 'RD')));
-                var btnFull = $(Lampa.Lang.translate(buttonHtml.replace('#{debrid_title}', 'Debrid Streams')));
+                var btnShort = $(Lampa.Lang.translate(buttonHtml.replace('#{title_key}', 'debrid_title_short')));
+                var btnFull = $(Lampa.Lang.translate(buttonHtml.replace('#{title_key}', 'debrid_title')));
 
-                // Handler for entering plugin
                 var enterPlugin = function () {
                     var movie = e.data.movie;
-                    var comet_url = Lampa.Storage.get('debrid_comet_url', '');
-                    var torrentio_url = Lampa.Storage.get('debrid_torrentio_url', '');
+                    var url = Lampa.Storage.get('debrid_aiostreams_url', '');
 
-                    if (!comet_url && !torrentio_url) {
-                        Lampa.Noty.show('Configure URL in Settings -> Debrid Streams');
+                    if (!url) {
+                        Lampa.Noty.show('Configure URL in Settings -> AIOStreams');
                         return;
                     }
 
@@ -1583,77 +917,46 @@
                     });
                 };
 
-                btnRd.on('hover:enter', enterPlugin);
+                btnShort.on('hover:enter', enterPlugin);
                 btnFull.on('hover:enter', enterPlugin);
 
-                // 1. Add RD button next to Watch button
                 var watchBtn = e.object.activity.render().find('.button--play, .view--play').first();
-                if (watchBtn.length) {
-                    watchBtn.after(btnRd);
-                } else {
-                    e.object.activity.render().find('.full-start__buttons').append(btnRd);
-                }
+                if (watchBtn.length) watchBtn.after(btnShort);
+                else e.object.activity.render().find('.full-start__buttons').append(btnShort);
 
-                // 2. Add Full button next to Torrent button (or at end of list)
                 var torrentBtn = e.object.activity.render().find('.view--torrent').last();
-                if (torrentBtn.length) {
-                    torrentBtn.after(btnFull);
-                } else {
-                    e.object.activity.render().find('.full-start__buttons').append(btnFull);
-                }
+                if (torrentBtn.length) torrentBtn.after(btnFull);
+                else e.object.activity.render().find('.full-start__buttons').append(btnFull);
             }
         });
 
-        // Listen for settings open
-        Lampa.Settings.listener.follow('open', function (e) {
-            if (e.name === 'debrid') {
-                // Real Debrid settings opened
-            }
-        });
-
-        // Move TraktTV menu item to top (with delay to ensure it's loaded)
+        // Move TraktTV menu item to top
         setTimeout(function () {
             try {
                 var menuList = $('.menu .menu__list').eq(0);
                 if (menuList.length) {
-                    // Find TraktTV menu item by its text content
                     var traktItem = menuList.find('.menu__item').filter(function () {
                         return $(this).find('.menu__text').text().toLowerCase().indexOf('trakt') !== -1;
                     });
-
                     if (traktItem.length) {
                         menuList.prepend(traktItem);
-                        console.log('Debrid Streams: Moved TraktTV menu item to top');
+                        console.log('AIOStreams: Moved TraktTV menu item to top');
                     }
                 }
-            } catch (e) {
-                console.warn('Debrid Streams: Could not reorder menu:', e);
-            }
-        }, 2000); // 2 second delay to ensure TraktTV addon is loaded
+            } catch (e) { }
+        }, 2000);
 
-        console.log('Debrid Streams Plugin v' + PLUGIN_VERSION + ' loaded');
-    }
-
-    // ==================== URL RESOLVER (Disabled) ====================
-
-    function resolveRedirect(url) {
-        return Promise.resolve(url);
+        console.log('AIOStreams Plugin v' + PLUGIN_VERSION + ' loaded');
     }
 
     // ==================== TRAKT SYNC ====================
 
     function showSyncModal(item) {
-        if (!item) return;
+        if (!item || !window.TraktTV || !window.TraktTV.api) return;
 
-        // Check if TraktTV is available before showing modal
-        if (!window.TraktTV || !window.TraktTV.api) {
-            return;
-        }
-
-        // CRITICAL: Capture current controller state BEFORE showing Select
         var enabled = Lampa.Controller.enabled().name;
-
         var title = (item.title || item.name || 'Video');
+
         Lampa.Select.show({
             title: 'Trakt TV',
             items: [
@@ -1669,14 +972,10 @@
                 }
             ],
             onSelect: function (a) {
-                // Restore controller to previous state
                 Lampa.Controller.toggle(enabled);
-                if (a.mark) {
-                    markAsWatched(item);
-                }
+                if (a.mark) markAsWatched(item);
             },
             onBack: function () {
-                // Restore controller to previous state
                 Lampa.Controller.toggle(enabled);
             }
         });
@@ -1688,58 +987,34 @@
             return;
         }
 
-        // Determine content type - TV shows have first_air_date or number_of_seasons
         var isTV = item.first_air_date || item.number_of_seasons || item.seasons;
         var method = isTV ? 'show' : 'movie';
-
-        var data = {
-            method: method,
-            id: item.id
-        };
-
-        // Add ids if available
-        if (item.ids) {
-            data.ids = item.ids;
-        }
-
-        console.log('Debrid Streams: Marking as watched:', data);
+        var data = { method: method, id: item.id };
+        if (item.ids) data.ids = item.ids;
 
         window.TraktTV.api.addToHistory(data).then(function () {
             Lampa.Noty.show('Отмечено в Trakt');
-            console.log('Debrid Streams: Successfully marked as watched');
         }).catch(function (e) {
-            console.error('Debrid Streams: Trakt error:', e);
             Lampa.Noty.show('Ошибка: ' + (e.message || 'Error'));
         });
     }
 
     function getTraktHistory(tmdbId, type) {
         return new Promise(function (resolve) {
-            if (!window.TraktTV || !window.TraktTV.api) {
-                console.warn('Debrid Streams: TraktAPI not available');
-                return resolve(null);
-            }
+            if (!window.TraktTV || !window.TraktTV.api) return resolve(null);
             var api = window.TraktTV.api;
-            console.log('Debrid Streams: Fetching Trakt history for TMDB ID:', tmdbId, 'Type:', type);
-
             api.get('/search/tmdb/' + tmdbId + '?type=' + (type === 'series' ? 'show' : 'movie'))
                 .then(function (res) {
-                    // console.log('Debrid Streams: Trakt Search Result:', res);
                     if (res && res[0] && res[0][type === 'series' ? 'show' : 'movie']) {
                         var traktId = res[0][type === 'series' ? 'show' : 'movie'].ids.trakt;
-                        console.log('Debrid Streams: Found Trakt ID:', traktId);
-                        // Add limit=1000 to get full history
                         return api.get('/sync/history/' + (type === 'series' ? 'shows' : 'movies') + '/' + traktId + '?extended=full&limit=1000');
                     }
-                    console.warn('Debrid Streams: Trakt ID not found for TMDB ID:', tmdbId);
                     return null;
                 })
                 .then(function (history) {
-                    console.log('Debrid Streams: History fetched. Items:', history ? history.length : 0);
                     resolve(history);
                 })
                 .catch(function (e) {
-                    console.error('Debrid Streams: History fetch error:', e);
                     resolve(null);
                 });
         });
@@ -1748,14 +1023,14 @@
     // ==================== INIT ====================
 
     if (window.appready) {
-        if (!window.plugin_debrid_streams_ready) {
-            window.plugin_debrid_streams_ready = true;
+        if (!window.plugin_aiostreams_ready) {
+            window.plugin_aiostreams_ready = true;
             initPlugin();
         }
     } else {
         Lampa.Listener.follow('app', function (e) {
-            if (e.type === 'ready' && !window.plugin_debrid_streams_ready) {
-                window.plugin_debrid_streams_ready = true;
+            if (e.type === 'ready' && !window.plugin_aiostreams_ready) {
+                window.plugin_aiostreams_ready = true;
                 initPlugin();
             }
         });
