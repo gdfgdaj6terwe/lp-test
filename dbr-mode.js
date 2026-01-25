@@ -967,6 +967,401 @@
         }, 2000);
 
         console.log('AIOStreams Plugin v' + PLUGIN_VERSION + ' loaded');
+
+        // Initialize dynamic catalogs
+        initDynamicCatalogs();
+    }
+
+    // ==================== DYNAMIC CATALOGS ====================
+
+    var catalogsCache = null;
+    var catalogsCacheTime = 0;
+    var CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+    /**
+     * Get base URL from manifest URL
+     */
+    function getCatalogBaseUrl() {
+        var url = Lampa.Storage.get('debrid_aiostreams_url', DEFAULT_SETTINGS.aiostreams_url);
+        return extractBaseUrl(url);
+    }
+
+    /**
+     * Load manifest and extract catalogs
+     */
+    function loadManifestCatalogs() {
+        return new Promise(function (resolve, reject) {
+            var baseUrl = getCatalogBaseUrl();
+            if (!baseUrl) {
+                return reject(new Error('AIOStreams URL not configured'));
+            }
+
+            // Check cache
+            var now = Date.now();
+            if (catalogsCache && (now - catalogsCacheTime) < CACHE_DURATION) {
+                return resolve(catalogsCache);
+            }
+
+            var manifestUrl = baseUrl + '/manifest.json';
+            var network = new Lampa.Reguest();
+
+            network.silent(manifestUrl, function (manifest) {
+                if (manifest && Array.isArray(manifest.catalogs)) {
+                    catalogsCache = manifest.catalogs;
+                    catalogsCacheTime = now;
+                    resolve(manifest.catalogs);
+                } else {
+                    reject(new Error('Invalid manifest format'));
+                }
+            }, function (error) {
+                reject(error);
+            });
+        });
+    }
+
+    /**
+     * Fetch catalog content
+     */
+    function fetchCatalogContent(catalogId, type, options) {
+        return new Promise(function (resolve, reject) {
+            var baseUrl = getCatalogBaseUrl();
+            if (!baseUrl) {
+                return reject(new Error('AIOStreams URL not configured'));
+            }
+
+            // Build URL
+            var url = baseUrl + '/catalog/' + type + '/' + catalogId;
+
+            // Add options (genre, skip)
+            var params = [];
+            if (options && options.genre) {
+                params.push('genre=' + encodeURIComponent(options.genre));
+            }
+            if (options && options.skip) {
+                params.push('skip=' + options.skip);
+            }
+
+            if (params.length > 0) {
+                url += '/' + params.join('&');
+            }
+
+            url += '.json';
+
+            var network = new Lampa.Reguest();
+            network.timeout(Lampa.Storage.get('debrid_timeout', DEFAULT_SETTINGS.timeout));
+
+            network.silent(url, function (response) {
+                if (response && response.metas && Array.isArray(response.metas)) {
+                    // Convert Stremio meta format to Lampa format
+                    var results = response.metas.map(function (meta) {
+                        return convertStremioMetaToLampa(meta, type);
+                    });
+                    resolve(results);
+                } else {
+                    resolve([]);
+                }
+            }, function (error) {
+                reject(error);
+            });
+        });
+    }
+
+    /**
+     * Convert Stremio meta format to Lampa card format
+     */
+    function convertStremioMetaToLampa(meta, type) {
+        var lampaType = type === 'series' ? 'tv' : (type === 'movie' ? 'movie' : type);
+
+        // Extract TMDB ID from Stremio ID (format: tt1234567 or tmdb:12345)
+        var tmdbId = null;
+        var imdbId = null;
+
+        if (meta.id) {
+            if (meta.id.startsWith('tt')) {
+                imdbId = meta.id;
+            } else if (meta.id.startsWith('tmdb:')) {
+                tmdbId = meta.id.replace('tmdb:', '');
+            }
+        }
+
+        var card = {
+            id: tmdbId || meta.id,
+            imdb_id: imdbId,
+            title: meta.name || meta.title,
+            name: lampaType === 'tv' ? (meta.name || meta.title) : undefined,
+            original_title: meta.name || meta.title,
+            poster_path: meta.poster,
+            poster: meta.poster,
+            backdrop_path: meta.background || meta.poster,
+            vote_average: meta.imdbRating ? parseFloat(meta.imdbRating) : 0,
+            release_date: meta.releaseInfo || meta.year,
+            overview: meta.description,
+            method: lampaType,
+            type: lampaType,
+            card_type: lampaType,
+            source: 'aiostreams'
+        };
+
+        // Add params.emit for Lampa 3.0+ modular system
+        card.params = {
+            emit: {
+                onlyEnter: function () {
+                    Lampa.Activity.push({
+                        url: card.url || '',
+                        component: 'full',
+                        id: card.id,
+                        method: card.method,
+                        card: card,
+                        source: 'tmdb'
+                    });
+                }
+            }
+        };
+
+        return card;
+    }
+
+    /**
+     * Get translated catalog name
+     */
+    function getCatalogTranslatedName(catalog) {
+        var lang = Lampa.Storage.get('language', 'ru');
+
+        // Mapping for common catalog names
+        var translations = {
+            'Popular': { ru: 'Популярное', uk: 'Популярне', en: 'Popular' },
+            'Trending': { ru: 'В тренде', uk: 'У тренді', en: 'Trending' },
+            'Top Rated': { ru: 'Лучшие', uk: 'Найкращі', en: 'Top Rated' },
+            'Year': { ru: 'По годам', uk: 'За роками', en: 'Year' },
+            'Language': { ru: 'По языкам', uk: 'За мовами', en: 'Language' },
+            'Top seeded': { ru: 'Топ раздач', uk: 'Топ роздач', en: 'Top seeded' },
+            'New Releases': { ru: 'Новинки', uk: 'Новинки', en: 'New Releases' },
+            'Kitsu Trending': { ru: 'Kitsu В тренде', uk: 'Kitsu У тренді', en: 'Kitsu Trending' },
+            'Kitsu Top Airing': { ru: 'Kitsu Сейчас выходит', uk: 'Kitsu Зараз виходить', en: 'Kitsu Top Airing' },
+            'Kitsu Most Popular': { ru: 'Kitsu Популярное', uk: 'Kitsu Популярне', en: 'Kitsu Most Popular' },
+            'Kitsu Highest Rated': { ru: 'Kitsu Лучшие', uk: 'Kitsu Найкращі', en: 'Kitsu Highest Rated' },
+            'RealDebrid': { ru: 'RealDebrid', uk: 'RealDebrid', en: 'RealDebrid' }
+        };
+
+        if (translations[catalog.name] && translations[catalog.name][lang]) {
+            return translations[catalog.name][lang];
+        }
+
+        return catalog.name;
+    }
+
+    /**
+     * Get type display name
+     */
+    function getTypeDisplayName(type) {
+        var lang = Lampa.Storage.get('language', 'ru');
+        var types = {
+            'movie': { ru: 'Фильмы', uk: 'Фільми', en: 'Movies' },
+            'series': { ru: 'Сериалы', uk: 'Серіали', en: 'Series' },
+            'anime': { ru: 'Аниме', uk: 'Аніме', en: 'Anime' },
+            'collections': { ru: 'Коллекции', uk: 'Колекції', en: 'Collections' },
+            'other': { ru: 'Другое', uk: 'Інше', en: 'Other' }
+        };
+
+        return types[type] && types[type][lang] ? types[type][lang] : type;
+    }
+
+    /**
+     * Register ContentRow for a catalog
+     */
+    function registerCatalogContentRow(catalog, index) {
+        var rowName = 'AIOCatalog_' + catalog.id.replace(/[^a-zA-Z0-9]/g, '_');
+        var title = getCatalogTranslatedName(catalog) + ' (' + getTypeDisplayName(catalog.type) + ')';
+
+        // Skip search catalogs
+        if (catalog.name === 'Search') return;
+
+        // Skip RealDebrid/other type catalogs for main page
+        if (catalog.type === 'other') return;
+
+        Lampa.ContentRows.add({
+            name: rowName,
+            title: title,
+            index: 10 + index, // Start after Trakt rows (index 1-2) and standard Lampa rows
+            screen: ['main'],
+            call: function (params, screen) {
+                var baseUrl = getCatalogBaseUrl();
+                if (!baseUrl) return;
+
+                return function (call) {
+                    fetchCatalogContent(catalog.id, catalog.type, { skip: 0 })
+                        .then(function (results) {
+                            if (!results || results.length === 0) {
+                                return call();
+                            }
+
+                            call({
+                                title: '<span style="display:inline-flex;align-items:center;gap:0.4em;">' +
+                                    '<img src="' + PLUGIN_LOGO + '" style="width:1.1em;height:1.1em;border-radius:50%;">' +
+                                    '<span>' + title + '</span>' +
+                                    '</span>',
+                                results: results,
+                                onMore: function () {
+                                    // Open category view with pagination
+                                    Lampa.Activity.push({
+                                        title: title,
+                                        component: 'aiostreams_catalog',
+                                        catalog_id: catalog.id,
+                                        catalog_type: catalog.type,
+                                        catalog_name: catalog.name,
+                                        page: 1
+                                    });
+                                }
+                            });
+                        })
+                        .catch(function (error) {
+                            console.error('AIOStreams', 'Catalog load error:', catalog.name, error);
+                            call();
+                        });
+                };
+            }
+        });
+    }
+
+    /**
+     * Catalog component for "More" view
+     */
+    function AIOStreamsCatalogComponent(object) {
+        var _this = this;
+        var scroll = new Lampa.Scroll({ mask: true, over: true });
+        var items = [];
+        var page = object.page || 1;
+        var loading = false;
+
+        this.create = function () {
+            this.activity.loader(true);
+            scroll.minus();
+            scroll.body().addClass('category-full');
+
+            this.loadContent();
+
+            return scroll.render();
+        };
+
+        this.loadContent = function () {
+            if (loading) return;
+            loading = true;
+
+            var skip = (page - 1) * 20;
+
+            fetchCatalogContent(object.catalog_id, object.catalog_type, { skip: skip })
+                .then(function (results) {
+                    _this.activity.loader(false);
+                    loading = false;
+
+                    if (results && results.length > 0) {
+                        results.forEach(function (card) {
+                            _this.appendCard(card);
+                        });
+                        page++;
+                    }
+
+                    _this.start(items.length === 0);
+                })
+                .catch(function (error) {
+                    _this.activity.loader(false);
+                    loading = false;
+                    console.error('AIOStreams', 'Catalog component error:', error);
+                });
+        };
+
+        this.appendCard = function (card) {
+            var element = Lampa.Template.get('card', {
+                title: card.title || card.name,
+                release_year: card.release_date
+            });
+
+            var img = element.find('.card__img')[0];
+            if (img && card.poster) {
+                img.src = card.poster;
+            }
+
+            element.on('hover:focus', function () {
+                scroll.update(element, true);
+            });
+
+            element.on('hover:enter', function () {
+                Lampa.Activity.push({
+                    component: 'full',
+                    id: card.id,
+                    method: card.method,
+                    card: card,
+                    source: 'tmdb'
+                });
+            });
+
+            scroll.append(element);
+            items.push(element);
+        };
+
+        this.start = function (firstFocus) {
+            var _self = this;
+
+            Lampa.Controller.add('content', {
+                toggle: function () {
+                    Lampa.Controller.collectionSet(scroll.render());
+                    Lampa.Controller.collectionFocus(firstFocus ? items[0] : false, scroll.render());
+                },
+                left: function () {
+                    if (Navigator.canmove('left')) Navigator.move('left');
+                    else Lampa.Controller.toggle('menu');
+                },
+                right: function () {
+                    if (Navigator.canmove('right')) Navigator.move('right');
+                },
+                up: function () {
+                    if (Navigator.canmove('up')) Navigator.move('up');
+                    else Lampa.Controller.toggle('head');
+                },
+                down: function () {
+                    if (Navigator.canmove('down')) Navigator.move('down');
+                    else _self.loadContent(); // Load more on scroll down at bottom
+                },
+                back: function () {
+                    Lampa.Activity.backward();
+                }
+            });
+
+            Lampa.Controller.toggle('content');
+        };
+
+        this.render = function () {
+            return scroll.render();
+        };
+
+        this.destroy = function () {
+            scroll.destroy();
+            items = [];
+        };
+    }
+
+    /**
+     * Initialize dynamic catalogs
+     */
+    function initDynamicCatalogs() {
+        // Register catalog component
+        Lampa.Component.add('aiostreams_catalog', AIOStreamsCatalogComponent);
+
+        // Load and register catalog rows
+        loadManifestCatalogs()
+            .then(function (catalogs) {
+                console.log('AIOStreams', 'Loaded', catalogs.length, 'catalogs from manifest');
+
+                // Filter and register catalogs
+                catalogs.forEach(function (catalog, index) {
+                    registerCatalogContentRow(catalog, index);
+                });
+
+                console.log('AIOStreams', 'Dynamic catalog rows registered');
+            })
+            .catch(function (error) {
+                console.log('AIOStreams', 'Failed to load catalogs:', error.message || error);
+            });
     }
 
     // ==================== TRAKT SYNC ====================
