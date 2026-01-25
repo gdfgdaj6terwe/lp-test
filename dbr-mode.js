@@ -393,7 +393,7 @@
                     var parsed = item.parsed;
 
                     // Build info line with source tag and languages
-                    var infoParts = ['[AIOS]'];
+                    var infoParts = [];
                     if (parsed.quality) infoParts.push(parsed.quality);
                     if (parsed.codec) infoParts.push(parsed.codec);
                     if (parsed.size) infoParts.push(parsed.size);
@@ -401,6 +401,11 @@
                         infoParts.push(parsed.languages.join('/'));
                     }
                     if (parsed.audio) infoParts.push(parsed.audio);
+
+                    // Append description if available
+                    if (stream.description) {
+                        infoParts.push(stream.description.replace(/\\n/g, ' • '));
+                    }
 
                     var info = infoParts.join(' • ');
 
