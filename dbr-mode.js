@@ -187,6 +187,7 @@
         var filter_items = {};
         var current_season = null;
         var current_episode = null;
+        var navStack = []; // Navigation stack: [{type: 'seasons'}, {type: 'episodes', imdbId, season}, ...]
         var choice = {
             quality: 0
         };
@@ -248,6 +249,9 @@
          * Show season selection for series
          */
         function showSeasonSelect(imdbId) {
+            // Push navigation state
+            navStack = [{ type: 'seasons', imdbId: imdbId }];
+
             var seasons = object.movie.number_of_seasons || (object.movie.seasons && object.movie.seasons.length) || 1;
             var items = [];
 
@@ -258,6 +262,9 @@
                     imdb_id: imdbId
                 });
             }
+
+            // Clear filter info when on seasons
+            component.updateFilterInfo(null);
 
             component.reset();
             component.loading(false);
@@ -300,6 +307,9 @@
          * Show episode selection
          */
         function showEpisodeSelect(imdbId, season) {
+            // Push navigation state
+            navStack.push({ type: 'episodes', imdbId: imdbId, season: season });
+
             var seasonData = null;
             if (object.movie.seasons) {
                 seasonData = object.movie.seasons.find(function (s) {
@@ -317,6 +327,9 @@
                     imdb_id: imdbId
                 });
             }
+
+            // Update filter info with current season
+            component.updateFilterInfo('S' + season);
 
             component.reset();
             component.loading(false);
@@ -359,6 +372,11 @@
             // Store current season/episode for filter display
             current_season = season || null;
             current_episode = episode || null;
+
+            // Push navigation state for streams
+            if (season && episode) {
+                navStack.push({ type: 'streams', imdbId: imdbId, season: season, episode: episode });
+            }
 
             // Update filter display with current season/episode
             if (current_season && current_episode) {
@@ -591,6 +609,29 @@
         this.destroy = function () {
             network.clear();
             streams_data = [];
+            navStack = [];
+        };
+
+        /**
+         * Go back in navigation hierarchy
+         * @returns {boolean} true if handled internally, false if should exit activity
+         */
+        this.goBack = function () {
+            if (navStack.length > 1) {
+                var current = navStack.pop();
+                var prev = navStack[navStack.length - 1];
+
+                if (prev.type === 'seasons') {
+                    navStack = []; // Reset and show seasons
+                    showSeasonSelect(prev.imdbId);
+                    return true;
+                } else if (prev.type === 'episodes') {
+                    navStack.pop(); // Remove episodes from stack, showEpisodeSelect will push it again
+                    showEpisodeSelect(prev.imdbId, prev.season);
+                    return true;
+                }
+            }
+            return false; // Exit activity
         };
     }
 
@@ -603,6 +644,7 @@
         var filter_items = {};
         var current_season = null;
         var current_episode = null;
+        var navStack = []; // Navigation stack for back navigation
         var choice = {
             quality: 0
         };
@@ -651,6 +693,9 @@
         };
 
         function showSeasonSelect(imdbId) {
+            // Push navigation state
+            navStack = [{ type: 'seasons', imdbId: imdbId }];
+
             var seasons = object.movie.number_of_seasons || (object.movie.seasons && object.movie.seasons.length) || 1;
             var items = [];
 
@@ -661,6 +706,9 @@
                     imdb_id: imdbId
                 });
             }
+
+            // Clear filter info when on seasons
+            component.updateFilterInfo(null);
 
             component.reset();
             component.loading(false);
@@ -682,6 +730,9 @@
         }
 
         function showEpisodeSelect(imdbId, season) {
+            // Push navigation state
+            navStack.push({ type: 'episodes', imdbId: imdbId, season: season });
+
             var seasonData = null;
             if (object.movie.seasons) {
                 seasonData = object.movie.seasons.find(function (s) {
@@ -699,6 +750,9 @@
                     imdb_id: imdbId
                 });
             }
+
+            // Update filter info with current season
+            component.updateFilterInfo('S' + season);
 
             component.reset();
             component.loading(false);
@@ -729,6 +783,11 @@
             // Store current season/episode for filter display
             current_season = season || null;
             current_episode = episode || null;
+
+            // Push navigation state for streams
+            if (season && episode) {
+                navStack.push({ type: 'streams', imdbId: imdbId, season: season, episode: episode });
+            }
 
             // Update filter display with current season/episode
             if (current_season && current_episode) {
@@ -984,6 +1043,29 @@
         this.destroy = function () {
             network.clear();
             streams_data = [];
+            navStack = [];
+        };
+
+        /**
+         * Go back in navigation hierarchy
+         * @returns {boolean} true if handled internally, false if should exit activity
+         */
+        this.goBack = function () {
+            if (navStack.length > 1) {
+                var current = navStack.pop();
+                var prev = navStack[navStack.length - 1];
+
+                if (prev.type === 'seasons') {
+                    navStack = []; // Reset and show seasons
+                    showSeasonSelect(prev.imdbId);
+                    return true;
+                } else if (prev.type === 'episodes') {
+                    navStack.pop(); // Remove episodes from stack, showEpisodeSelect will push it again
+                    showEpisodeSelect(prev.imdbId, prev.season);
+                    return true;
+                }
+            }
+            return false; // Exit activity
         };
     }
 
@@ -1239,6 +1321,11 @@
         };
 
         this.back = function () {
+            // Try internal navigation first (for series: streams → episodes → seasons)
+            if (sources[balanser] && sources[balanser].goBack && sources[balanser].goBack()) {
+                return; // Handled internally
+            }
+            // Otherwise exit activity
             Lampa.Activity.backward();
         };
 
@@ -1491,10 +1578,10 @@
                     });
                 });
 
-                // Add button after torrents
-                var torrentBtn = e.object.activity.render().find('.view--torrent');
-                if (torrentBtn.length) {
-                    torrentBtn.after(btn);
+                // Add button after Watch button
+                var watchBtn = e.object.activity.render().find('.button--play, .view--play').first();
+                if (watchBtn.length) {
+                    watchBtn.after(btn);
                 } else {
                     e.object.activity.render().find('.full-start__buttons').append(btn);
                 }
