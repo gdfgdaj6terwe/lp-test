@@ -1,9 +1,9 @@
 /**
  * TraktTV Extended Lists - Lampa Plugin
- * Version: 1.2.0
+ * Version: 1.3.0
  *
  * Adds Watchlist and Liked Lists rows to main page
- * Reorders Trakt and AIOStreams rows to top
+ * Reorders Trakt rows to top and hides unwanted rows
  * Requires: trakttv.js plugin
  */
 
@@ -11,10 +11,10 @@
     'use strict';
 
     var PLUGIN_NAME = 'trakttv-extended-lists';
-    var PLUGIN_VERSION = '1.2.0';
+    var PLUGIN_VERSION = '1.3.0';
 
-    // SVG Icons (from trakttv.js)
-    var TRAKT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" viewBox="0 0 48 48" fill="currentColor"> <g id="_x2D_-production"> <path id="logomark.square.white" class="cls-1" d="M30.17,30.22l-1.46-1.46,19.16-19.17c-.05-.39-.13-.77-.23-1.15l-20.31,20.33,2.16,2.16-1.46,1.46-3.62-3.62L46.85,6.29c-.15-.3-.31-.6-.5-.88l-23.33,23.35,4.31,4.31-1.46,1.46-14.39-14.4,1.46-1.46,8.62,8.62L45.1,3.72c-2.07-2.29-5.05-3.72-8.37-3.72H11.27C5.05,0,0,5.05,0,11.27v25.48c0,6.22,5.05,11.26,11.27,11.26h25.47c6.22,0,11.27-5.04,11.27-11.26V12.38l-17.83,17.84ZM21.54,25.91l-7.91-7.93,1.46-1.46,7.91,7.92-1.46,1.47ZM23.69,23.74l-7.91-7.92,1.46-1.46,7.92,7.92-1.47,1.46ZM43.4,35.12c0,4.57-3.71,8.28-8.28,8.28H12.88c-4.56,0-8.28-3.71-8.28-8.28V12.88c0-4.57,3.71-8.28,8.28-8.28h20.78v2.08H12.88c-3.42,0-6.2,2.78-6.2,6.2v22.23c0,3.42,2.78,6.21,6.2,6.21h22.24c3.42,0,6.2-2.79,6.2-6.21v-3.51h2.08v3.51Z"/> </g> </svg>';
+    // SVG Icons (from trakttv.js) - Ensure this is on one line or properly escaped
+    var TRAKT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" viewBox="0 0 48 48" fill="currentColor"><g id="_x2D_-production"><path id="logomark.square.white" class="cls-1" d="M30.17,30.22l-1.46-1.46,19.16-19.17c-.05-.39-.13-.77-.23-1.15l-20.31,20.33,2.16,2.16-1.46,1.46-3.62-3.62L46.85,6.29c-.15-.3-.31-.6-.5-.88l-23.33,23.35,4.31,4.31-1.46,1.46-14.39-14.4,1.46-1.46,8.62,8.62L45.1,3.72c-2.07-2.29-5.05-3.72-8.37-3.72H11.27C5.05,0,0,5.05,0,11.27v25.48c0,6.22,5.05,11.26,11.27,11.26h25.47c6.22,0,11.27-5.04,11.27-11.26V12.38l-17.83,17.84ZM21.54,25.91l-7.91-7.93,1.46-1.46,7.91,7.92-1.46,1.47ZM23.69,23.74l-7.91-7.92,1.46-1.46,7.92,7.92-1.47,1.46ZM43.4,35.12c0,4.57-3.71,8.28-8.28,8.28H12.88c-4.56,0-8.28-3.71-8.28-8.28V12.88c0-4.57,3.71-8.28,8.28-8.28h20.78v2.08H12.88c-3.42,0-6.2,2.78-6.2,6.2v22.23c0,3.42,2.78,6.21,6.2,6.21h22.24c3.42,0,6.2-2.79,6.2-6.21v-3.51h2.08v3.51Z"/></g></svg>';
 
     // Styles
     var LINE_TITLE_STYLE = 'display:inline-flex; align-items:center; gap:.4em;';
@@ -31,7 +31,7 @@
     }
 
     /**
-     * Create title as DOM element (Fixes HTML escaping issue)
+     * Create title as DOM element
      */
     function createLineTitle(text) {
         var root = document.createElement('span');
@@ -41,7 +41,8 @@
         var iconWrap = document.createElement('span');
         iconWrap.className = 'trakt-line-title__icon';
         iconWrap.setAttribute('style', LINE_ICON_STYLE);
-        iconWrap.innerHTML = TRAKT_ICON.replace('<svg ', '<svg style="width:100%; height:100%; display:block;" ');
+        // Ensure the replaced style is correct
+        iconWrap.innerHTML = TRAKT_ICON.replace('<svg', '<svg style="width:100%; height:100%; display:block;"');
 
         var label = document.createElement('span');
         label.textContent = text;
@@ -141,7 +142,10 @@
                                 });
                             }
                         });
-                    }).catch(function () { call(); });
+                    }).catch(function (e) {
+                        console.error('TraktWatchlistRow', e);
+                        call();
+                    });
                 };
             }
         });
@@ -181,66 +185,59 @@
                                 }
                             });
                         });
-                    }).catch(function () { call(); });
+                    }).catch(function (e) {
+                        console.error('TraktLikedListsRow', e);
+                        call();
+                    });
                 };
             }
         });
     }
 
-    // ==================== REORDERING LOGIC ====================
+    // ==================== LAYOUT MANIPULATION ====================
 
-    var reorderTimer = null;
+    var layoutTimer = null;
 
-    /**
-     * Finds and moves Trakt and AIOStreams rows to the top of scroll__body
-     */
-    function reorderAllRows() {
+    function cleanupLayout() {
         var container = $('.scroll__body');
         if (!container.length) return;
 
-        var rows = container.children();
+        // 1. Hide unwanted rows
+        var unwantedTexts = ['Сейчас смотрят', 'Shots'];
 
-        // 1. Move AIOStreams rows first (so they are below Trakt rows but above others)
-        // We prepend them in reverse order of how we want them to appear (bottom to top)
-        // AIO rows are dynamic, so we just find them by class 'aiostreams-line-title'
-        var aioRows = rows.filter(function () {
-            return $(this).find('.aiostreams-line-title').length > 0;
+        container.find('.items-line').each(function () {
+            var row = $(this);
+            var titleEl = row.find('.items-line__title');
+            var titleText = titleEl.text();
+
+            // Check if title contains any unwanted text
+            for (var i = 0; i < unwantedTexts.length; i++) {
+                // Determine checking method: 'Сейчас смотрят' matches standard category
+                // 'Shots' matches another. Using generic indexOf.
+                if (titleText && titleText.indexOf(unwantedTexts[i]) !== -1) {
+                    row.hide();
+                    // Optional: remove them completely to prevent interference
+                    // row.remove();
+                    break;
+                }
+            }
         });
 
-        // Loop through AIO rows in reverse and prepend them
-        // This puts the LAST AIO row at the top initially, but subsequent prepends push it down.
-        // Wait, prepend inserts at the START.
-        // If we want [A, B, C] at top:
-        // Prepend C -> [C, ...]
-        // Prepend B -> [B, C, ...]
-        // Prepend A -> [A, B, C, ...]
-        // So we need to prepend in Reverse order (C, B, A).
-        // Since `aioRows` comes from `rows` (DOM order), we should reverse it.
-        $(aioRows.get().reverse()).each(function () {
-            container.prepend($(this));
-        });
-
-        // 2. Move Trakt rows (Up Next, Watchlist, Liked, Recs)
-        // They should be ABOVE AIO rows.
-        // Order we want: Up Next, Watchlist, Liked Lists, Recommendations
-        // So we prepend Recs, then Liked, then Watchlist, then Up Next.
-        var traktTargets = [
-            'trakttv_recommendations', // Recommendations
-            'trakttv_liked_lists_row', // Liked Lists
-            'trakttv_watchlist_row',   // Watchlist
-            'trakttv_upnext'           // Up Next
+        // 2. Reorder Trakt Rows to Top
+        // Order: Up Next, Watchlist, Liked, Recommendations
+        var targets = [
+            Lampa.Lang.translate('trakttv_recommendations'),
+            Lampa.Lang.translate('trakttv_liked_lists_row'),
+            Lampa.Lang.translate('trakttv_watchlist_row'),
+            Lampa.Lang.translate('trakttv_upnext')
         ];
 
-        traktTargets.forEach(function (key) {
-            var translated = Lampa.Lang.translate(key);
-            // Also account for fallback "Up Next" text if translation fails or differs
-            // Or try to match by class if possible, but Trakt items-line__title 
-            // has .trakt-line-title so we can check that too.
+        var rows = container.children();
+
+        targets.forEach(function (targetTitle) {
             var row = rows.filter(function () {
-                var text = $(this).text();
-                // Check if it's a Trakt row (has trakt-line-title class) AND contains text
-                // OR just contains the text
-                return $(this).text().indexOf(translated) !== -1;
+                // Robust matching: Check if text contains the title
+                return $(this).text().indexOf(targetTitle) !== -1;
             });
 
             if (row.length) {
@@ -249,15 +246,14 @@
         });
     }
 
-    function startReorderService() {
-        if (reorderTimer) clearInterval(reorderTimer);
+    function startLayoutService() {
+        if (layoutTimer) clearInterval(layoutTimer);
 
-        // Check frequently for 15 seconds to catch lazy loaded rows
         var attempts = 0;
-        reorderTimer = setInterval(function () {
-            reorderAllRows();
+        layoutTimer = setInterval(function () {
+            cleanupLayout();
             attempts++;
-            if (attempts > 30) clearInterval(reorderTimer); // 15 seconds (30 * 500ms)
+            if (attempts > 20) clearInterval(layoutTimer); // 10 seconds check
         }, 500);
     }
 
@@ -267,16 +263,15 @@
         addTranslations();
         registerContentRows();
 
-        // Listen for main page render to trigger reordering
+        // Listen for main page rendering
         Lampa.Listener.follow('main', function (e) {
             if (e.type === 'complite') {
-                startReorderService();
+                startLayoutService();
             }
         });
 
-        // Also try immediately if main is already active
         if (Lampa.Activity.active() && Lampa.Activity.active().component === 'main') {
-            startReorderService();
+            startLayoutService();
         }
     }
 
