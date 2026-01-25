@@ -408,6 +408,14 @@
                     var streamUrl = getStreamUrl(stream);
                     var hasUrl = !!streamUrl;
 
+                    // DEBUG: Log stream processing
+                    console.log('AIOStreams: Stream processing:', {
+                        title: stream.title || stream.name,
+                        parsed: parsed,
+                        generated_info: info,
+                        url_found: hasUrl
+                    });
+
                     var element = Lampa.Template.get('debrid_item', {
                         title: stream.title || stream.name || 'Stream ' + (item.index + 1),
                         info: info + (hasUrl ? '' : ' [NO URL]')
@@ -880,6 +888,9 @@
             });
         }
 
+        // Add styles for logo on focus
+        $('body').append('<style>.view--debrid.focus img { filter: brightness(0); }</style>');
+
         Lampa.Component.add(PLUGIN_NAME, DebridComponent);
 
         var buttonHtml = '\
@@ -891,8 +902,8 @@
 
         Lampa.Listener.follow('full', function (e) {
             if (e.type === 'complite') {
-                var btnShort = $(Lampa.Lang.translate(buttonHtml.replace('#{title_key}', 'debrid_title_short')));
-                var btnFull = $(Lampa.Lang.translate(buttonHtml.replace('#{title_key}', 'debrid_title')));
+                var btnShort = $(buttonHtml.replace('#{title_key}', Lampa.Lang.translate('debrid_title_short')));
+                var btnFull = $(buttonHtml.replace('#{title_key}', Lampa.Lang.translate('debrid_title')));
 
                 var enterPlugin = function () {
                     var movie = e.data.movie;
