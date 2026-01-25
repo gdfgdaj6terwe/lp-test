@@ -1,9 +1,9 @@
 /**
  * TraktTV Extended Lists - Lampa Plugin
- * Version: 1.1.0
+ * Version: 1.2.0
  *
  * Adds Watchlist and Liked Lists rows to main page
- * Reorders Trakt rows to top
+ * Reorders Trakt and AIOStreams rows to top
  * Requires: trakttv.js plugin
  */
 
@@ -11,10 +11,10 @@
     'use strict';
 
     var PLUGIN_NAME = 'trakttv-extended-lists';
-    var PLUGIN_VERSION = '1.1.0';
+    var PLUGIN_VERSION = '1.2.0';
 
-    // SVG Icons
-    var TRAKT_ICON = '<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 239 239" style="enable-background:new 0 0 239 239;" xml:space="preserve"> <style type="text/css"> .st0{fill:#ED1C24;} .st1{fill:#FFFFFF;} </style> <circle class="st0" cx="119.5" cy="119.5" r="119.5"/> <path class="st1" d="M49.6,113.6L48,115.2c-2.4,2.4-2.4,6.4,0,8.8l11.3,11.3l15.7,15.7l49.7,49.6c2.4,2.4,6.4,2.4,8.8,0l4.9-4.9 L52.4,109C50.1,111,49.6,113.6,49.6,113.6z"/> <polygon class="st1" points="191,115.7 191,115.6 191,115.6 118.6,43.4 103,59 103.1,59 157.5,113.4 79.5,113.4 79.5,127.5 171.5,127.5 171.5,127.5 79,220 93.3,234.3 189.6,138 191.6,135.9 "/> <polygon class="st1" points="62.9,135.1 74.5,146.7 109,182.2 123.3,196.5 189.5,130.4 175.2,116.1 118.8,172.5 75.5,129.2 62.9,116.6 "/> </svg>';
+    // SVG Icons (from trakttv.js)
+    var TRAKT_ICON = '<svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" viewBox="0 0 48 48" fill="currentColor"> <g id="_x2D_-production"> <path id="logomark.square.white" class="cls-1" d="M30.17,30.22l-1.46-1.46,19.16-19.17c-.05-.39-.13-.77-.23-1.15l-20.31,20.33,2.16,2.16-1.46,1.46-3.62-3.62L46.85,6.29c-.15-.3-.31-.6-.5-.88l-23.33,23.35,4.31,4.31-1.46,1.46-14.39-14.4,1.46-1.46,8.62,8.62L45.1,3.72c-2.07-2.29-5.05-3.72-8.37-3.72H11.27C5.05,0,0,5.05,0,11.27v25.48c0,6.22,5.05,11.26,11.27,11.26h25.47c6.22,0,11.27-5.04,11.27-11.26V12.38l-17.83,17.84ZM21.54,25.91l-7.91-7.93,1.46-1.46,7.91,7.92-1.46,1.47ZM23.69,23.74l-7.91-7.92,1.46-1.46,7.92,7.92-1.47,1.46ZM43.4,35.12c0,4.57-3.71,8.28-8.28,8.28H12.88c-4.56,0-8.28-3.71-8.28-8.28V12.88c0-4.57,3.71-8.28,8.28-8.28h20.78v2.08H12.88c-3.42,0-6.2,2.78-6.2,6.2v22.23c0,3.42,2.78,6.21,6.2,6.21h22.24c3.42,0,6.2-2.79,6.2-6.21v-3.51h2.08v3.51Z"/> </g> </svg>';
 
     // Styles
     var LINE_TITLE_STYLE = 'display:inline-flex; align-items:center; gap:.4em;';
@@ -192,35 +192,59 @@
     var reorderTimer = null;
 
     /**
-     * Finds and moves Trakt rows to the top of scroll__body
+     * Finds and moves Trakt and AIOStreams rows to the top of scroll__body
      */
-    function reorderTraktRows() {
+    function reorderAllRows() {
         var container = $('.scroll__body');
         if (!container.length) return;
 
-        // Target titles in order (bottom to top for prepending)
-        // Order we want at TOP: Up Next, Watchlist, Liked Lists, Recommendations
-        // So we prepend Recommendations first (it goes to top), then Watchlist, then Liked Lists.
-        var targets = [
-            Lampa.Lang.translate('trakttv_upnext'),
-            Lampa.Lang.translate('trakttv_watchlist_row'),
-            Lampa.Lang.translate('trakttv_liked_lists_row'),
-            Lampa.Lang.translate('trakttv_recommendations')
-        ];
-
         var rows = container.children();
 
-        targets.forEach(function (targetTitle) {
-            // Find row containing the title
+        // 1. Move AIOStreams rows first (so they are below Trakt rows but above others)
+        // We prepend them in reverse order of how we want them to appear (bottom to top)
+        // AIO rows are dynamic, so we just find them by class 'aiostreams-line-title'
+        var aioRows = rows.filter(function () {
+            return $(this).find('.aiostreams-line-title').length > 0;
+        });
+
+        // Loop through AIO rows in reverse and prepend them
+        // This puts the LAST AIO row at the top initially, but subsequent prepends push it down.
+        // Wait, prepend inserts at the START.
+        // If we want [A, B, C] at top:
+        // Prepend C -> [C, ...]
+        // Prepend B -> [B, C, ...]
+        // Prepend A -> [A, B, C, ...]
+        // So we need to prepend in Reverse order (C, B, A).
+        // Since `aioRows` comes from `rows` (DOM order), we should reverse it.
+        $(aioRows.get().reverse()).each(function () {
+            container.prepend($(this));
+        });
+
+        // 2. Move Trakt rows (Up Next, Watchlist, Liked, Recs)
+        // They should be ABOVE AIO rows.
+        // Order we want: Up Next, Watchlist, Liked Lists, Recommendations
+        // So we prepend Recs, then Liked, then Watchlist, then Up Next.
+        var traktTargets = [
+            'trakttv_recommendations', // Recommendations
+            'trakttv_liked_lists_row', // Liked Lists
+            'trakttv_watchlist_row',   // Watchlist
+            'trakttv_upnext'           // Up Next
+        ];
+
+        traktTargets.forEach(function (key) {
+            var translated = Lampa.Lang.translate(key);
+            // Also account for fallback "Up Next" text if translation fails or differs
+            // Or try to match by class if possible, but Trakt items-line__title 
+            // has .trakt-line-title so we can check that too.
             var row = rows.filter(function () {
                 var text = $(this).text();
-                return text.indexOf(targetTitle) !== -1;
+                // Check if it's a Trakt row (has trakt-line-title class) AND contains text
+                // OR just contains the text
+                return $(this).text().indexOf(translated) !== -1;
             });
 
             if (row.length) {
-                // Move to top
                 container.prepend(row);
-                // console.log('TraktTV Extended Lists', 'Moved row to top:', targetTitle);
             }
         });
     }
@@ -228,12 +252,12 @@
     function startReorderService() {
         if (reorderTimer) clearInterval(reorderTimer);
 
-        // Check every 500ms for 5 seconds after main page load
+        // Check frequently for 15 seconds to catch lazy loaded rows
         var attempts = 0;
         reorderTimer = setInterval(function () {
-            reorderTraktRows();
+            reorderAllRows();
             attempts++;
-            if (attempts > 10) clearInterval(reorderTimer);
+            if (attempts > 30) clearInterval(reorderTimer); // 15 seconds (30 * 500ms)
         }, 500);
     }
 

@@ -1174,6 +1174,7 @@
      */
     function createAIOTitle(text) {
         var root = document.createElement('span');
+        root.className = 'aiostreams-line-title'; // Added class for identification
         root.style.cssText = 'display:inline-flex;align-items:center;gap:0.4em;';
 
         var img = document.createElement('img');
