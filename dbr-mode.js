@@ -204,7 +204,24 @@
                 // Fetch history
                 getTraktHistory(object.movie.id, 'series').then(function (history) {
                     object.trakt_history = history;
-                    showSeasonSelect(imdbId);
+
+                    // Try to find next episode to watch
+                    var next = findNextEpisode(history, object.movie);
+                    if (next) {
+                        console.log('AIOStreams: Auto-jumping to S' + next.season + 'E' + next.episode);
+
+                        // Setup navigation stack for "Back" functionality
+                        // 1. Root (Seasons)
+                        navStack = [{ type: 'seasons', imdbId: imdbId }];
+                        // 2. Episodes list for current season
+                        navStack.push({ type: 'episodes', imdbId: imdbId, season: next.season });
+
+                        // 3. Fetch streams (will push 'streams' state implicitly or we consider it current state)
+                        // Note: fetchStreams pushes to navStack strings logic, so we are good.
+                        fetchStreams(imdbId, 'series', next.season, next.episode);
+                    } else {
+                        showSeasonSelect(imdbId);
+                    }
                 });
             } else {
                 fetchStreams(imdbId, 'movie');
@@ -392,22 +409,9 @@
                     var stream = item.stream;
                     var parsed = item.parsed;
 
-                    // Build info line with source tag and languages
-                    var infoParts = [];
-                    if (parsed.quality) infoParts.push(parsed.quality);
-                    if (parsed.codec) infoParts.push(parsed.codec);
-                    if (parsed.size) infoParts.push(parsed.size);
-                    if (parsed.languages && parsed.languages.length > 0) {
-                        infoParts.push(parsed.languages.join('/'));
-                    }
-                    if (parsed.audio) infoParts.push(parsed.audio);
-
-                    // Append description if available
-                    if (stream.description) {
-                        infoParts.push(stream.description.replace(/\\n/g, ' • '));
-                    }
-
-                    var info = infoParts.join(' • ');
+                    // Display: Title = description (as-is), Info = name
+                    var displayTitle = stream.description || stream.title || 'Stream ' + (item.index + 1);
+                    var displayInfo = stream.name || '';
 
                     // Check if stream has valid URL
                     var streamUrl = getStreamUrl(stream);
@@ -415,15 +419,15 @@
 
                     // DEBUG: Log stream processing
                     console.log('AIOStreams: Stream processing:', {
-                        title: stream.title || stream.name,
-                        parsed: parsed,
-                        generated_info: info,
+                        original_name: stream.name,
+                        title_used: displayTitle,
+                        info_used: displayInfo,
                         url_found: hasUrl
                     });
 
                     var element = Lampa.Template.get('debrid_item', {
-                        title: stream.title || stream.name || 'Stream ' + (item.index + 1),
-                        info: info + (hasUrl ? '' : ' [NO URL]')
+                        title: displayTitle,
+                        info: displayInfo + (hasUrl ? '' : ' [NO URL]')
                     });
 
                     element.on('hover:enter', function () {
@@ -893,8 +897,8 @@
             });
         }
 
-        // Add styles for logo on focus
-        $('body').append('<style>.view--debrid.focus img { filter: brightness(0); }</style>');
+        // Add styles for logo on focus and multiline functionality
+        $('body').append('<style>.view--debrid.focus img { filter: brightness(0); } .online__quality { white-space: pre-wrap; } .online__title { white-space: pre-wrap; }</style>');
 
         Lampa.Component.add(PLUGIN_NAME, DebridComponent);
 
@@ -1034,6 +1038,42 @@
                     resolve(null);
                 });
         });
+    }
+
+    function findNextEpisode(history, movie) {
+        if (!history || !history.length) return null;
+
+        // Build a set of watched episodes: "S:E"
+        var watchedSet = {};
+        history.forEach(function (h) {
+            if (h.episode && h.episode.season && h.episode.number) {
+                var key = h.episode.season + ':' + h.episode.number;
+                watchedSet[key] = true;
+            }
+        });
+
+        console.log('AIOStreams: Watched episodes:', Object.keys(watchedSet).length);
+
+        // Get available seasons from movie data
+        var seasons = movie.seasons || [];
+        var totalSeasons = movie.number_of_seasons || seasons.length || 1;
+
+        // Find first unwatched episode (iterate through seasons/episodes)
+        for (var s = 1; s <= totalSeasons; s++) {
+            var seasonData = seasons.find(function (sd) { return sd.season_number === s; });
+            var episodeCount = (seasonData && seasonData.episode_count) || 20;
+
+            for (var e = 1; e <= episodeCount; e++) {
+                var key = s + ':' + e;
+                if (!watchedSet[key]) {
+                    console.log('AIOStreams: Next unwatched episode: S' + s + 'E' + e);
+                    return { season: s, episode: e };
+                }
+            }
+        }
+
+        console.log('AIOStreams: All episodes watched or no data');
+        return null;
     }
 
     // ==================== INIT ====================
