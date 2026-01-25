@@ -1321,11 +1321,18 @@
         };
 
         this.back = function () {
+            console.log('Debrid Component: Back pressed. Balanser:', balanser);
             // Try internal navigation first (for series: streams → episodes → seasons)
-            if (sources[balanser] && sources[balanser].goBack && sources[balanser].goBack()) {
-                return; // Handled internally
+            if (sources[balanser] && sources[balanser].goBack) {
+                if (sources[balanser].goBack()) {
+                    console.log('Debrid Component: Handled internally by source');
+                    return; // Handled internally
+                }
+            } else {
+                console.log('Debrid Component: Source not found or no goBack method. Sources keys:', Object.keys(sources));
             }
             // Otherwise exit activity
+            console.log('Debrid Component: Exiting activity');
             Lampa.Activity.backward();
         };
 
@@ -1550,12 +1557,13 @@
 
         Lampa.Listener.follow('full', function (e) {
             if (e.type === 'complite') {
-                var btn = $(Lampa.Lang.translate(buttonHtml));
+                // Create two buttons: Short (RD) and Full (Debrid Streams)
+                var btnRd = $(Lampa.Lang.translate(buttonHtml.replace('#{debrid_title}', 'RD')));
+                var btnFull = $(Lampa.Lang.translate(buttonHtml.replace('#{debrid_title}', 'Debrid Streams')));
 
-                btn.on('hover:enter', function () {
+                // Handler for entering plugin
+                var enterPlugin = function () {
                     var movie = e.data.movie;
-
-                    // Check settings availability
                     var comet_url = Lampa.Storage.get('debrid_comet_url', '');
                     var torrentio_url = Lampa.Storage.get('debrid_torrentio_url', '');
 
@@ -1576,14 +1584,25 @@
                         movie: movie,
                         page: 1
                     });
-                });
+                };
 
-                // Add button after Watch button
+                btnRd.on('hover:enter', enterPlugin);
+                btnFull.on('hover:enter', enterPlugin);
+
+                // 1. Add RD button next to Watch button
                 var watchBtn = e.object.activity.render().find('.button--play, .view--play').first();
                 if (watchBtn.length) {
-                    watchBtn.after(btn);
+                    watchBtn.after(btnRd);
                 } else {
-                    e.object.activity.render().find('.full-start__buttons').append(btn);
+                    e.object.activity.render().find('.full-start__buttons').append(btnRd);
+                }
+
+                // 2. Add Full button next to Torrent button (or at end of list)
+                var torrentBtn = e.object.activity.render().find('.view--torrent').last();
+                if (torrentBtn.length) {
+                    torrentBtn.after(btnFull);
+                } else {
+                    e.object.activity.render().find('.full-start__buttons').append(btnFull);
                 }
             }
         });
