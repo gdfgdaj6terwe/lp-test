@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '3.0.6';
+    var PLUGIN_VERSION = '4.0.0';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -137,7 +137,6 @@
         // If not on web platform, play directly with internal player
         if (!Lampa.Platform.is('web')) {
             Lampa.Player.play(playerData);
-            showSyncModal(movie);
             return;
         }
 
@@ -149,13 +148,12 @@
 
         console.log('AIOStreams: Opening in external player:', torrentPlayer || 'default');
         Lampa.Player.play(playerData);
-        showSyncModal(movie);
     }
 
     // ==================== AIOSTREAMS SOURCE ====================
 
 
-var DbrStyles = ".dbr3{color:#f3f4f5}.dbr3-header{padding:.6em .4em 1em}.dbr3-header h2{font-size:1.65em;margin:0 0 .8em}.dbr3-filters{display:flex;flex-wrap:wrap;gap:.55em}.dbr3-button{display:inline-block;padding:.65em .9em;border-radius:.45em;background:#292c32;font-size:.95em;cursor:pointer}.dbr3-button small{display:block;color:#b6bdc9;font-size:.72em;margin-bottom:.2em}.dbr3-button.active{box-shadow:inset 0 -.15em #d8e6ad}.dbr3-button.active span{color:#d8e6ad}.dbr3 .selector.focus{outline:.17em solid #fff;outline-offset:.13em;background:#353a43}.dbr3-layout{display:flex;height:100%;min-height:0}.dbr3-layout>.scroll{flex:1;min-width:0}.dbr3-sources{display:none}.dbr3-with-sources .dbr3-sources{display:block;flex:0 0 12em;padding:.3em 1.2em .7em .3em;margin-right:1em;border-right:1px solid #414651;overflow-y:auto}.dbr3-source{display:block;margin-bottom:.45em;background:transparent;padding:.7em}.dbr3-source b{float:right;font-size:.8em;font-weight:400}.dbr3-source.selected{background:#e9ecdf;color:#1b2019}.dbr3-source.selected small{color:#51594a}.dbr3-source small{white-space:normal;line-height:1.4}.dbr3-source-error{font-size:.8em;color:#cbbbaa;line-height:1.5;padding:.7em}.dbr3-count{color:#b7bdc9;padding:.6em .8em;font-size:.9em}.dbr3-stream{display:flex;align-items:center;padding:1em .85em;border-bottom:1px solid #363b45;border-radius:.35em;gap:1em;margin:.25em .2em}.dbr3-stream-copy{flex:1;min-width:0}.dbr3-stream-copy strong{font-size:1.1em;display:block}.dbr3-stream-copy small{display:block;font-size:.78em;color:#bac1cd;margin-top:.35em;white-space:pre-line}.dbr3-stream-copy p{font-size:.82em;color:#c2c8d2;white-space:pre-line;margin:.5em 0;max-height:4.3em;overflow:hidden;overflow-wrap:anywhere}.dbr3-quality{flex:0 0 4em;font-size:1.15em;font-weight:600}.dbr3-size{flex:0 0 5.5em;text-align:right;font-size:.9em}.dbr3-size small{display:block;color:#d8e6ad;font-size:.75em;margin-top:.5em}.dbr3-episode{display:flex;align-items:center;gap:1.2em;padding:.8em;border-radius:.5em;margin:.25em .2em}.dbr3-preview{width:11em;height:6.2em;flex-shrink:0;border-radius:.35em;overflow:hidden;background:#282f38;color:#b2bbc8;font-size:.9em;display:flex;align-items:center;justify-content:center}.dbr3-preview img{width:100%;height:100%;object-fit:cover}.dbr3-episode-copy{flex:1;min-width:0}.dbr3-episode-copy strong{font-size:1.2em;display:block;margin:.2em 0}.dbr3-episode-copy small{color:#b8c0cc;font-size:.8em}.dbr3-episode-copy p{color:#c0c7d2;font-size:.88em;line-height:1.5;max-height:3em;overflow:hidden}.dbr3-enter{color:#d8e6ad;font-size:.85em;white-space:nowrap}.dbr3-empty{padding:2em 1em;font-size:1.1em;color:#c3cbd8;line-height:1.5}.dbr3-loading{padding:1.2em;color:#bac1cd}.dbr3-skeleton{height:6em;border-radius:.5em;background:#2a2e36;margin:.8em;position:relative;overflow:hidden}.dbr3-skeleton:after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 25%,#ffffff10 50%,transparent 75%);transform:translateX(-100%);animation:dbr3-shimmer 1.6s infinite}@keyframes dbr3-shimmer{to{transform:translateX(100%)}}@media(prefers-reduced-motion:reduce){.dbr3-skeleton:after{animation:none}}@media(max-width:700px){.dbr3-with-sources .dbr3-sources{flex-basis:8em;padding-right:.5em;margin-right:.5em}.dbr3-preview{width:7em;height:4.5em}.dbr3-enter{display:none}.dbr3-quality{flex-basis:3em;font-size:.9em}.dbr3-size{flex-basis:4em}.dbr3-stream{gap:.6em;padding:.8em .5em}}\n\n.dbr3-skeleton{display:flex;align-items:center;gap:1em;padding:1em;background:transparent;height:7em}.dbr3-skeleton:after{display:none}.dbr3-skeleton-preview,.dbr3-skeleton-body div,.dbr3-skeleton-end{position:relative;overflow:hidden;background:#2b3039;border-radius:.3em}.dbr3-skeleton-preview{width:8em;height:5em;flex-shrink:0}.dbr3-skeleton-body{flex:1}.dbr3-skeleton-body div{height:.7em;margin:.8em 0;width:75%}.dbr3-skeleton-body div:first-child{width:55%;height:1em}.dbr3-skeleton-body div:last-child{width:40%}.dbr3-skeleton-end{width:4em;height:1em}.dbr3-skeleton-preview:after,.dbr3-skeleton-body div:after,.dbr3-skeleton-end:after{content:\"\";position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(105deg,transparent 20%,rgba(255,255,255,.1) 50%,transparent 80%);transform:translateX(-100%);animation:dbr3-shimmer 1.6s ease-in-out infinite}@media(prefers-reduced-motion:reduce){.dbr3-skeleton *:after{animation:none}}\n";
+var DbrStyles = ".dbr3 {\n  color: #f6f6f6;\n  background: #141414;\n}\n.dbr3 .explorer__files-head {\n  display: none;\n}\n.dbr3 .explorer__files {\n  width: 100%;\n  min-width: 0;\n}\n.dbr3-layout {\n  display: flex;\n  height: calc(100vh - 6.5em);\n  box-sizing: border-box;\n  padding: 1.2em 2em 1.2em 1em;\n  gap: 2.4em;\n  min-height: 0;\n}\n.dbr4-detail {\n  flex: 0 0 30%;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.dbr4-art {\n  height: 9em;\n  flex-shrink: 0;\n  background: #202020;\n  position: relative;\n  border-radius: 0.4em;\n  overflow: hidden;\n  margin-bottom: 1em;\n}\n.dbr4-art img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr4-art:before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(0deg, rgba(20, 20, 20, 0.3), transparent 50%);\n  z-index: 1;\n}\n.dbr4-kicker {\n  font-size: 0.68em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: #b5b5b5;\n  height: 1.6em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  flex-shrink: 0;\n}\n.dbr4-detail h1 {\n  font-size: 1.65em;\n  line-height: 1.15;\n  height: 2.3em;\n  margin: 0.35em 0 0.4em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-meta {\n  font-size: 0.78em;\n  line-height: 1.5;\n  height: 1.5em;\n  color: #bebebe;\n  flex-shrink: 0;\n}\n.dbr4-description {\n  font-size: 0.82em;\n  line-height: 1.55;\n  height: 4.65em;\n  margin: 1em 0 0.5em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-progress {\n  height: 2em;\n  flex-shrink: 0;\n  margin: 0.3em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.68em;\n  color: #b8b8b8;\n  height: 1.4em;\n}\n.dbr4-progress-track {\n  height: 2px;\n  background: #343434;\n  margin-top: 0.3em;\n}\n.dbr4-progress-fill {\n  height: 100%;\n  background: #e50914;\n}\n.dbr4-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6em;\n  margin-top: 0.4em;\n}\n.dbr3-button {\n  cursor: pointer;\n  padding: 0.65em 0.9em;\n  border-radius: 0.28em;\n  line-height: 1.25;\n  font-size: 0.84em;\n  background: #292929;\n  box-sizing: border-box;\n  min-width: 0;\n}\n.dbr4-actions .dbr3-button {\n  height: 2.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n.dbr4-primary {\n  background: #f4f4f4;\n  color: #151515;\n  font-weight: 700;\n}\n.dbr4-right {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n.dbr4-toolbar {\n  flex-shrink: 0;\n  padding: 0.25em 0.25em 0.8em;\n}\n.dbr4-tabs {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  border-bottom: 1px solid #393939;\n  padding-bottom: 0.65em;\n}\n.dbr4-tab {\n  background: transparent;\n  font-size: 1.05em;\n  padding: 0.4em 0.15em;\n  border-radius: 0;\n  position: relative;\n  color: #a7a7a7;\n}\n.dbr4-tab.selected {\n  color: white;\n}\n.dbr4-tab.selected:after {\n  content: \"\";\n  height: 3px;\n  background: #e50914;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -0.7em;\n}\n.dbr4-tools {\n  margin-left: auto;\n  display: flex;\n  gap: 0.6em;\n}\n.dbr4-dropdown {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\n.dbr4-chevron {\n  width: 1em;\n  height: 1em;\n  flex-shrink: 0;\n}\n.dbr3-sources {\n  display: flex;\n  align-items: center;\n  gap: 0.65em;\n  height: 3.2em;\n  flex-shrink: 0;\n  overflow-x: auto;\n  overflow-y: hidden;\n  padding: 0.2em 0.25em;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr3-source {\n  display: flex;\n  gap: 0.7em;\n  align-items: center;\n  flex-shrink: 0;\n  background: transparent;\n  color: #aaa;\n  font-size: 0.8em;\n  max-width: 14em;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.dbr3-source b {\n  font-size: 0.8em;\n  font-weight: 400;\n  color: inherit;\n}\n.dbr3-source.selected {\n  background: #303030;\n  color: #fff;\n}\n.dbr4-voices {\n  display: flex;\n  align-items: center;\n  gap: 0.55em;\n  height: 3.3em;\n  flex-shrink: 0;\n  padding: 0.3em 0.25em 0.6em;\n  overflow-x: auto;\n  overflow-y: hidden;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr4-voice-label {\n  font-size: 0.7em;\n  color: #999;\n  flex-shrink: 0;\n  margin-right: 0.45em;\n}\n.dbr4-voice {\n  font-size: 0.74em;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 14em;\n  flex-shrink: 0;\n  background: #242424;\n}\n.dbr4-voice.selected {\n  background: #eee;\n  color: #161616;\n}\n.dbr4-muted {\n  font-size: 0.75em;\n  color: #999;\n}\n.dbr4-right > .scroll {\n  flex: 1;\n  min-height: 0;\n  height: 100% !important;\n  width: 100%;\n  overflow: hidden;\n}\n.dbr4-right .scroll__body {\n  padding: 0.3em 0.3em 1em !important;\n}\n.dbr3 .selector.focus {\n  outline: 0.14em solid white;\n  outline-offset: 0.12em;\n  box-shadow: none;\n  background: #3b3b3b;\n  color: #fff;\n}\n.dbr3 .dbr4-primary.focus {\n  background: white;\n  color: #111;\n}\n.dbr3-stream {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7.1em;\n  padding: 1em 0.8em;\n  margin: 0.25em 0 0.45em;\n  border-bottom: 1px solid #303030;\n  border-radius: 0.3em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr3-quality {\n  flex: 0 0 3.5em;\n  font-size: 1.1em;\n  font-weight: 700;\n}\n.dbr3-stream-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-stream-copy strong {\n  display: block;\n  font-size: 0.95em;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-stream-copy small {\n  display: block;\n  font-size: 0.67em;\n  line-height: 1.4;\n  color: #aaa;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin-top: 0.25em;\n}\n.dbr3-stream-copy p {\n  font-size: 0.7em;\n  color: #999;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin: 0.35em 0;\n}\n.dbr3-size {\n  flex: 0 0 4.5em;\n  text-align: right;\n  font-size: 0.78em;\n}\n.dbr3-size small {\n  display: block;\n  color: #a7c7a7;\n  font-size: 0.75em;\n  margin-top: 0.5em;\n}\n.dbr3-count {\n  font-size: 0.7em;\n  color: #929292;\n  padding: 0.4em 0.9em 0.7em;\n}\n.dbr3-episode {\n  display: flex;\n  align-items: center;\n  gap: 0.9em;\n  height: 7.2em;\n  padding: 0.65em 0.4em;\n  margin: 0.2em 0 0.6em;\n  border-radius: 0.35em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr4-episode-number {\n  flex: 0 0 1.2em;\n  font-size: 1.1em;\n  color: #aaa;\n  text-align: center;\n}\n.dbr3-preview {\n  width: 8.7em;\n  height: 4.9em;\n  flex-shrink: 0;\n  position: relative;\n  border-radius: 0.25em;\n  overflow: hidden;\n  background: #242424;\n  color: #999;\n  font-size: 0.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.dbr3-preview img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr3-episode-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-episode-copy strong {\n  font-size: 0.95em;\n  display: block;\n  line-height: 1.35;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-episode-copy p {\n  font-size: 0.72em;\n  line-height: 1.5;\n  height: 3em;\n  margin: 0.5em 0;\n  overflow: hidden;\n  color: #aaa;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n}\n.dbr3-episode-copy .time-line {\n  height: 2px;\n}\n.dbr4-episode-status {\n  flex: 0 0 3.4em;\n  text-align: right;\n  font-size: 0.7em;\n  color: #aaa;\n}\n.dbr4-episode-status span,\n.dbr4-episode-status small {\n  display: block;\n  height: 1.6em;\n}\n.dbr4-episode-status small {\n  color: #b8cfb8;\n}\n.dbr3-empty {\n  padding: 2.5em 1em;\n  line-height: 1.6;\n  font-size: 0.95em;\n  color: #aaa;\n}\n.dbr3-loading {\n  font-size: 0.75em;\n  color: #aaa;\n  padding: 0.7em;\n}\n.dbr3-skeleton {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7em;\n  padding: 1em;\n  box-sizing: border-box;\n}\n.dbr3-skeleton-preview {\n  width: 5em;\n  height: 3em;\n}\n.dbr3-skeleton-body {\n  flex: 1;\n}\n.dbr3-skeleton-body div {\n  height: 0.65em;\n  margin: 0.75em 0;\n  width: 75%;\n}\n.dbr3-skeleton-body div:first-child {\n  width: 55%;\n  height: 0.85em;\n}\n.dbr3-skeleton-body div:last-child {\n  width: 40%;\n}\n.dbr3-skeleton-end {\n  width: 3em;\n  height: 1em;\n}\n.dbr4-source-placeholder {\n  width: 5em;\n  height: 1.5em;\n  flex-shrink: 0;\n}\n.dbr4-voice-placeholder {\n  width: 5em;\n  height: 1.8em;\n  flex-shrink: 0;\n}\n.dbr4-shimmer,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  position: relative;\n  overflow: hidden;\n  background: #242424;\n  border-radius: 0.25em;\n}\n.dbr4-shimmer:after,\n.dbr3-skeleton-preview:after,\n.dbr3-skeleton-body div:after,\n.dbr3-skeleton-end:after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(\n    105deg,\n    transparent 20%,\n    rgba(255, 255, 255, 0.08) 50%,\n    transparent 80%\n  );\n  transform: translateX(-100%);\n  animation: dbr4-shimmer 1.7s ease-in-out infinite;\n  pointer-events: none;\n}\n@keyframes dbr4-shimmer {\n  to {\n    transform: translateX(100%);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr4-shimmer:after,\n  .dbr3-skeleton *:after {\n    animation: none;\n  }\n}\n@media (max-height: 650px) {\n  .dbr4-art {\n    height: 7em;\n  }\n  .dbr4-description {\n    margin-top: 0.6em;\n  }\n  .dbr3-layout {\n    padding-top: 0.5em;\n  }\n}\n@media (max-width: 800px) {\n  .dbr3-layout {\n    gap: 1.3em;\n    padding-right: 1em;\n  }\n  .dbr4-detail {\n    flex-basis: 29%;\n  }\n  .dbr4-tools {\n    gap: 0.4em;\n  }\n  .dbr4-tabs {\n    gap: 0.7em;\n  }\n  .dbr3-preview {\n    width: 6.5em;\n    height: 3.7em;\n  }\n}\n";
 
 var DbrCore = (function () {
     'use strict';
@@ -203,9 +201,12 @@ var DbrCore = (function () {
     }
     function normalize(stream, index, provider) {
         var text = [stream.name, stream.description, stream.title].filter(Boolean).join('\n');
-        var quality = text.match(/\b(2160|1440|1080|720|576|480|360)p?\b/i);
+        var hints = stream.behaviorHints || {};
+        var exact = String(stream.resolution || hints.filename || '');
+        var quality = exact.match(/\b(2160|1440|1080|720|576|480|360|240|144)p?\b/i) || text.match(/\b(2160|1440|1080|720|576|480|360|240|144)p?\b/i);
+        var alias = /\b(4K|UHD)\b/i.test(text) ? '2160' : /\bQHD\b/i.test(text) ? '1440' : /\bFHD\b/i.test(text) ? '1080' : /\bHD\b/i.test(text) ? '720' : /Low Quality/i.test(text) ? 'low' : 'unknown';
         var size = text.match(/(\d+(?:[.,]\d+)?)\s*(GB|GiB|MB|MiB|ГБ|МБ)/i);
-        var codec = text.match(/\b(HEVC|H\.?265|H\.?264|x265|x264|AV1)\b/i);
+        var codec = text.match(/\b(HEVC|H\.?265|H\.?264|x265|x264|AV1|AVC)\b/i);
         var audioText = text.split('\n').filter(function (line) { return !/subtitles?|субтитр|\bsubs\b/i.test(line); }).join('\n');
         var explicitAudio = stream.audioLanguages || stream.languages;
         var audio = Array.isArray(explicitAudio) ? unique(explicitAudio.map(languageCode)) : languages(audioText);
@@ -222,12 +223,13 @@ var DbrCore = (function () {
             url: httpUrl(stream.url),
             external: httpUrl(stream.externalUrl),
             method: stream.method || 'play',
-            quality: stream.dbr_quality || (quality ? quality[1] : /\b4k\b/i.test(text) ? '2160' : 'unknown'),
+            quality: stream.dbr_quality || (quality ? quality[1] : alias),
             audio: audio,
             subtitles: subtitles,
             voice: stream.dbr_voice ? [stream.dbr_voice] : unique(voiceMatch || []),
             range: /Dolby.?Vision|\bDV\b/i.test(text) ? ['Dolby Vision'] : /HDR10\+/i.test(text) ? ['HDR10+'] : /HDR/i.test(text) ? ['HDR'] : /\bSDR\b/i.test(text) ? ['SDR'] : [],
-            codec: codec ? codec[1] : '',
+            codec: codec ? (/AVC/i.test(codec[1]) ? 'H.264' : codec[1]) : '',
+            audioCodec: (text.match(/\b(EAC3|E-AC-3|AC3|AAC|OPUS|FLAC|DTS(?:-HD)?|TRUEHD)\b/i) || [''])[0],
             size: size ? parseFloat(size[1].replace(',', '.')) / (/^(M|М)/i.test(size[2]) ? 1024 : 1) : undefined,
             cached: hints.cached === true || /RD\+|Real.?Debrid.*cached/i.test(text)
         };
@@ -296,6 +298,65 @@ var DbrCore = (function () {
         return key === 'quality' ? value === '2160' ? '4K' : value + 'p' : value;
     }
     return { nextVariant: nextVariant, fields: fields, escape: escape, httpUrl: httpUrl, baseUrl: baseUrl, streamUrl: streamUrl, type: type, normalize: normalize, values: values, select: select, facet: facet, sort: sort, lampacRows: lampacRows, label: label };
+})();
+
+var DbrI18n = (function () {
+var en = {"Фильм": "Movie", "Смотреть": "Play", "Потоки": "Streams", "Серии": "Episodes", "Серия ": "Episode ", "Сезон ": "Season ", "Сезон": "Season", "Следующая серия": "Next episode", "Описание": "Description", "Описание отсутствует": "No description available", "Просмотрено": "Watched", "Просмотрено ": "Watched ", " мин": " min", "Нет превью": "No preview", "Не указаны": "Unknown", "Перевод": "Translation", "Озвучка": "Translation", "Язык": "Language", "Субтитры": "Subtitles", "Качество": "Quality", "Видео": "Video", "Фильтры": "Filters", "Список серий пока недоступен": "Episodes are not available yet", " · показано ": " · showing ", " ГБ": " GB", " из ": " of ", " потоков": " streams", " потоков нет. Выберите другой источник слева.": " has no streams. Choose another source above.", "В ": "", "В кэше RD": "RD cached", "Веб-страница": "Web page", "Видео недоступно на этом устройстве": "Video unavailable on this device", "Все варианты": "All options", "Выберите поток следующей серии": "Choose a stream for the next episode", "Выбрать серию": "Choose episode", "Готово · ": "Done · ", "Загружаем серии…": "Loading episodes…", "Информация о потоке": "Stream information", "Источник вернул веб-страницу вместо прямого видео": "Source returned a web page instead of video", "Источник вернул неподдерживаемый ответ": "Unsupported source response", "Источник недоступен": "Source unavailable", "Источник недоступен на этом устройстве": "Source unavailable on this device", "Источник требует авторизацию": "Source requires sign in", "Источник требует проверку в своём плагине": "Source requires verification in its plugin", "Источник требует уточнить название": "Source requires a title match", "Ищем потоки…": "Finding streams…", "Найдено в ": "Available on ", "Не удалось загрузить сведения о сериях": "Could not load episode details", "Не удалось определить IMDb ID": "Could not identify the IMDb ID", "Не удалось подключиться": "Could not connect", "Не удалось получить видео": "Could not retrieve video", "Повторить": "Retry", "Потоки найдены, но не подходят под выбранные фильтры.": "No streams match your filters.", "Прямая ссылка на видео отсутствует": "No direct video link available", "Сбросить фильтры": "Reset filters", "Следующая серия пока недоступна": "Next episode is not available yet", "Укажите адрес AIOStreams в настройках": "Add your AIOStreams address in settings", "Это последняя доступная серия": "This is the last available episode", "Язык не указан": "Language unknown", "Сортировка": "Sort", "Как у источника": "Source order", "Качество: выше": "Highest quality", "Размер: меньше": "Smallest size", "Низкое качество": "Low quality", "Не предоставлены": "Not provided"};
+function text(value) { return Lampa.Storage.get("language", "ru") === "ru" ? value.replace("другой источник слева", "другой источник выше") : en[value] === undefined ? value : en[value]; }
+function label(key, value) { if(value === "low") return text("Низкое качество"); if(value === "unknown") return text("Не указаны"); if(value === "none") return text("Не предоставлены"); return DbrCore.label(key, value); }
+return {text:text,label:label};
+})();
+
+var DbrNavigation = (function () {
+  function move(groups, key, direction, memory) {
+    var order = ["header", "tabs", "sources", "voices", "list"];
+    var group;
+    Object.keys(groups).some(function (name) {
+      if (groups[name].indexOf(key) !== -1) {
+        group = name;
+        return true;
+      }
+      return false;
+    });
+    function target(name, fallback) {
+      var items = groups[name] || [];
+      if (!items.length) return undefined;
+      var index = memory[name] === undefined ? fallback || 0 : memory[name];
+      return { key: items[Math.max(0, Math.min(index, items.length - 1))] };
+    }
+    if (!group) return target("list") || target("tabs") || target("header");
+    var items = groups[group],
+      index = items.indexOf(key);
+    var vertical = group === "list" || group === "detail";
+    if (
+      (vertical && (direction === "up" || direction === "down")) ||
+      (!vertical && (direction === "left" || direction === "right"))
+    ) {
+      var next = index + (direction === "up" || direction === "left" ? -1 : 1);
+      if (next >= 0 && next < items.length) return { key: items[next] };
+    }
+    if (direction === "left")
+      return group === "detail" || group === "header"
+        ? { action: "menu" }
+        : target("detail") || { action: "menu" };
+    if (direction === "right")
+      return group === "detail"
+        ? target("list") || target("tabs")
+        : { action: "filters" };
+    if (group === "detail")
+      return direction === "up"
+        ? target("tabs") || target("header")
+        : target("list") || target("tabs");
+    if (group === "list" && direction === "down") return { key: key };
+    var position = order.indexOf(group),
+      step = direction === "up" ? -1 : 1;
+    for (var n = position + step; n >= 0 && n < order.length; n += step) {
+      var result = target(order[n], index);
+      if (result) return result;
+    }
+    return direction === "up" ? { action: "head" } : { key: key };
+  }
+  return { move: move };
 })();
 
 function DbrHistory(movie) {
@@ -630,6 +691,15 @@ function DebridComponent(object) {
     var files = new Lampa.Explorer($.extend({}, object, { params: $.extend({}, object.params, { noinfo: true }) }));
     var scroll = new Lampa.Scroll({ mask: true, over: true });
     var header = $('<div class="dbr3-header"></div>');
+    var t = DbrI18n.text;
+    var label = DbrI18n.label;
+    var detailPanel = $('<div class="dbr4-detail"></div>');
+    var rightPanel = $('<div class="dbr4-right"></div>');
+    var toolbar = $('<div class="dbr4-toolbar"></div>');
+    var voicebar = $('<div class="dbr4-voices"></div>');
+    var previewEpisode = 1;
+    var focusMemory = {};
+    var chevron = '<svg class="dbr4-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     var side = $('<div class="dbr3-sources"></div>');
     var layout = $('<div class="dbr3-layout"></div>');
     var mode = DbrCore.type(movie) === 'series' ? 'episodes' : 'streams';
@@ -652,10 +722,160 @@ function DebridComponent(object) {
     var lastPlayback;
     var nextRequest;
     var advancing = false;
-    var labels = { audio: 'Язык', subtitles: 'Субтитры', quality: 'Качество', voice: 'Озвучка', range: 'Видео' };
-    var errors = { network: 'Не удалось подключиться', playback: 'Видео недоступно на этом устройстве', format: 'Источник вернул неподдерживаемый ответ', config: 'Укажите адрес AIOStreams в настройках', imdb: 'Не удалось определить IMDb ID', auth: 'Источник требует авторизацию', device: 'Источник недоступен на этом устройстве', challenge: 'Источник требует проверку в своём плагине', match: 'Источник требует уточнить название', metadata: 'Не удалось загрузить сведения о сериях' };
+    var labels = { audio: t('Язык'), subtitles: t('Субтитры'), quality: t('Качество'), voice: t('Озвучка'), range: t('Видео') };
+    var errors = { network: t('Не удалось подключиться'), playback: t('Видео недоступно на этом устройстве'), format: t('Источник вернул неподдерживаемый ответ'), config: t('Укажите адрес AIOStreams в настройках'), imdb: t('Не удалось определить IMDb ID'), auth: t('Источник требует авторизацию'), device: t('Источник недоступен на этом устройстве'), challenge: t('Источник требует проверку в своём плагине'), match: t('Источник требует уточнить название'), metadata: t('Не удалось загрузить сведения о сериях') };
 
-    function title() { return movie.title || movie.name || 'Видео'; }
+    function detail(item) {
+      item =
+        item ||
+        episodes.filter(function (entry) {
+          return entry.episode_number === episode;
+        })[0] ||
+        movie;
+      var number = item.episode_number || episode;
+      var series = DbrCore.type(movie) === "series";
+      var preview = image(
+        item.still_path || movie.backdrop_path || movie.poster_path,
+      );
+      detailPanel.find(".dbr4-art").empty();
+      if (preview)
+        detailPanel.find(".dbr4-art").append(
+          $('<img alt="">')
+            .attr("src", preview)
+            .on("load", function () {
+              $(this).parent().removeClass("dbr4-shimmer");
+            })
+            .on("error", function () {
+              $(this).parent().removeClass("dbr4-shimmer");
+              $(this).remove();
+            }),
+        );
+      detailPanel.find(".dbr4-kicker").text(series ? title() : t("Фильм"));
+      detailPanel
+        .find("h1")
+        .text(series ? item.name || t("Серия ") + number : title());
+      detailPanel
+        .find(".dbr4-meta")
+        .text(
+          series
+            ? t("Сезон ") +
+                season +
+                " · " +
+                t("Серия ") +
+                number +
+                (item.runtime ? " · " + item.runtime + t(" мин") : "")
+            : (movie.release_date || "").slice(0, 4),
+        );
+      detailPanel
+        .find(".dbr4-description")
+        .text(item.overview || movie.overview || t("Описание отсутствует"));
+      var progress = history ? history.timeline(season, number) : {};
+      detailPanel
+        .find(".dbr4-progress-label")
+        .text(
+          progress.percent > 0
+            ? progress.percent >= 90
+              ? t("Просмотрено")
+              : t("Просмотрено ") + Math.round(progress.percent) + "%"
+            : "",
+        );
+      detailPanel
+        .find(".dbr4-progress-fill")
+        .css("width", Math.max(0, Math.min(100, progress.percent || 0)) + "%");
+      previewEpisode = number;
+    }
+    function buildDetail() {
+      if (detailPanel.children().length) {
+        detail();
+        return;
+      }
+      detailPanel.append(
+        '<div class="dbr4-art dbr4-shimmer"></div><div class="dbr4-kicker"></div><h1></h1><div class="dbr4-meta"></div><p class="dbr4-description"></p><div class="dbr4-progress"><div class="dbr4-progress-label"></div><div class="dbr4-progress-track"><div class="dbr4-progress-fill"></div></div></div>',
+      );
+      var actions = $('<div class="dbr4-actions"></div>');
+      actions.append(
+        button(
+          t("Смотреть"),
+          "detail-play",
+          function () {
+            if (mode === "episodes") {
+              episode = previewEpisode;
+              beginStreams();
+            } else {
+              var available = controlsFor("list");
+              if (available.length)
+                Lampa.Controller.collectionFocus(available.first(), layout);
+            }
+          },
+          "dbr4-primary",
+        ).attr("data-dbr-group", "detail"),
+      );
+      if (DbrCore.type(movie) === "series")
+        actions.append(
+          button(t("Следующая серия"), "next-episode", nextEpisode).attr(
+            "data-dbr-group",
+            "detail",
+          ),
+        );
+      actions.append(
+        button(t("Описание"), "description", function () {
+          Lampa.Modal.open({
+            title: title(),
+            html: $('<div class="about"></div>').text(
+              episodes.filter(function (item) {
+                return item.episode_number === previewEpisode;
+              })[0]
+                ? episodes.filter(function (item) {
+                    return item.episode_number === previewEpisode;
+                  })[0].overview ||
+                    movie.overview ||
+                    ""
+                : movie.overview || "",
+            ),
+            onBack: function () {
+              Lampa.Modal.close();
+              self.start();
+            },
+          });
+        }).attr("data-dbr-group", "detail"),
+      );
+      detailPanel.append(actions);
+      detail();
+    }
+    function controlsFor(group) {
+      return layout
+        .find(".selector")
+        .filter(":visible")
+        .filter(function () {
+          return !group || $(this).attr("data-dbr-group") === group;
+        });
+    }
+    function move(direction) {
+      var groups = {};
+      controlsFor().each(function () {
+        var node = $(this),
+          group = node.attr("data-dbr-group") || "list";
+        if (!groups[group]) groups[group] = [];
+        groups[group].push(node.attr("data-dbr-key"));
+      });
+      var next = DbrNavigation.move(groups, lastKey, direction, focusMemory);
+      if (!next) return;
+      if (next.action === "filters") {
+        filterMenu();
+        return;
+      }
+      if (next.action) {
+        Lampa.Controller.toggle(next.action);
+        return;
+      }
+      var target = controlsFor()
+        .filter(function () {
+          return $(this).attr("data-dbr-key") === next.key;
+        })
+        .first();
+      if (target.length) Lampa.Controller.collectionFocus(target, layout);
+    }
+    function title() { return movie.title || movie.name || t('Видео'); }
     function provider() { return providers.filter(function (item) { return item.id === selectedProvider; })[0] || providers[0]; }
     function rows() { return provider() ? provider().rows : []; }
     function filtered() { return DbrCore.sort(DbrCore.select(rows(), selection), order); }
@@ -668,12 +888,15 @@ function DebridComponent(object) {
     function bind(element, key, enter) {
         element.attr('data-dbr-key', key).on('hover:enter', enter).on('hover:focus', function () {
             lastKey = key;
+            var group = element.attr('data-dbr-group') || 'list';
+            focusMemory[group] = controlsFor(group).index(element);
+            if (group === 'sources' || group === 'voices') element[0].scrollIntoView({ block: 'nearest', inline: 'nearest' });
             if ($.contains(scroll.render()[0], element[0])) scroll.update(element, true);
         });
         return element;
     }
     function button(text, key, action, className) {
-        return bind($('<div class="selector dbr3-button ' + (className || '') + '"></div>').text(text), key, action);
+        return bind($('<div class="selector dbr3-button ' + (className || '') + '"></div>').text(text), key, action).attr('data-dbr-group', 'list');
     }
     function choose(titleText, items, onSelect) {
         var safeItems = items.map(function (item) {
@@ -689,25 +912,29 @@ function DebridComponent(object) {
     function filterMenu() {
         var items = [];
         if (DbrCore.type(movie) === 'series') {
-            items.push({ title: 'Сезон ' + season, action: 'season' });
-            if (mode === 'streams') items.push({ title: 'Выбрать серию', action: 'episodes' });
+            items.push({ title: t('Сезон ') + season, action: 'season' });
+            if (mode === 'streams') items.push({ title: t('Выбрать серию'), action: 'episodes' });
         }
         DbrCore.fields.forEach(function (key) { items.push({ title: labels[key], action: key }); });
-        choose('Фильтры', items, function (item) {
+        items.push({ title: t('Сортировка'), action: 'sort' });
+        if (countFilters()) items.push({ title: t('Сбросить фильтры'), action: 'reset' });
+        choose(t('Фильтры'), items, function (item) {
             if (item.action === 'season') showSeasons();
             else if (item.action === 'episodes') { api.cancel(); mode = 'episodes'; lastKey = 'episode-' + episode; render(); }
+            else if (item.action === 'reset') { selection = {}; render(); }
+            else if (item.action === 'sort') choose(t('Сортировка'), [{ title: t('Как у источника'), value: 'source' }, { title: t('Качество: выше'), value: 'quality' }, { title: t('Размер: меньше'), value: 'size' }], function (item) { order = item.value; render(); });
             else showFilter(item.action);
         });
     }
     function loading() {
-        scroll.append($('<div class="dbr3-loading"></div>').text(mode === 'episodes' ? 'Загружаем серии…' : 'Ищем потоки…'));
+        scroll.append($('<div class="dbr3-loading"></div>').text(mode === 'episodes' ? t('Загружаем серии…') : t('Ищем потоки…')));
         for (var index = 0; index < 4; index++) {
             scroll.append($('<div class="dbr3-skeleton" aria-hidden="true"><div class="dbr3-skeleton-preview"></div><div class="dbr3-skeleton-body"><div></div><div></div><div></div></div><div class="dbr3-skeleton-end"></div></div>'));
         }
     }
     function empty(message, action) {
         scroll.append($('<div class="dbr3-empty"></div>').text(message));
-        if (action) scroll.append(button('Повторить', 'retry', action));
+        if (action) scroll.append(button(t('Повторить'), 'retry', action));
     }
     function showFilter(key) {
         var values = (selection[key] || []).slice();
@@ -716,11 +943,11 @@ function DebridComponent(object) {
             Object.keys(selection).forEach(function (field) { temporary[field] = selection[field]; });
             temporary[key] = values;
             var items = [
-                { title: 'Готово · ' + DbrCore.select(rows(), temporary).length + ' потоков', done: true },
-                { title: 'Все варианты', reset: true, selected: !values.length }
+                { title: t('Готово · ') + DbrCore.select(rows(), temporary).length + t(' потоков'), done: true },
+                { title: t('Все варианты'), reset: true, selected: !values.length }
             ];
             DbrCore.facet(rows(), temporary, key).forEach(function (option) {
-                items.push({ title: (values.indexOf(option.value) !== -1 ? '✓ ' : '') + DbrCore.label(key, option.value), subtitle: option.count + ' потоков', value: option.value });
+                items.push({ title: (values.indexOf(option.value) !== -1 ? '✓ ' : '') + label(key, option.value), subtitle: option.count + t(' потоков'), value: option.value });
             });
             choose(labels[key], items, function (item) {
                 if (item.done) { selection[key] = values; render(); return; }
@@ -733,7 +960,7 @@ function DebridComponent(object) {
         show();
     }
     function showSeasons() {
-        choose('Сезон', seasons.map(function (item) { return { title: item.name || 'Сезон ' + item.season_number, number: item.season_number, selected: item.season_number === season }; }), function (item) {
+        choose(t('Сезон'), seasons.map(function (item) { return { title: item.name || t('Сезон ') + item.season_number, number: item.season_number, selected: item.season_number === season }; }), function (item) {
             season = item.number;
             episode = 1;
             loadEpisodes();
@@ -761,140 +988,310 @@ function DebridComponent(object) {
         var next = episodes.filter(function (item) { return item.episode_number === episode + 1; })[0];
         function start(item) {
             advancing = false;
-            if (!item || (item.air_date && item.air_date > new Date().toISOString().slice(0, 10))) { Lampa.Noty.show('Следующая серия пока недоступна'); return; }
+            if (!item || (item.air_date && item.air_date > new Date().toISOString().slice(0, 10))) { Lampa.Noty.show(t('Следующая серия пока недоступна')); return; }
             episode = item.episode_number;
             beginStreams(preference);
         }
         if (next) return start(next);
         var later = seasons.filter(function (item) { return item.season_number > season; }).sort(function (a, b) { return a.season_number - b.season_number; })[0];
-        if (!later) { Lampa.Noty.show('Это последняя доступная серия'); return; }
+        if (!later) { Lampa.Noty.show(t('Это последняя доступная серия')); return; }
         advancing = true;
         api.episodes(later.season_number, function (error, items) {
             advancing = false;
             var first = items.filter(function (item) { return item.episode_number === 1; })[0];
-            if (error || !first || (first.air_date && first.air_date > new Date().toISOString().slice(0, 10))) { Lampa.Noty.show('Следующая серия пока недоступна'); return; }
+            if (error || !first || (first.air_date && first.air_date > new Date().toISOString().slice(0, 10))) { Lampa.Noty.show(t('Следующая серия пока недоступна')); return; }
             season = later.season_number;
             episodes = items;
             start(first);
         });
     }
     function addFilterHeader() {
-        var bar = $('<div class="dbr3-filters"></div>');
-        if (DbrCore.type(movie) === 'series') bar.append(button('Сезон ' + season + ' ⌄', 'season', showSeasons));
-        if (mode === 'streams' && DbrCore.type(movie) === 'series') bar.append(button('Серия ' + episode + ' ⌄', 'episode', function () {
-            choose('Серия', episodes.map(function (item) { return { title: item.episode_number + '. ' + item.name, number: item.episode_number }; }), function (item) { episode = item.number; beginStreams(); });
-        }));
-        if (mode === 'streams' && DbrCore.type(movie) === 'series') bar.append(button('Следующая серия ›', 'next-episode', nextEpisode));
-        DbrCore.fields.forEach(function (key) {
-            if (mode !== 'streams') return;
-            var current = (selection[key] || []).map(function (value) { return DbrCore.label(key, value); }).join(', ');
-            var control = button('', 'filter-' + key, function () { showFilter(key); });
-            control.toggleClass('active', !!current).append($('<small></small>').text(labels[key])).append($('<span></span>').text(current || 'Все')).append(' ⌄');
-            bar.append(control);
-        });
-        if (countFilters()) bar.append(button('Сбросить', 'reset-filters', function () { selection = {}; render(); }));
-        if (mode === 'streams') bar.append(button('Сортировка ⌄', 'sort', function () {
-            choose('Сортировка', [{ title: 'Как у источника', value: 'source' }, { title: 'Качество: выше', value: 'quality' }, { title: 'Размер: меньше', value: 'size' }], function (item) { order = item.value; render(); });
-        }));
-        header.append(bar);
+      var bar = $('<div class="dbr4-tabs"></div>');
+      bar.append(
+        button(
+          t("Потоки"),
+          "tab-streams",
+          function () {
+            if (mode !== "streams") beginStreams();
+          },
+          mode === "streams" ? "dbr4-tab selected" : "dbr4-tab",
+        ).attr("data-dbr-group", "tabs"),
+      );
+      if (DbrCore.type(movie) === "series")
+        bar.append(
+          button(
+            t("Серии"),
+            "tab-episodes",
+            function () {
+              api.cancel();
+              nextRequest = undefined;
+              mode = "episodes";
+              lastKey = "tab-episodes";
+              render();
+            },
+            mode === "episodes" ? "dbr4-tab selected" : "dbr4-tab",
+          ).attr("data-dbr-group", "tabs"),
+        );
+      var tools = $('<div class="dbr4-tools"></div>');
+      if (DbrCore.type(movie) === "series")
+        tools.append(
+          button(t("Сезон ") + season, "season", showSeasons, "dbr4-dropdown")
+            .attr("data-dbr-group", "tabs")
+            .append(chevron),
+        );
+      tools.append(
+        button(
+          t("Фильтры") + (countFilters() ? " · " + countFilters() : ""),
+          "filters",
+          filterMenu,
+        ).attr("data-dbr-group", "tabs"),
+      );
+      bar.append(tools);
+      toolbar.empty().append(bar);
     }
     function episodeList() {
-        if (initializing) { loading(); return; }
-        if (!episodes.length) { empty(errors[metadataError] || 'Список серий пока недоступен', loadEpisodes); return; }
-        var last = history.last();
-        if (last && last.season === season && episodes.some(function (item) { return item.episode_number === last.episode; })) {
-            var saved = history.timeline(last.season, last.episode);
-            scroll.append(button('Последняя серия: ' + last.episode + (saved.time && saved.percent < 90 ? ' · продолжить с ' + Lampa.Utils.secondsToTime(saved.time) : ''), 'resume-episode', function () { episode = last.episode; beginStreams(); }));
-        }
-        episodes.forEach(function (item) {
-            var row = $('<div class="selector dbr3-episode"></div>');
-            var preview = image(item.still_path);
-            var picture = $('<div class="dbr3-preview"></div>');
-            if (preview) {
-                var img = $('<img alt="">').attr('src', preview).on('error', function () { $(this).remove(); picture.text('Нет превью'); });
-                picture.append(img);
-            } else picture.text('Нет превью');
-            row.append(picture);
-            var content = $('<div class="dbr3-episode-copy"></div>');
-            content.append($('<small></small>').text(item.episode_number + ' серия' + (item.runtime ? ' · ' + item.runtime + ' мин' : '')));
-            content.append($('<strong></strong>').text(item.name || 'Серия ' + item.episode_number));
-            content.append($('<p></p>').text(item.overview || 'Описание отсутствует'));
-            var progress = history.timeline(season, item.episode_number);
-            if (progress.percent > 0) {
-                content.append($('<small></small>').text(progress.percent >= 90 ? 'Просмотрено' : 'Просмотрено ' + Math.round(progress.percent) + '% · ' + Lampa.Utils.secondsToTime(progress.time)));
-            }
-            content.append(Lampa.Timeline.render(progress));
-            row.append(content).append('<span class="dbr3-enter">Выбрать поток ›</span>');
-            scroll.append(bind(row, 'episode-' + item.episode_number, function () { episode = item.episode_number; beginStreams(); }));
+      if (initializing) {
+        loading();
+        return;
+      }
+      if (!episodes.length) {
+        empty(
+          errors[metadataError] || t("Список серий пока недоступен"),
+          loadEpisodes,
+        );
+        return;
+      }
+      episodes.forEach(function (item) {
+        var row = $('<div class="selector dbr3-episode"></div>').attr(
+          "data-dbr-group",
+          "list",
+        );
+        var picture = $('<div class="dbr3-preview dbr4-shimmer"></div>');
+        var preview = image(item.still_path);
+        if (preview)
+          picture.append(
+            $('<img alt="">')
+              .attr("src", preview)
+              .on("load", function () {
+                picture.removeClass("dbr4-shimmer");
+              })
+              .on("error", function () {
+                $(this).remove();
+                picture.removeClass("dbr4-shimmer").text(t("Нет превью"));
+              }),
+          );
+        else picture.removeClass("dbr4-shimmer").text(t("Нет превью"));
+        row
+          .append(
+            $('<div class="dbr4-episode-number"></div>').text(item.episode_number),
+          )
+          .append(picture);
+        var content = $('<div class="dbr3-episode-copy"></div>');
+        content.append(
+          $("<strong></strong>").text(
+            item.name || t("Серия ") + item.episode_number,
+          ),
+        );
+        content.append(
+          $("<p></p>").text(item.overview || t("Описание отсутствует")),
+        );
+        var progress = history.timeline(season, item.episode_number);
+        content.append(Lampa.Timeline.render(progress));
+        row.append(content).append(
+          $('<div class="dbr4-episode-status"></div>')
+            .append(
+              $("<span></span>").text(item.runtime ? item.runtime + t(" мин") : ""),
+            )
+            .append(
+              $("<small></small>").text(
+                progress.percent >= 90
+                  ? "✓"
+                  : progress.percent > 0
+                    ? Math.round(progress.percent) + "%"
+                    : "",
+              ),
+            ),
+        );
+        bind(row, "episode-" + item.episode_number, function () {
+          episode = item.episode_number;
+          beginStreams();
         });
+        row.on("hover:focus", function () {
+          detail(item);
+        });
+        scroll.append(row);
+      });
     }
     function renderSources() {
-        side.empty();
-        providers.filter(function (item) { return item.id === 'aio' || (item.state === 'ready' && item.rows.length > 0); }).forEach(function (item) {
-            var current = DbrCore.select(item.rows, selection).length;
-            var label = item.state === 'ready' ? current + (countFilters() ? '/' + item.rows.length : '') : item.state === 'loading' || item.state === 'queued' ? '…' : '—';
-            var node = button('', 'source-' + item.id, function () { nextRequest = undefined; selectedProvider = item.id; render(); }, 'dbr3-source');
-            node.toggleClass('selected', item.id === selectedProvider);
-            node.append($('<span></span>').text(item.name)).append($('<b></b>').text(label));
-            node.append($('<small></small>').text(item.error ? errors[item.error] || 'Не удалось загрузить' : item.state === 'ready' && !item.rows.length ? 'Потоков нет' : item.id === 'aio' ? 'Stremio / Debrid' : 'Онлайн'));
-            side.append(node);
+      side.empty();
+      providers
+        .filter(function (item) {
+          return (
+            item.id === "aio" || (item.state === "ready" && item.rows.length > 0)
+          );
+        })
+        .forEach(function (item) {
+          var node = button(
+            item.name,
+            "source-" + item.id,
+            function () {
+              nextRequest = undefined;
+              selection = {};
+              selectedProvider = item.id;
+              render();
+            },
+            "dbr3-source",
+          ).attr("data-dbr-group", "sources");
+          node.toggleClass("selected", item.id === selectedProvider);
+          node.append(
+            $("<b></b>").text(item.state === "ready" ? item.rows.length : ""),
+          );
+          side.append(node);
         });
-        if (providers.some(function (item) { return item.id !== 'aio' && (item.state === 'queued' || item.state === 'loading'); })) side.append($('<p class="dbr3-loading"></p>').text('Проверяем другие источники…'));
-        if (discoveryError) side.append($('<p class="dbr3-source-error"></p>').text('Сервер балансеров: ' + (errors[discoveryError] || 'ошибка')));
+      if (
+        providers.some(function (item) {
+          return item.state === "queued" || item.state === "loading";
+        })
+      )
+        side.append(
+          '<div class="dbr4-source-placeholder dbr4-shimmer" aria-hidden="true"></div>',
+        );
+      var source = provider();
+      voicebar.empty();
+      voicebar.append(
+        $('<span class="dbr4-voice-label"></span>').text(t("Озвучка")),
+      );
+      if (!source || source.state === "loading" || source.state === "queued") {
+        for (var n = 0; n < 3; n++)
+          voicebar.append(
+            '<div class="dbr4-voice-placeholder dbr4-shimmer" aria-hidden="true"></div>',
+          );
+        return;
+      }
+      function selectVoice(item) {
+        nextRequest = undefined;
+        source.voiceUrl = item.url;
+        source.voiceName = item.name || item.title;
+        fetchProvider(source);
+      }
+      if (source.voices && source.voices.length) {
+        source.voices.slice(0, 3).forEach(function (item, index) {
+          voicebar.append(
+            button(
+              item.name || item.title || t("Перевод"),
+              "voice-" + index,
+              function () {
+                selectVoice(item);
+              },
+              (source.voiceName === (item.name || item.title) ? "selected " : "") +
+                "dbr4-voice",
+            ).attr("data-dbr-group", "voices"),
+          );
+        });
+        if (source.voices.length > 3)
+          voicebar.append(
+            button(
+              "+" + (source.voices.length - 3),
+              "voices-more",
+              function () {
+                choose(
+                  t("Озвучка"),
+                  source.voices.map(function (item) {
+                    return { title: item.name || item.title, url: item.url };
+                  }),
+                  selectVoice,
+                );
+              },
+              "dbr4-voice",
+            ).attr("data-dbr-group", "voices"),
+          );
+      } else {
+        var options = DbrCore.facet(source.rows, selection, "audio");
+        voicebar.find(".dbr4-voice-label").text(t("Язык"));
+        options.slice(0, 3).forEach(function (item, index) {
+          voicebar.append(
+            button(
+              label("audio", item.value),
+              "audio-" + index,
+              function () {
+                selection.audio =
+                  (selection.audio || []).indexOf(item.value) >= 0
+                    ? []
+                    : [item.value];
+                render();
+              },
+              ((selection.audio || []).indexOf(item.value) >= 0
+                ? "selected "
+                : "") + "dbr4-voice",
+            ).attr("data-dbr-group", "voices"),
+          );
+        });
+        if (options.length > 3)
+          voicebar.append(
+            button(
+              "+" + (options.length - 3),
+              "audio-more",
+              function () {
+                showFilter("audio");
+              },
+              "dbr4-voice",
+            ).attr("data-dbr-group", "voices"),
+          );
+        if (!options.length)
+          voicebar.append(
+            $('<span class="dbr4-muted"></span>').text(t("Не указаны")),
+          );
+      }
     }
     function streamList() {
         var source = provider();
         if (!source) { loading(); return; }
         if (source.state === 'loading' || source.state === 'queued') { loading(); return; }
-        if (source.error) empty(errors[source.error] || 'Источник недоступен', function () { fetchProvider(source); });
-        else if (!source.rows.length) empty('В ' + source.name + ' потоков нет. Выберите другой источник слева.', function () { fetchProvider(source); });
+        if (source.error) empty(errors[source.error] || t('Источник недоступен'), function () { fetchProvider(source); });
+        else if (!source.rows.length) empty(t('В ') + source.name + t(' потоков нет. Выберите другой источник слева.'), function () { fetchProvider(source); });
         else if (!filtered().length) {
-            empty('Потоки найдены, но не подходят под выбранные фильтры.');
-            scroll.append(button('Сбросить фильтры', 'clear', function () { selection = {}; render(); }));
+            empty(t('Потоки найдены, но не подходят под выбранные фильтры.'));
+            scroll.append(button(t('Сбросить фильтры'), 'clear', function () { selection = {}; render(); }));
         } else {
-            scroll.append($('<div class="dbr3-count"></div>').text(source.name + ' · показано ' + filtered().length + ' из ' + source.rows.length));
-            if (source.voices && source.voices.length) {
-                scroll.append(button('Перевод источника: ' + (source.voiceName || 'текущий') + ' ⌄', 'source-voice', function () {
-                    choose('Перевод источника', source.voices.map(function (item) { return { title: item.name || item.title || 'Перевод', url: item.url }; }), function (item) {
-                        source.voiceUrl = item.url;
-                        source.voiceName = item.title;
-                        fetchProvider(source);
-                    });
-                }));
-            }
+            scroll.append($('<div class="dbr3-count"></div>').text(source.name + t(' · показано ') + filtered().length + t(' из ') + source.rows.length));
             filtered().forEach(function (row) {
                 var item = $('<div class="selector dbr3-stream"></div>');
-                item.append($('<div class="dbr3-quality"></div>').text(DbrCore.label('quality', row.quality)));
+                item.append($('<div class="dbr3-quality"></div>').text(label('quality', row.quality)));
                 var details = $('<div class="dbr3-stream-copy"></div>');
-                var audio = row.audio.map(function (value) { return DbrCore.label('audio', value); }).join(' + ') || 'Язык не указан';
+                var audio = row.audio.map(function (value) { return label('audio', value); }).join(' + ') || t('Язык не указан');
                 details.append($('<strong></strong>').text(audio + (row.voice.length ? ' · ' + row.voice.join(', ') : '')));
-                details.append($('<small></small>').text([row.codec, row.range.join(' / '), row.source].filter(Boolean).join(' · ')));
+                details.append($('<small></small>').text([row.codec, row.audioCodec, row.range.join(' / '), row.source].filter(Boolean).join(' · ')));
                 details.append($('<p></p>').text(row.title));
-                details.append($('<small></small>').text('CC · ' + DbrCore.values(row, 'subtitles').map(function (value) { return DbrCore.label('subtitles', value); }).join(', ')));
+                details.append($('<small></small>').text('CC · ' + DbrCore.values(row, 'subtitles').map(function (value) { return label('subtitles', value); }).join(', ')));
                 item.append(details);
-                item.append($('<div class="dbr3-size"></div>').text(row.size === undefined ? '—' : row.size.toFixed(2) + ' ГБ').append($('<small></small>').text(row.external && !row.url ? 'Веб-страница' : row.cached ? 'В кэше RD' : '')));
+                item.append($('<div class="dbr3-size"></div>').text(row.size === undefined ? '—' : row.size.toFixed(2) + t(' ГБ')).append($('<small></small>').text(row.external && !row.url ? t('Веб-страница') : row.cached ? t('В кэше RD') : '')));
+                item.attr('data-dbr-group', 'list');
                 bind(item, 'stream-' + row.id, function () { play(row); });
                 item.on('hover:long', function () {
-                    choose('Информация о потоке', [{ title: row.title, subtitle: row.source, detail: true }, { title: 'Смотреть', play: true }], function (value) { if (value.play) play(row); else self.start(); });
+                    choose(t('Информация о потоке'), [{ title: row.title, subtitle: row.source, detail: true }, { title: t('Смотреть'), play: true }], function (value) { if (value.play) play(row); else self.start(); });
                 });
                 scroll.append(item);
             });
         }
         if (source.error || !source.rows.length) providers.filter(function (item) { return item.id !== source.id && item.rows.length; }).forEach(function (item) {
-            scroll.append(button('Найдено в ' + item.name + ' · ' + item.rows.length + ' потоков', 'alternative-' + item.id, function () { selectedProvider = item.id; render(); }));
+            scroll.append(button(t('Найдено в ') + item.name + ' · ' + item.rows.length + t(' потоков'), 'alternative-' + item.id, function () { selectedProvider = item.id; render(); }));
         });
     }
     function render() {
-        if (dead) return;
-        header.empty().append($('<h2></h2>').text(title()));
-        addFilterHeader();
-        scroll.clear();
-        side.toggle(mode === 'streams');
-        layout.toggleClass('dbr3-with-sources', mode === 'streams');
-        if (mode === 'episodes') episodeList();
-        else { renderSources(); streamList(); }
-        if (self.activity) self.activity.loader(false);
-        self.start(true);
+      if (dead) return;
+      header.empty();
+      buildDetail();
+      addFilterHeader();
+      scroll.clear();
+      side.toggle(mode === "streams");
+      voicebar.toggle(mode === "streams");
+      if (mode === "episodes") episodeList();
+      else {
+        renderSources();
+        streamList();
+      }
+      if (self.activity) self.activity.loader(false);
+      self.start(true);
     }
     function fetchProvider(source, done) {
         source.state = 'loading';
@@ -917,7 +1314,7 @@ function DebridComponent(object) {
                 render();
                 var candidate = source.id === 'aio' ? DbrCore.nextVariant(filtered(), wanted.row) : wanted.voiceName && source.voiceName === wanted.voiceName && filtered().length === 1 ? filtered()[0] : undefined;
                 if (candidate) play(candidate, wanted.quality);
-                else if (!error) Lampa.Noty.show('Выберите поток следующей серии');
+                else if (!error) Lampa.Noty.show(t('Выберите поток следующей серии'));
             }
             if (done) done();
         }
@@ -964,11 +1361,11 @@ function DebridComponent(object) {
             var alternative = providers.filter(function (item) { return item.id !== failed.id && item.state === 'ready' && item.rows.length; })[0];
             if (alternative) selectedProvider = alternative.id;
         }
-        Lampa.Noty.show(errors[error] || 'Не удалось получить видео');
+        Lampa.Noty.show(errors[error] || t('Не удалось получить видео'));
         render();
     }
     function play(row, preferredQuality) {
-        if (!row.url) { Lampa.Noty.show(row.external ? 'Источник вернул веб-страницу вместо прямого видео' : 'Прямая ссылка на видео отсутствует'); return; }
+        if (!row.url) { Lampa.Noty.show(row.external ? t('Источник вернул веб-страницу вместо прямого видео') : t('Прямая ссылка на видео отсутствует')); return; }
         var request = ++playbackRequest;
         api.resolveStream(row, function (error, stream) {
             if (request !== playbackRequest || dead) return;
@@ -976,7 +1373,7 @@ function DebridComponent(object) {
             var qualities = stream.quality || stream.qualitys || {};
             function launch(url, chosenQuality) {
                 url = DbrCore.httpUrl(String(url || '').split(' or ')[0]);
-                if (!url) { Lampa.Noty.show('Прямая ссылка на видео отсутствует'); return; }
+                if (!url) { Lampa.Noty.show(t('Прямая ссылка на видео отсутствует')); return; }
                 var timeline = history.timeline(season, episode);
                 var player = { title: title() + (DbrCore.type(movie) === 'series' ? ' · S' + season + 'E' + episode : ''), url: url, card: movie, timeline: timeline, quality: qualities };
                 player.error = function () {
@@ -989,7 +1386,7 @@ function DebridComponent(object) {
                 var hints = stream.behaviorHints || row.raw.behaviorHints || {};
                 if (stream.headers) player.headers = stream.headers;
                 else if (hints.proxyHeaders && hints.proxyHeaders.request) player.headers = hints.proxyHeaders.request;
-                if (Array.isArray(stream.subtitles)) player.subtitles = stream.subtitles.filter(function (sub) { return DbrCore.httpUrl(sub.url); }).map(function (sub) { return { label: sub.label || sub.title || sub.lang || 'Субтитры', url: sub.url }; });
+                if (Array.isArray(stream.subtitles)) player.subtitles = stream.subtitles.filter(function (sub) { return DbrCore.httpUrl(sub.url); }).map(function (sub) { return { label: sub.label || sub.title || sub.lang || t('Субтитры'), url: sub.url }; });
                 if (DbrCore.type(movie) === 'series') { player.season = season; player.episode = episode; }
                 if (stream.hls_manifest_timeout) player.hls_manifest_timeout = stream.hls_manifest_timeout;
                 if (stream.segments) player.segments = stream.segments;
@@ -1010,23 +1407,24 @@ function DebridComponent(object) {
             }
             var keys = Object.keys(qualities).filter(function (key) { return DbrCore.httpUrl(String(qualities[key]).split(' or ')[0]); });
             if (preferredQuality && qualities[preferredQuality]) launch(qualities[preferredQuality], preferredQuality);
-            else if (row.method === 'call' && keys.length > 1) choose('Качество', keys.map(function (key) { return { title: key, url: qualities[key] }; }), function (item) { launch(item.url, item.title); });
+            else if (row.method === 'call' && keys.length > 1) choose(t('Качество'), keys.map(function (key) { return { title: key, url: qualities[key] }; }), function (item) { launch(item.url, item.title); });
             else launch(row.method === 'call' ? stream.url : row.url);
         });
     }
     this.create = function () {
         if (!$('#dbr3-style').length) $('head').append($('<style id="dbr3-style"></style>').text(DbrStyles));
         files.render().addClass('dbr3');
-        layout.append(side).append(scroll.render());
+        rightPanel.append(toolbar).append(side).append(voicebar).append(scroll.render());
+        layout.append(detailPanel).append(rightPanel);
         files.appendHead(header);
         files.appendFiles(layout);
-        scroll.minus(header);
+
         render();
         api.resolveMovie(function (error) {
             metadataError = error;
             seasons = Array.isArray(movie.seasons) ? movie.seasons.filter(function (item) { return typeof item.season_number === 'number'; }) : [];
             if (!seasons.length && movie.number_of_seasons) {
-                for (var n = 1; n <= movie.number_of_seasons; n++) seasons.push({ season_number: n, name: 'Сезон ' + n });
+                for (var n = 1; n <= movie.number_of_seasons; n++) seasons.push({ season_number: n, name: t('Сезон ') + n });
             }
             if (seasons.length) season = seasons.filter(function (item) { return item.season_number > 0; })[0] ? seasons.filter(function (item) { return item.season_number > 0; })[0].season_number : seasons[0].season_number;
             history = new DbrHistory(movie);
@@ -1059,10 +1457,10 @@ function DebridComponent(object) {
                 Lampa.Controller.collectionSet(layout, header, true);
                 if (last.length) Lampa.Controller.collectionFocus(last, layout);
             },
-            left: function () { if (Navigator.canmove('left')) Navigator.move('left'); else Lampa.Controller.toggle('menu'); },
-            right: function () { if (Navigator.canmove('right')) Navigator.move('right'); else filterMenu(); },
-            up: function () { if (Navigator.canmove('up')) Navigator.move('up'); else filterMenu(); },
-            down: function () { if (Navigator.canmove('down')) Navigator.move('down'); },
+            left: function () { move('left'); },
+            right: function () { move('right'); },
+            up: function () { move('up'); },
+            down: function () { move('down'); },
             back: function () { self.back(); }
         });
         if (takeFocus && !$('body').hasClass('selectbox--open')) Lampa.Controller.toggle('content');
@@ -1196,8 +1594,7 @@ function DebridComponent(object) {
 
         Lampa.Listener.follow('full', function (e) {
             if (e.type === 'complite') {
-                var btnShort = $(buttonHtml.replace('#{title_key}', Lampa.Lang.translate('debrid_title_short')));
-                var btnFull = $(buttonHtml.replace('#{title_key}', Lampa.Lang.translate('debrid_title')));
+                var btnShort = $(buttonHtml.replace('#{title_key}', (Lampa.Storage.get('language', 'ru') === 'ru' ? 'Смотреть' : 'Play')));
 
                 var enterPlugin = function () {
                     var movie = e.data.movie;
@@ -1211,33 +1608,16 @@ function DebridComponent(object) {
                 };
 
                 btnShort.on('hover:enter', enterPlugin);
-                btnFull.on('hover:enter', enterPlugin);
 
-                var watchBtn = e.object.activity.render().find('.button--play, .view--play').first();
-                if (watchBtn.length) watchBtn.after(btnShort);
-                else e.object.activity.render().find('.full-start__buttons').append(btnShort);
+                var card = e.object.activity.render();
+                card.find('.view--debrid').remove();
+                var watchButtons = card.find('.button--play, .view--play');
+                if (watchButtons.length) watchButtons.first().before(btnShort);
+                else card.find('.full-start__buttons').prepend(btnShort);
+                watchButtons.hide().removeClass('selector');
 
-                var torrentBtn = e.object.activity.render().find('.view--torrent').last();
-                if (torrentBtn.length) torrentBtn.after(btnFull);
-                else e.object.activity.render().find('.full-start__buttons').append(btnFull);
             }
         });
-
-        // Move TraktTV menu item to top
-        setTimeout(function () {
-            try {
-                var menuList = $('.menu .menu__list').eq(0);
-                if (menuList.length) {
-                    var traktItem = menuList.find('.menu__item').filter(function () {
-                        return $(this).find('.menu__text').text().toLowerCase().indexOf('trakt') !== -1;
-                    });
-                    if (traktItem.length) {
-                        menuList.prepend(traktItem);
-                        console.log('AIOStreams: Moved TraktTV menu item to top');
-                    }
-                }
-            } catch (e) { }
-        }, 2000);
 
         console.log('AIOStreams Plugin v' + PLUGIN_VERSION + ' loaded');
 
@@ -1479,7 +1859,7 @@ function DebridComponent(object) {
         Lampa.ContentRows.add({
             name: rowName,
             title: titleText, // Fallback title
-            index: 10 + index, // Start after Trakt rows (index 1-2) and standard Lampa rows
+            index: 10 + index, // Leave room for the standard catalog rows.
             screen: ['main'],
             call: function (params, screen) {
                 var baseUrl = getCatalogBaseUrl();
@@ -1656,113 +2036,6 @@ function DebridComponent(object) {
             .catch(function (error) {
                 console.log('AIOStreams', 'Failed to load catalogs:', error.message || error);
             });
-    }
-
-    // ==================== TRAKT SYNC ====================
-
-    function showSyncModal(item) {
-        if (!item || !window.TraktTV || !window.TraktTV.api) return;
-
-        var enabled = Lampa.Controller.enabled().name;
-        var title = (item.title || item.name || 'Video');
-
-        Lampa.Select.show({
-            title: 'Trakt TV',
-            items: [
-                {
-                    title: 'Да, отметить как просмотренное',
-                    subtitle: title,
-                    mark: true
-                },
-                {
-                    title: 'Нет',
-                    subtitle: 'Закрыть',
-                    mark: false
-                }
-            ],
-            onSelect: function (a) {
-                Lampa.Controller.toggle(enabled);
-                if (a.mark) markAsWatched(item);
-            },
-            onBack: function () {
-                Lampa.Controller.toggle(enabled);
-            }
-        });
-    }
-
-    function markAsWatched(item) {
-        if (!window.TraktTV || !window.TraktTV.api) {
-            Lampa.Noty.show('Trakt API не доступен');
-            return;
-        }
-
-        var isTV = item.first_air_date || item.number_of_seasons || item.seasons;
-        var method = isTV ? 'show' : 'movie';
-        var data = { method: method, id: item.id };
-        if (item.ids) data.ids = item.ids;
-
-        window.TraktTV.api.addToHistory(data).then(function () {
-            Lampa.Noty.show('Отмечено в Trakt');
-        }).catch(function (e) {
-            Lampa.Noty.show('Ошибка: ' + (e.message || 'Error'));
-        });
-    }
-
-    function getTraktHistory(tmdbId, type) {
-        return new Promise(function (resolve) {
-            if (!window.TraktTV || !window.TraktTV.api) return resolve(null);
-            var api = window.TraktTV.api;
-            api.get('/search/tmdb/' + tmdbId + '?type=' + (type === 'series' ? 'show' : 'movie'))
-                .then(function (res) {
-                    if (res && res[0] && res[0][type === 'series' ? 'show' : 'movie']) {
-                        var traktId = res[0][type === 'series' ? 'show' : 'movie'].ids.trakt;
-                        return api.get('/sync/history/' + (type === 'series' ? 'shows' : 'movies') + '/' + traktId + '?extended=full&limit=1000');
-                    }
-                    return null;
-                })
-                .then(function (history) {
-                    resolve(history);
-                })
-                .catch(function (e) {
-                    resolve(null);
-                });
-        });
-    }
-
-    function findNextEpisode(history, movie) {
-        if (!history || !history.length) return null;
-
-        // Build a set of watched episodes: "S:E"
-        var watchedSet = {};
-        history.forEach(function (h) {
-            if (h.episode && h.episode.season && h.episode.number) {
-                var key = h.episode.season + ':' + h.episode.number;
-                watchedSet[key] = true;
-            }
-        });
-
-        console.log('AIOStreams: Watched episodes:', Object.keys(watchedSet).length);
-
-        // Get available seasons from movie data
-        var seasons = movie.seasons || [];
-        var totalSeasons = movie.number_of_seasons || seasons.length || 1;
-
-        // Find first unwatched episode (iterate through seasons/episodes)
-        for (var s = 1; s <= totalSeasons; s++) {
-            var seasonData = seasons.find(function (sd) { return sd.season_number === s; });
-            var episodeCount = (seasonData && seasonData.episode_count) || 20;
-
-            for (var e = 1; e <= episodeCount; e++) {
-                var key = s + ':' + e;
-                if (!watchedSet[key]) {
-                    console.log('AIOStreams: Next unwatched episode: S' + s + 'E' + e);
-                    return { season: s, episode: e };
-                }
-            }
-        }
-
-        console.log('AIOStreams: All episodes watched or no data');
-        return null;
     }
 
     // ==================== INIT ====================
