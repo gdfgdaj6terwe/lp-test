@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '4.0.0';
+    var PLUGIN_VERSION = '4.1.0';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -153,7 +153,7 @@
     // ==================== AIOSTREAMS SOURCE ====================
 
 
-var DbrStyles = ".dbr3 {\n  color: #f6f6f6;\n  background: #141414;\n}\n.dbr3 .explorer__files-head {\n  display: none;\n}\n.dbr3 .explorer__files {\n  width: 100%;\n  min-width: 0;\n}\n.dbr3-layout {\n  display: flex;\n  height: calc(100vh - 4em);\n  box-sizing: border-box;\n  padding: 1.2em 2em 1.2em 1em;\n  gap: 2.4em;\n  min-height: 0;\n}\n.dbr4-detail {\n  flex: 0 0 30%;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.dbr4-art {\n  height: 9em;\n  flex-shrink: 0;\n  background: #202020;\n  position: relative;\n  border-radius: 0.4em;\n  overflow: hidden;\n  margin-bottom: 1em;\n}\n.dbr4-art img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr4-art:before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(0deg, rgba(20, 20, 20, 0.3), transparent 50%);\n  z-index: 1;\n}\n.dbr4-kicker {\n  font-size: 0.68em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: #b5b5b5;\n  height: 1.6em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  flex-shrink: 0;\n}\n.dbr4-detail h1 {\n  font-size: 1.65em;\n  line-height: 1.15;\n  height: 2.3em;\n  margin: 0.35em 0 0.4em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-meta {\n  font-size: 0.78em;\n  line-height: 1.5;\n  height: 1.5em;\n  color: #bebebe;\n  flex-shrink: 0;\n}\n.dbr4-description {\n  font-size: 0.82em;\n  line-height: 1.55;\n  height: 4.65em;\n  margin: 1em 0 0.5em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-progress {\n  height: 2em;\n  flex-shrink: 0;\n  margin: 0.3em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.68em;\n  color: #b8b8b8;\n  height: 1.4em;\n}\n.dbr4-progress-track {\n  height: 2px;\n  background: #343434;\n  margin-top: 0.3em;\n}\n.dbr4-progress-fill {\n  height: 100%;\n  background: #e50914;\n}\n.dbr4-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6em;\n  margin-top: 0.4em;\n}\n.dbr3-button {\n  cursor: pointer;\n  padding: 0.65em 0.9em;\n  border-radius: 0.28em;\n  line-height: 1.25;\n  font-size: 0.84em;\n  background: #292929;\n  box-sizing: border-box;\n  min-width: 0;\n}\n.dbr4-actions .dbr3-button {\n  height: 2.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n.dbr4-primary {\n  background: #f4f4f4;\n  color: #151515;\n  font-weight: 700;\n}\n.dbr4-right {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n.dbr4-toolbar {\n  flex-shrink: 0;\n  padding: 0.25em 0.25em 0.8em;\n}\n.dbr4-tabs {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  border-bottom: 1px solid #393939;\n  padding-bottom: 0.65em;\n}\n.dbr4-tab {\n  background: transparent;\n  font-size: 1.05em;\n  padding: 0.4em 0.15em;\n  border-radius: 0;\n  position: relative;\n  color: #a7a7a7;\n}\n.dbr4-tab.selected {\n  color: white;\n}\n.dbr4-tab.selected:after {\n  content: \"\";\n  height: 3px;\n  background: #e50914;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -0.7em;\n}\n.dbr4-tools {\n  margin-left: auto;\n  display: flex;\n  gap: 0.6em;\n}\n.dbr4-dropdown {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\n.dbr4-chevron {\n  width: 1em;\n  height: 1em;\n  flex-shrink: 0;\n}\n.dbr3-sources {\n  display: flex;\n  align-items: center;\n  gap: 0.65em;\n  height: 3.2em;\n  flex-shrink: 0;\n  overflow-x: auto;\n  overflow-y: hidden;\n  padding: 0.2em 0.25em;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr3-source {\n  display: flex;\n  gap: 0.7em;\n  align-items: center;\n  flex-shrink: 0;\n  background: transparent;\n  color: #aaa;\n  font-size: 0.8em;\n  max-width: 14em;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.dbr3-source b {\n  font-size: 0.8em;\n  font-weight: 400;\n  color: inherit;\n}\n.dbr3-source.selected {\n  background: #303030;\n  color: #fff;\n}\n.dbr4-voices {\n  display: flex;\n  align-items: center;\n  gap: 0.55em;\n  height: 3.3em;\n  flex-shrink: 0;\n  padding: 0.3em 0.25em 0.6em;\n  overflow-x: auto;\n  overflow-y: hidden;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr4-voice-label {\n  font-size: 0.7em;\n  color: #999;\n  flex-shrink: 0;\n  margin-right: 0.45em;\n}\n.dbr4-voice {\n  font-size: 0.74em;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 14em;\n  flex-shrink: 0;\n  background: #242424;\n}\n.dbr4-voice.selected {\n  background: #eee;\n  color: #161616;\n}\n.dbr4-muted {\n  font-size: 0.75em;\n  color: #999;\n}\n.dbr4-right > .scroll {\n  flex: 1;\n  min-height: 0;\n  height: 100% !important;\n  width: 100%;\n  overflow: hidden;\n}\n.dbr4-right .scroll__body {\n  padding: 0.3em 0.3em 1em !important;\n}\n.dbr3 .selector.focus {\n  outline: 0.14em solid white;\n  outline-offset: 0.12em;\n  box-shadow: none;\n  background: #3b3b3b;\n  color: #fff;\n}\n.dbr3 .dbr4-primary.focus {\n  background: white;\n  color: #111;\n}\n.dbr3-stream {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7.1em;\n  padding: 1em 0.8em;\n  margin: 0.25em 0 0.45em;\n  border-bottom: 1px solid #303030;\n  border-radius: 0.3em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr3-quality {\n  flex: 0 0 3.5em;\n  font-size: 1.1em;\n  font-weight: 700;\n}\n.dbr3-stream-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-stream-copy strong {\n  display: block;\n  font-size: 0.95em;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-stream-copy small {\n  display: block;\n  font-size: 0.67em;\n  line-height: 1.4;\n  color: #aaa;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin-top: 0.25em;\n}\n.dbr3-stream-copy p {\n  font-size: 0.7em;\n  color: #999;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin: 0.35em 0;\n}\n.dbr3-size {\n  flex: 0 0 4.5em;\n  text-align: right;\n  font-size: 0.78em;\n}\n.dbr3-size small {\n  display: block;\n  color: #a7c7a7;\n  font-size: 0.75em;\n  margin-top: 0.5em;\n}\n.dbr3-count {\n  font-size: 0.7em;\n  color: #929292;\n  padding: 0.4em 0.9em 0.7em;\n}\n.dbr3-episode {\n  display: flex;\n  align-items: center;\n  gap: 0.9em;\n  height: 7.2em;\n  padding: 0.65em 0.4em;\n  margin: 0.2em 0 0.6em;\n  border-radius: 0.35em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr4-episode-number {\n  flex: 0 0 1.2em;\n  font-size: 1.1em;\n  color: #aaa;\n  text-align: center;\n}\n.dbr3-preview {\n  width: 8.7em;\n  height: 4.9em;\n  flex-shrink: 0;\n  position: relative;\n  border-radius: 0.25em;\n  overflow: hidden;\n  background: #242424;\n  color: #999;\n  font-size: 0.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.dbr3-preview img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr3-episode-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-episode-copy strong {\n  font-size: 0.95em;\n  display: block;\n  line-height: 1.35;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-episode-copy p {\n  font-size: 0.72em;\n  line-height: 1.5;\n  height: 3em;\n  margin: 0.5em 0;\n  overflow: hidden;\n  color: #aaa;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n}\n.dbr3-episode-copy .time-line {\n  height: 2px;\n}\n.dbr4-episode-status {\n  flex: 0 0 3.4em;\n  text-align: right;\n  font-size: 0.7em;\n  color: #aaa;\n}\n.dbr4-episode-status span,\n.dbr4-episode-status small {\n  display: block;\n  height: 1.6em;\n}\n.dbr4-episode-status small {\n  color: #b8cfb8;\n}\n.dbr3-empty {\n  padding: 2.5em 1em;\n  line-height: 1.6;\n  font-size: 0.95em;\n  color: #aaa;\n}\n.dbr3-loading {\n  font-size: 0.75em;\n  color: #aaa;\n  padding: 0.7em;\n}\n.dbr3-skeleton {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7em;\n  padding: 1em;\n  box-sizing: border-box;\n}\n.dbr3-skeleton-preview {\n  width: 5em;\n  height: 3em;\n}\n.dbr3-skeleton-body {\n  flex: 1;\n}\n.dbr3-skeleton-body div {\n  height: 0.65em;\n  margin: 0.75em 0;\n  width: 75%;\n}\n.dbr3-skeleton-body div:first-child {\n  width: 55%;\n  height: 0.85em;\n}\n.dbr3-skeleton-body div:last-child {\n  width: 40%;\n}\n.dbr3-skeleton-end {\n  width: 3em;\n  height: 1em;\n}\n.dbr4-source-placeholder {\n  width: 5em;\n  height: 1.5em;\n  flex-shrink: 0;\n}\n.dbr4-voice-placeholder {\n  width: 5em;\n  height: 1.8em;\n  flex-shrink: 0;\n}\n.dbr4-shimmer,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  position: relative;\n  overflow: hidden;\n  background: #242424;\n  border-radius: 0.25em;\n}\n.dbr4-shimmer:after,\n.dbr3-skeleton-preview:after,\n.dbr3-skeleton-body div:after,\n.dbr3-skeleton-end:after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(\n    105deg,\n    transparent 20%,\n    rgba(255, 255, 255, 0.08) 50%,\n    transparent 80%\n  );\n  transform: translateX(-100%);\n  animation: dbr4-shimmer 1.7s ease-in-out infinite;\n  pointer-events: none;\n}\n@keyframes dbr4-shimmer {\n  to {\n    transform: translateX(100%);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr4-shimmer:after,\n  .dbr3-skeleton *:after {\n    animation: none;\n  }\n}\n@media (max-height: 650px) {\n  .dbr4-art {\n    height: 7em;\n  }\n  .dbr4-description {\n    margin-top: 0.6em;\n  }\n  .dbr3-layout {\n    padding-top: 0.5em;\n  }\n}\n@media (max-width: 800px) {\n  .dbr3-layout {\n    gap: 1.3em;\n    padding-right: 1em;\n  }\n  .dbr4-detail {\n    flex-basis: 29%;\n  }\n  .dbr4-tools {\n    gap: 0.4em;\n  }\n  .dbr4-tabs {\n    gap: 0.7em;\n  }\n  .dbr3-preview {\n    width: 6.5em;\n    height: 3.7em;\n  }\n}\n\n.dbr4-right .scroll__content{padding:0!important}.dbr4-art{height:9.5em}.dbr4-right .scroll{mask-image:none!important;-webkit-mask-image:none!important}\n\n.dbr3 {\n  background: #242321;\n  color: #f1eee8;\n}\n.dbr3-layout {\n  position: relative;\n  isolation: isolate;\n  padding-left: 1.5em;\n}\n.dbr4-detail {\n  padding-top: 4.2em;\n  box-sizing: border-box;\n}\n.dbr4-art {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 65%;\n  height: 100%;\n  margin: 0;\n  border-radius: 0;\n  background: transparent;\n  z-index: -1;\n  pointer-events: none;\n}\n.dbr4-art img {\n  object-fit: cover;\n  object-position: 35% center;\n  opacity: 0.62;\n}\n.dbr4-art:before {\n  z-index: 1;\n  background:\n    linear-gradient(\n      90deg,\n      rgba(36, 35, 33, 0.2),\n      rgba(36, 35, 33, 0.65) 47%,\n      #242321 96%\n    ),\n    linear-gradient(\n      0deg,\n      #242321 3%,\n      rgba(36, 35, 33, 0.7) 40%,\n      transparent 90%\n    );\n}\n.dbr4-art.dbr4-shimmer:after {\n  opacity: 0.2;\n}\n.dbr4-kicker {\n  color: #c0b9ae;\n}\n.dbr4-detail h1 {\n  font-size: 1.9em;\n  height: 2.3em;\n  color: #f7f2e9;\n}\n.dbr4-meta {\n  color: #bfb7ab;\n}\n.dbr4-description {\n  color: #d5cfc5;\n}\n.dbr4-progress-label {\n  color: #bfb6a8;\n}\n.dbr4-progress-track {\n  background: #ffffff1c;\n}\n.dbr4-progress-fill,\n.dbr4-tab.selected:after {\n  background: #c7ac80;\n}\n.dbr4-tabs {\n  border-color: #ffffff20;\n}\n.dbr3-button {\n  background: #ffffff0c;\n  color: #d9d2c7;\n}\n.dbr3 .selector.focus {\n  background: #514b41;\n  color: #fff9ef;\n  outline-color: #e8d8ba;\n}\n.dbr4-primary,\n.dbr3 .dbr4-primary.focus {\n  background: #eee4d3;\n  color: #28251f;\n}\n.dbr3-source.selected {\n  background: #ffffff13;\n  color: #f4ecde;\n}\n.dbr4-voice {\n  background: #ffffff08;\n  border: 1px solid #ffffff14;\n}\n.dbr4-voice.selected {\n  background: #d9c8aa;\n  color: #28251f;\n  border-color: #d9c8aa;\n}\n.dbr3-stream {\n  border-color: #ffffff15;\n}\n.dbr3-stream-copy small,\n.dbr3-stream-copy p,\n.dbr3-episode-copy p,\n.dbr3-count,\n.dbr4-voice-label {\n  color: #b5afa6;\n}\n.dbr3-preview,\n.dbr4-source-placeholder,\n.dbr4-voice-placeholder,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  background: #34312b;\n}\n.dbr4-actions {\n  margin-top: 1em;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: transparent;\n  border: 1px solid #ffffff18;\n}\n.dbr4-actions .dbr3-button.focus {\n  background: #514b41;\n}\n.dbr4-primary {\n  max-width: 100%;\n}\n@media (max-height: 650px) {\n  .dbr4-detail {\n    padding-top: 3em;\n  }\n}\n@media (max-width: 700px) {\n  .dbr4-detail {\n    padding-top: 2em;\n  }\n}\n";
+var DbrStyles = ".dbr3 {\n  color: #f6f6f6;\n  background: #141414;\n}\n.dbr3 .explorer__files-head {\n  display: none;\n}\n.dbr3 .explorer__files {\n  width: 100%;\n  min-width: 0;\n}\n.dbr3-layout {\n  display: flex;\n  height: calc(100vh - 4em);\n  box-sizing: border-box;\n  padding: 1.2em 2em 1.2em 1em;\n  gap: 2.4em;\n  min-height: 0;\n}\n.dbr4-detail {\n  flex: 0 0 30%;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.dbr4-art {\n  height: 9em;\n  flex-shrink: 0;\n  background: #202020;\n  position: relative;\n  border-radius: 0.4em;\n  overflow: hidden;\n  margin-bottom: 1em;\n}\n.dbr4-art img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr4-art:before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(0deg, rgba(20, 20, 20, 0.3), transparent 50%);\n  z-index: 1;\n}\n.dbr4-kicker {\n  font-size: 0.68em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: #b5b5b5;\n  height: 1.6em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  flex-shrink: 0;\n}\n.dbr4-detail h1 {\n  font-size: 1.65em;\n  line-height: 1.15;\n  height: 2.3em;\n  margin: 0.35em 0 0.4em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-meta {\n  font-size: 0.78em;\n  line-height: 1.5;\n  height: 1.5em;\n  color: #bebebe;\n  flex-shrink: 0;\n}\n.dbr4-description {\n  font-size: 0.82em;\n  line-height: 1.55;\n  height: 4.65em;\n  margin: 1em 0 0.5em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-progress {\n  height: 2em;\n  flex-shrink: 0;\n  margin: 0.3em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.68em;\n  color: #b8b8b8;\n  height: 1.4em;\n}\n.dbr4-progress-track {\n  height: 2px;\n  background: #343434;\n  margin-top: 0.3em;\n}\n.dbr4-progress-fill {\n  height: 100%;\n  background: #e50914;\n}\n.dbr4-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6em;\n  margin-top: 0.4em;\n}\n.dbr3-button {\n  cursor: pointer;\n  padding: 0.65em 0.9em;\n  border-radius: 0.28em;\n  line-height: 1.25;\n  font-size: 0.84em;\n  background: #292929;\n  box-sizing: border-box;\n  min-width: 0;\n}\n.dbr4-actions .dbr3-button {\n  height: 2.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n.dbr4-primary {\n  background: #f4f4f4;\n  color: #151515;\n  font-weight: 700;\n}\n.dbr4-right {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n.dbr4-toolbar {\n  flex-shrink: 0;\n  padding: 0.25em 0.25em 0.8em;\n}\n.dbr4-tabs {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  border-bottom: 1px solid #393939;\n  padding-bottom: 0.65em;\n}\n.dbr4-tab {\n  background: transparent;\n  font-size: 1.05em;\n  padding: 0.4em 0.15em;\n  border-radius: 0;\n  position: relative;\n  color: #a7a7a7;\n}\n.dbr4-tab.selected {\n  color: white;\n}\n.dbr4-tab.selected:after {\n  content: \"\";\n  height: 3px;\n  background: #e50914;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -0.7em;\n}\n.dbr4-tools {\n  margin-left: auto;\n  display: flex;\n  gap: 0.6em;\n}\n.dbr4-dropdown {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\n.dbr4-chevron {\n  width: 1em;\n  height: 1em;\n  flex-shrink: 0;\n}\n.dbr3-sources {\n  display: flex;\n  align-items: center;\n  gap: 0.65em;\n  height: 3.2em;\n  flex-shrink: 0;\n  overflow-x: auto;\n  overflow-y: hidden;\n  padding: 0.2em 0.25em;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr3-source {\n  display: flex;\n  gap: 0.7em;\n  align-items: center;\n  flex-shrink: 0;\n  background: transparent;\n  color: #aaa;\n  font-size: 0.8em;\n  max-width: 14em;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.dbr3-source b {\n  font-size: 0.8em;\n  font-weight: 400;\n  color: inherit;\n}\n.dbr3-source.selected {\n  background: #303030;\n  color: #fff;\n}\n.dbr4-voices {\n  display: flex;\n  align-items: center;\n  gap: 0.55em;\n  height: 3.3em;\n  flex-shrink: 0;\n  padding: 0.3em 0.25em 0.6em;\n  overflow-x: auto;\n  overflow-y: hidden;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr4-voice-label {\n  font-size: 0.7em;\n  color: #999;\n  flex-shrink: 0;\n  margin-right: 0.45em;\n}\n.dbr4-voice {\n  font-size: 0.74em;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 14em;\n  flex-shrink: 0;\n  background: #242424;\n}\n.dbr4-voice.selected {\n  background: #eee;\n  color: #161616;\n}\n.dbr4-muted {\n  font-size: 0.75em;\n  color: #999;\n}\n.dbr4-right > .scroll {\n  flex: 1;\n  min-height: 0;\n  height: 100% !important;\n  width: 100%;\n  overflow: hidden;\n}\n.dbr4-right .scroll__body {\n  padding: 0.3em 0.3em 1em !important;\n}\n.dbr3 .selector.focus {\n  outline: 0.14em solid white;\n  outline-offset: 0.12em;\n  box-shadow: none;\n  background: #3b3b3b;\n  color: #fff;\n}\n.dbr3 .dbr4-primary.focus {\n  background: white;\n  color: #111;\n}\n.dbr3-stream {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7.1em;\n  padding: 1em 0.8em;\n  margin: 0.25em 0 0.45em;\n  border-bottom: 1px solid #303030;\n  border-radius: 0.3em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr3-quality {\n  flex: 0 0 3.5em;\n  font-size: 1.1em;\n  font-weight: 700;\n}\n.dbr3-stream-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-stream-copy strong {\n  display: block;\n  font-size: 0.95em;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-stream-copy small {\n  display: block;\n  font-size: 0.67em;\n  line-height: 1.4;\n  color: #aaa;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin-top: 0.25em;\n}\n.dbr3-stream-copy p {\n  font-size: 0.7em;\n  color: #999;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin: 0.35em 0;\n}\n.dbr3-size {\n  flex: 0 0 4.5em;\n  text-align: right;\n  font-size: 0.78em;\n}\n.dbr3-size small {\n  display: block;\n  color: #a7c7a7;\n  font-size: 0.75em;\n  margin-top: 0.5em;\n}\n.dbr3-count {\n  font-size: 0.7em;\n  color: #929292;\n  padding: 0.4em 0.9em 0.7em;\n}\n.dbr3-episode {\n  display: flex;\n  align-items: center;\n  gap: 0.9em;\n  height: 7.2em;\n  padding: 0.65em 0.4em;\n  margin: 0.2em 0 0.6em;\n  border-radius: 0.35em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr4-episode-number {\n  flex: 0 0 1.2em;\n  font-size: 1.1em;\n  color: #aaa;\n  text-align: center;\n}\n.dbr3-preview {\n  width: 8.7em;\n  height: 4.9em;\n  flex-shrink: 0;\n  position: relative;\n  border-radius: 0.25em;\n  overflow: hidden;\n  background: #242424;\n  color: #999;\n  font-size: 0.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.dbr3-preview img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr3-episode-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-episode-copy strong {\n  font-size: 0.95em;\n  display: block;\n  line-height: 1.35;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-episode-copy p {\n  font-size: 0.72em;\n  line-height: 1.5;\n  height: 3em;\n  margin: 0.5em 0;\n  overflow: hidden;\n  color: #aaa;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n}\n.dbr3-episode-copy .time-line {\n  height: 2px;\n}\n.dbr4-episode-status {\n  flex: 0 0 3.4em;\n  text-align: right;\n  font-size: 0.7em;\n  color: #aaa;\n}\n.dbr4-episode-status span,\n.dbr4-episode-status small {\n  display: block;\n  height: 1.6em;\n}\n.dbr4-episode-status small {\n  color: #b8cfb8;\n}\n.dbr3-empty {\n  padding: 2.5em 1em;\n  line-height: 1.6;\n  font-size: 0.95em;\n  color: #aaa;\n}\n.dbr3-loading {\n  font-size: 0.75em;\n  color: #aaa;\n  padding: 0.7em;\n}\n.dbr3-skeleton {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7em;\n  padding: 1em;\n  box-sizing: border-box;\n}\n.dbr3-skeleton-preview {\n  width: 5em;\n  height: 3em;\n}\n.dbr3-skeleton-body {\n  flex: 1;\n}\n.dbr3-skeleton-body div {\n  height: 0.65em;\n  margin: 0.75em 0;\n  width: 75%;\n}\n.dbr3-skeleton-body div:first-child {\n  width: 55%;\n  height: 0.85em;\n}\n.dbr3-skeleton-body div:last-child {\n  width: 40%;\n}\n.dbr3-skeleton-end {\n  width: 3em;\n  height: 1em;\n}\n.dbr4-source-placeholder {\n  width: 5em;\n  height: 1.5em;\n  flex-shrink: 0;\n}\n.dbr4-voice-placeholder {\n  width: 5em;\n  height: 1.8em;\n  flex-shrink: 0;\n}\n.dbr4-shimmer,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  position: relative;\n  overflow: hidden;\n  background: #242424;\n  border-radius: 0.25em;\n}\n.dbr4-shimmer:after,\n.dbr3-skeleton-preview:after,\n.dbr3-skeleton-body div:after,\n.dbr3-skeleton-end:after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(\n    105deg,\n    transparent 20%,\n    rgba(255, 255, 255, 0.08) 50%,\n    transparent 80%\n  );\n  transform: translateX(-100%);\n  animation: dbr4-shimmer 1.7s ease-in-out infinite;\n  pointer-events: none;\n}\n@keyframes dbr4-shimmer {\n  to {\n    transform: translateX(100%);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr4-shimmer:after,\n  .dbr3-skeleton *:after {\n    animation: none;\n  }\n}\n@media (max-height: 650px) {\n  .dbr4-art {\n    height: 7em;\n  }\n  .dbr4-description {\n    margin-top: 0.6em;\n  }\n  .dbr3-layout {\n    padding-top: 0.5em;\n  }\n}\n@media (max-width: 800px) {\n  .dbr3-layout {\n    gap: 1.3em;\n    padding-right: 1em;\n  }\n  .dbr4-detail {\n    flex-basis: 29%;\n  }\n  .dbr4-tools {\n    gap: 0.4em;\n  }\n  .dbr4-tabs {\n    gap: 0.7em;\n  }\n  .dbr3-preview {\n    width: 6.5em;\n    height: 3.7em;\n  }\n}\n\n.dbr4-right .scroll__content{padding:0!important}.dbr4-art{height:9.5em}.dbr4-right .scroll{mask-image:none!important;-webkit-mask-image:none!important}\n\n.dbr3 {\n  background: #242321;\n  color: #f1eee8;\n}\n.dbr3-layout {\n  position: relative;\n  isolation: isolate;\n  padding-left: 1.5em;\n}\n.dbr4-detail {\n  padding-top: 4.2em;\n  box-sizing: border-box;\n}\n.dbr4-art {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 65%;\n  height: 100%;\n  margin: 0;\n  border-radius: 0;\n  background: transparent;\n  z-index: -1;\n  pointer-events: none;\n}\n.dbr4-art img {\n  object-fit: cover;\n  object-position: 35% center;\n  opacity: 0.62;\n}\n.dbr4-art:before {\n  z-index: 1;\n  background:\n    linear-gradient(\n      90deg,\n      rgba(36, 35, 33, 0.2),\n      rgba(36, 35, 33, 0.65) 47%,\n      #242321 96%\n    ),\n    linear-gradient(\n      0deg,\n      #242321 3%,\n      rgba(36, 35, 33, 0.7) 40%,\n      transparent 90%\n    );\n}\n.dbr4-art.dbr4-shimmer:after {\n  opacity: 0.2;\n}\n.dbr4-kicker {\n  color: #c0b9ae;\n}\n.dbr4-detail h1 {\n  font-size: 1.9em;\n  height: 2.3em;\n  color: #f7f2e9;\n}\n.dbr4-meta {\n  color: #bfb7ab;\n}\n.dbr4-description {\n  color: #d5cfc5;\n}\n.dbr4-progress-label {\n  color: #bfb6a8;\n}\n.dbr4-progress-track {\n  background: #ffffff1c;\n}\n.dbr4-progress-fill,\n.dbr4-tab.selected:after {\n  background: #c7ac80;\n}\n.dbr4-tabs {\n  border-color: #ffffff20;\n}\n.dbr3-button {\n  background: #ffffff0c;\n  color: #d9d2c7;\n}\n.dbr3 .selector.focus {\n  background: #514b41;\n  color: #fff9ef;\n  outline-color: #e8d8ba;\n}\n.dbr4-primary,\n.dbr3 .dbr4-primary.focus {\n  background: #eee4d3;\n  color: #28251f;\n}\n.dbr3-source.selected {\n  background: #ffffff13;\n  color: #f4ecde;\n}\n.dbr4-voice {\n  background: #ffffff08;\n  border: 1px solid #ffffff14;\n}\n.dbr4-voice.selected {\n  background: #d9c8aa;\n  color: #28251f;\n  border-color: #d9c8aa;\n}\n.dbr3-stream {\n  border-color: #ffffff15;\n}\n.dbr3-stream-copy small,\n.dbr3-stream-copy p,\n.dbr3-episode-copy p,\n.dbr3-count,\n.dbr4-voice-label {\n  color: #b5afa6;\n}\n.dbr3-preview,\n.dbr4-source-placeholder,\n.dbr4-voice-placeholder,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  background: #34312b;\n}\n.dbr4-actions {\n  margin-top: 1em;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: transparent;\n  border: 1px solid #ffffff18;\n}\n.dbr4-actions .dbr3-button.focus {\n  background: #514b41;\n}\n.dbr4-primary {\n  max-width: 100%;\n}\n@media (max-height: 650px) {\n  .dbr4-detail {\n    padding-top: 3em;\n  }\n}\n@media (max-width: 700px) {\n  .dbr4-detail {\n    padding-top: 2em;\n  }\n}\n\n.dbr3-button {\n  border: 1px solid rgba(245, 236, 217, 0.13);\n  background: rgba(239, 231, 213, 0.045);\n  border-radius: 0.45em;\n  color: #ded8ce;\n  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);\n  transition:\n    background 0.15s,\n    border-color 0.15s,\n    box-shadow 0.15s;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: rgba(36, 34, 30, 0.32);\n  border-color: rgba(241, 232, 216, 0.17);\n}\n.dbr4-tools .dbr3-button {\n  background: rgba(232, 224, 208, 0.045);\n  border-color: rgba(241, 232, 216, 0.14);\n  padding: 0.65em 1em;\n}\n.dbr4-tab {\n  border: 0;\n  box-shadow: none;\n  background: transparent;\n  border-radius: 0;\n}\n.dbr3-source {\n  border-color: transparent;\n  box-shadow: none;\n  background: transparent;\n}\n.dbr3-source.selected {\n  background: rgba(243, 233, 210, 0.055);\n  border-color: rgba(241, 232, 216, 0.16);\n}\n.dbr4-voice {\n  background: rgba(239, 231, 213, 0.035);\n  border-color: rgba(241, 232, 216, 0.14);\n}\n.dbr4-voice.selected {\n  color: #f1e6d2;\n  background: rgba(203, 179, 136, 0.15);\n  border-color: rgba(228, 208, 173, 0.46);\n}\n.dbr4-primary {\n  border-color: rgba(255, 250, 238, 0.42);\n  background: linear-gradient(\n    135deg,\n    rgba(251, 243, 226, 0.92),\n    rgba(221, 208, 183, 0.87)\n  );\n  color: #27231b;\n  box-shadow:\n    inset 0 1px 0 rgba(255, 255, 255, 0.3),\n    0 0.15em 0.7em rgba(0, 0, 0, 0.14);\n  font-weight: 600;\n}\n.dbr3 .selector.focus {\n  background: rgba(219, 199, 163, 0.16);\n  color: #fff5e4;\n  outline: 0.12em solid rgba(244, 227, 194, 0.9);\n  outline-offset: 0.12em;\n  box-shadow: 0 0 0 0.22em rgba(221, 195, 148, 0.07);\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n  color: #242018;\n  box-shadow: 0 0.15em 1em rgba(0, 0, 0, 0.15);\n  outline-color: rgba(255, 243, 217, 0.94);\n}\n.dbr3 .dbr4-actions .dbr3-button.focus:not(.dbr4-primary) {\n  background: rgba(218, 196, 154, 0.17);\n  border-color: rgba(249, 235, 209, 0.45);\n}\n.dbr4-primary:before {\n  content: \"\";\n  display: block;\n  width: 0;\n  height: 0;\n  border-top: 0.32em solid transparent;\n  border-bottom: 0.32em solid transparent;\n  border-left: 0.5em solid currentColor;\n  margin-right: 0.65em;\n}\n.dbr4-actions {\n  max-width: 19em;\n}\n.dbr3-stream.focus,\n.dbr3-episode.focus {\n  background: rgba(230, 213, 180, 0.065);\n}\n@supports (backdrop-filter: blur(1px)) {\n  .dbr4-actions .dbr3-button,\n  .dbr4-tools .dbr3-button,\n  .dbr4-voice {\n    backdrop-filter: blur(8px);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-button {\n    transition: none;\n  }\n}\n\n.dbr4-icon {\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  flex: 0 0 1em;\n  vertical-align: middle;\n  color: #bfb4a2;\n}\n.dbr4-flag {\n  width: 1.25em;\n  height: 0.85em;\n  display: block;\n  flex-shrink: 0;\n  border-radius: 0.12em;\n  overflow: hidden;\n  opacity: 0.9;\n}\n.dbr4-language-row {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  min-height: 1.7em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-language {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  background: rgba(238, 223, 194, 0.045);\n  border: 1px solid rgba(238, 223, 194, 0.12);\n  border-radius: 0.3em;\n  padding: 0.28em 0.45em;\n  font-size: 0.72em;\n  line-height: 1.15;\n  color: #ede2d0;\n  flex-shrink: 0;\n}\n.dbr4-language > span {\n  font-size: 1em !important;\n  color: inherit !important;\n}\n.dbr4-more-languages {\n  font-size: 0.7em;\n  color: #beb3a1;\n  padding: 0.3em;\n}\n.dbr4-metadata {\n  display: flex;\n  align-items: center;\n  gap: 1.1em;\n  margin-top: 0.6em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-badge {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  font-size: 0.7em;\n  color: #bfb6a8;\n  line-height: 1.3;\n  flex-shrink: 0;\n}\n.dbr4-origin {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  margin-top: 0.55em;\n  font-size: 0.65em;\n  color: #999182;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr4-translation-name {\n  font-size: 0.85em !important;\n  font-weight: 500;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-quality {\n  font-size: 1em;\n  color: #eee4d2;\n}\n.dbr3-size {\n  font-size: 0.76em;\n}\n.dbr3-size .dbr4-icon {\n  display: inline-block;\n  margin-right: 0.3em;\n}\n.dbr4-voices .dbr4-flag {\n  display: inline-block;\n  vertical-align: middle;\n  margin-right: 0.5em;\n}\n.dbr3-stream {\n  height: 6.8em;\n}\n.dbr4-voice {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.1em;\n}\n.dbr4-art {\n  z-index: 0;\n}\n.dbr4-detail > :not(.dbr4-art),\n.dbr4-right {\n  position: relative;\n  z-index: 1;\n}\n\n.dbr3 {\n  font-size: max(1em, 1.55vw);\n}\n.dbr3-layout {\n  gap: 1.5em;\n  padding: 1em 1.4em 1em 1.3em;\n}\n.dbr4-detail {\n  flex-basis: 31%;\n  padding-top: 2em;\n}\n.dbr4-detail h1 {\n  font-size: 1.7em;\n  line-height: 1.18;\n  height: 2.36em;\n  margin: 0.5em 0;\n}\n.dbr4-kicker {\n  font-size: 0.78em;\n  letter-spacing: 0.055em;\n}\n.dbr4-meta {\n  font-size: 0.9em;\n}\n.dbr4-description {\n  font-size: 0.95em;\n  line-height: 1.5;\n  height: 4.5em;\n  margin: 0.8em 0 0.5em;\n}\n.dbr4-progress {\n  height: 1.5em;\n  margin: 0.2em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.78em;\n}\n.dbr4-actions {\n  gap: 0.6em;\n  margin-top: 0.7em;\n}\n.dbr4-actions .dbr3-button {\n  font-size: 1em;\n  height: 2.8em;\n}\n.dbr4-tabs {\n  gap: 0.9em;\n  padding-bottom: 0.55em;\n}\n.dbr4-tab {\n  font-size: 1.1em;\n}\n.dbr4-tools .dbr3-button {\n  font-size: 0.85em;\n}\n.dbr4-toolbar {\n  padding-bottom: 0.5em;\n}\n.dbr3-sources {\n  height: 2.8em;\n  gap: 0.45em;\n}\n.dbr3-source {\n  font-size: 0.85em;\n  max-width: 11em;\n  padding: 0.5em 0.65em;\n}\n.dbr4-voices {\n  height: 2.9em;\n  gap: 0.4em;\n}\n.dbr4-voice {\n  font-size: 0.85em;\n  padding: 0.5em 0.6em;\n}\n.dbr4-voice-label {\n  font-size: 0.78em;\n  margin-right: 0.15em;\n}\n.dbr3-stream {\n  height: 7.3em;\n  padding: 0.9em 0.7em;\n  gap: 0.8em;\n}\n.dbr3-quality {\n  font-size: 1.1em;\n  flex-basis: 3em;\n}\n.dbr4-language {\n  font-size: 0.9em;\n}\n.dbr4-more-languages {\n  font-size: 0.85em;\n}\n.dbr4-badge {\n  font-size: 0.83em;\n}\n.dbr4-metadata {\n  gap: 0.8em;\n}\n.dbr4-origin {\n  font-size: 0.78em;\n}\n.dbr3-size {\n  font-size: 0.85em;\n  flex-basis: 4.1em;\n}\n.dbr3-episode {\n  height: 7.8em;\n  gap: 0.8em;\n  padding: 0.6em 0.35em;\n}\n.dbr3-preview {\n  width: 8.1em;\n  height: 4.6em;\n  font-size: 1em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.05em;\n  white-space: normal;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  line-height: 1.3;\n  max-height: 2.6em;\n}\n.dbr3-episode-copy p {\n  font-size: 0.85em;\n  line-height: 1.4;\n  height: 2.8em;\n  margin: 0.4em 0;\n}\n.dbr4-episode-status {\n  font-size: 0.8em;\n  flex-basis: 3.1em;\n}\n.dbr4-episode-number {\n  font-size: 1em;\n  flex-basis: 0.8em;\n}\n.dbr3-episode-copy .time-line {\n  max-width: 10em;\n  opacity: 0.65;\n}\n.dbr3-count {\n  font-size: 0.8em;\n}\n.dbr4-translation-name {\n  font-size: 1em !important;\n}\n@media (max-aspect-ratio: 4/3) {\n  .dbr3-layout {\n    gap: 1em;\n    padding: 0.6em;\n  }\n  .dbr4-detail {\n    flex-basis: 32%;\n    padding-top: 1em;\n  }\n  .dbr3-preview {\n    width: 5.5em;\n    height: 3.1em;\n  }\n  .dbr4-tools .dbr3-button {\n    padding: 0.6em;\n  }\n  .dbr4-kicker {\n    letter-spacing: 0;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3 {\n    font-size: 16px;\n  }\n  .dbr4-detail {\n    display: none;\n  }\n  .dbr3-preview {\n    width: 6em;\n    height: 3.4em;\n  }\n  .dbr3-layout {\n    height: 100%;\n  }\n  .dbr4-tools {\n    gap: 0.3em;\n  }\n  .dbr4-tabs {\n    gap: 0.6em;\n  }\n}\n\n.dbr3-episode {\n  height: 8.5em;\n  padding: 0.8em 0.6em;\n  border: 1px solid transparent;\n  border-radius: 0.6em;\n  margin: 0.35em 0 0.7em;\n}\n.dbr3-preview {\n  width: 9.6em;\n  height: 5.4em;\n  border-radius: 0.4em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.12em;\n  line-height: 1.35;\n}\n.dbr3-episode-copy p {\n  font-size: 0.9em;\n  color: #c4bcaf;\n}\n.dbr3-episode,\n.dbr3-stream {\n  transition:\n    background 0.14s,\n    border-color 0.14s,\n    box-shadow 0.14s;\n}\n.dbr3-stream {\n  border-radius: 0.6em;\n  border: 1px solid rgba(242, 229, 205, 0.07);\n  background: rgba(24, 23, 20, 0.16);\n  margin: 0.35em 0 0.7em;\n}\n.dbr3 .selector.focus {\n  outline: none !important;\n  border-color: rgba(237, 219, 183, 0.65) !important;\n  box-shadow:\n    inset 0 0 0 1px rgba(244, 224, 190, 0.32),\n    0 0 0 2px rgba(244, 224, 190, 0.1) !important;\n  background: rgba(229, 208, 171, 0.11) !important;\n  color: #fff6e6 !important;\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd) !important;\n  color: #242018 !important;\n  box-shadow:\n    0 0 0 2px rgba(255, 239, 207, 0.5),\n    0 0.2em 0.8em rgba(0, 0, 0, 0.15) !important;\n}\n.dbr3 .dbr4-tab.focus {\n  background: transparent !important;\n  border-radius: 0.2em;\n  box-shadow: 0 0 0 2px rgba(237, 219, 183, 0.65) !important;\n}\n.dbr3-episode.focus .dbr3-preview {\n  box-shadow: 0 0.15em 0.8em rgba(0, 0, 0, 0.25);\n}\n.dbr4-actions .dbr3-button {\n  border-radius: 0.5em;\n  font-weight: 500;\n}\n.dbr4-actions .dbr4-primary {\n  font-weight: 600;\n}\n.dbr4-episode-status {\n  color: #c7bdac;\n}\n.dbr3 .selector.focus:after {\n  outline: none;\n}\n.dbr4-description {\n  color: #dfd5c5;\n}\n.dbr4-tools {\n  gap: 0.6em;\n}\n.dbr3-quality {\n  font-weight: 600;\n}\n.dbr4-metadata {\n  color: #cbbfac;\n}\n@media (hover: hover) and (pointer: fine) {\n  .dbr3 .dbr3-button:hover,\n  .dbr3 .dbr3-episode:hover,\n  .dbr3 .dbr3-stream:hover {\n    background: rgba(237, 220, 186, 0.085);\n    border-color: rgba(237, 219, 183, 0.3);\n    cursor: pointer;\n  }\n  .dbr3 .dbr4-primary:hover {\n    background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n    color: #242018;\n  }\n  .dbr3 .dbr4-tab:hover {\n    background: transparent;\n    color: #fff5e6;\n  }\n}\n@media (max-width: 900px) {\n  .dbr3-preview {\n    width: 7.5em;\n    height: 4.22em;\n  }\n  .dbr3-episode {\n    height: 8em;\n  }\n  .dbr4-detail h1 {\n    font-size: 1.55em;\n  }\n  .dbr4-metadata {\n    gap: 0.55em;\n  }\n  .dbr4-language {\n    font-size: 0.82em;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3-preview {\n    width: 6.8em;\n    height: 3.83em;\n  }\n  .dbr3-episode-copy p {\n    font-size: 0.82em;\n  }\n  .dbr4-episode-status {\n    display: none;\n  }\n  .dbr3-episode {\n    height: 7.5em;\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-episode,\n  .dbr3-stream {\n    transition: none;\n  }\n}\n";
 
 var DbrCore = (function () {
     'use strict';
@@ -360,6 +360,116 @@ var DbrNavigation = (function () {
   return { move: move };
 })();
 
+var DbrPresentation = (function () {
+  var paths = {
+    audio:
+      '<path d="M4 14v-3a8 8 0 0 1 16 0v3M4 13h3v7H4a1 1 0 0 1-1-1v-5a1 1 0 0 1 1-1Zm13 0h3a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-3Z"/>',
+    subtitles:
+      '<rect x="2" y="4" width="20" height="16" rx="3"/><path d="M6 10h4M6 14h4M14 10h4M14 14h4"/>',
+    video:
+      '<rect x="2" y="4" width="20" height="14" rx="2"/><path d="M8 22h8M12 18v4"/>',
+    source: '<path d="m12 2 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 17l9 5 9-5"/>',
+    size: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 15h18M7 18h1M12 18h1"/>',
+    cached:
+      '<path d="M12 2 3 6v6c0 5 9 10 9 10s9-5 9-10V6l-9-4Z"/><path d="m8 12 3 3 5-6"/>',
+  };
+  function icon(name) {
+    return (
+      '<svg class="dbr4-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      (paths[name] || paths.source) +
+      "</svg>"
+    );
+  }
+  function flag(code) {
+    var drawing = {
+      ru: '<path fill="#ecebe7" d="M0 0h24v5H0z"/><path fill="#5779b1" d="M0 5h24v6H0z"/><path fill="#b45c65" d="M0 11h24v5H0z"/>',
+      en: '<path fill="#445b82" d="M0 0h24v16H0z"/><path stroke="#e8e3d8" stroke-width="4" d="m0 0 24 16M24 0 0 16"/><path stroke="#b86a70" stroke-width="1.5" d="m0 0 24 16M24 0 0 16"/><path stroke="#eee8dd" stroke-width="6" d="M12 0v16M0 8h24"/><path stroke="#b86a70" stroke-width="3" d="M12 0v16M0 8h24"/>',
+      ja: '<path fill="#ede9df" d="M0 0h24v16H0z"/><circle fill="#ba606e" cx="12" cy="8" r="4.5"/>',
+      uk: '<path fill="#5782b2" d="M0 0h24v8H0z"/><path fill="#dbbc69" d="M0 8h24v8H0z"/>',
+      pl: '<path fill="#ece8df" d="M0 0h24v8H0z"/><path fill="#ba6371" d="M0 8h24v8H0z"/>',
+      de: '<path fill="#333" d="M0 0h24v6H0z"/><path fill="#b96568" d="M0 5h24v6H0z"/><path fill="#d5b86c" d="M0 11h24v5H0z"/>',
+      fr: '<path fill="#5876a5" d="M0 0h8v16H0z"/><path fill="#ede9df" d="M8 0h8v16H8z"/><path fill="#b7646a" d="M16 0h8v16h-8z"/>',
+      es: '<path fill="#b15e61" d="M0 0h24v16H0z"/><path fill="#d7b46d" d="M0 4h24v8H0z"/>',
+    };
+    return drawing[code]
+      ? '<svg class="dbr4-flag" viewBox="0 0 24 16" aria-hidden="true">' +
+          drawing[code] +
+          "</svg>"
+      : icon("audio");
+  }
+  function language(code) {
+    var name = DbrI18n.label("audio", code);
+    return $('<span class="dbr4-language"></span>')
+      .attr("title", name)
+      .append(flag(code))
+      .append(
+        $("<span></span>").text(code === "unknown" ? name : code.toUpperCase()),
+      );
+  }
+  function badge(kind, text) {
+    return $('<span class="dbr4-badge"></span>')
+      .append(icon(kind))
+      .append($("<span></span>").text(text));
+  }
+  function stream(row, title, label) {
+    var box = $('<div class="dbr3-stream-copy"></div>');
+    var langs = $('<div class="dbr4-language-row"></div>');
+    var audio = row.audio.length ? row.audio : ["unknown"];
+    audio.filter(function (code) { return ["ru", "en", "pl", "unknown"].indexOf(code) >= 0; }).sort(function (a, b) { return ["ru", "en", "pl", "unknown"].indexOf(a) - ["ru", "en", "pl", "unknown"].indexOf(b); }).forEach(function (code) {
+      langs.append(language(code));
+    });
+    var hidden = audio.filter(function (code) { return ["ru", "en", "pl", "unknown"].indexOf(code) < 0; }).length;
+    if (hidden)
+      langs.append(
+        $('<span class="dbr4-more-languages"></span>').text(
+          "+" + (hidden),
+        ),
+      );
+    if (row.voice.length)
+      langs.append(
+        $('<strong class="dbr4-translation-name"></strong>').text(
+          row.voice.join(" / "),
+        ),
+      );
+    box.append(langs);
+    var metadata = $('<div class="dbr4-metadata"></div>');
+    if (row.codec || row.range.length)
+      metadata.append(
+        badge(
+          "video",
+          [row.codec, row.range.join(" / ")].filter(Boolean).join(" · "),
+        ),
+      );
+    if (row.audioCodec) metadata.append(badge("audio", row.audioCodec));
+    metadata.append(
+      badge(
+        "subtitles",
+        DbrCore.values(row, "subtitles")
+          .map(function (code) {
+            return code === "unknown" || code === "none"
+              ? label("subtitles", code)
+              : code.toUpperCase();
+          })
+          .join(" / "),
+      ),
+    );
+    box.append(metadata);
+    box.append(
+      $('<div class="dbr4-origin"></div>')
+        .append(icon("source"))
+        .append($("<span></span>").text(row.source)),
+    );
+    return box;
+  }
+  return {
+    icon: icon,
+    flag: flag,
+    language: language,
+    badge: badge,
+    stream: stream,
+  };
+})();
+
 function DbrHistory(movie) {
   var identity = movie.imdb_id || movie.tmdb_id || movie.id;
   var storageKey = "debrid_episode_history";
@@ -451,6 +561,46 @@ function DbrDirectPlayback(player) {
   listener.follow("ready", ready);
   listener.follow("external", external);
   listener.follow("destroy", cleanup);
+  return cleanup;
+}
+
+function DbrAutoplay(player, onEnded) {
+  var listener = Lampa.Player.listener;
+  var video;
+  var released = false;
+  var timer;
+  function detach() {
+    listener.remove("ready", ready);
+    listener.remove("destroy", cleanup);
+    listener.remove("external", cleanup);
+    if (video) video.removeEventListener("ended", ended, true);
+  }
+  function cleanup() {
+    released = true;
+    clearTimeout(timer);
+    detach();
+  }
+  function ended() {
+    if (released || !video.ended || Lampa.Player.playdata() !== player) return;
+    if (player.timeline && player.timeline.waiting_for_user) return;
+    released = true;
+    detach();
+    timer = setTimeout(function () {
+      if (Lampa.Player.playdata() !== player) return;
+      Lampa.Player.close();
+      onEnded();
+    }, 0);
+  }
+  function ready(data) {
+    if (data !== player || released) return;
+    video =
+      Lampa.PlayerVideo && Lampa.PlayerVideo.video && Lampa.PlayerVideo.video();
+    if (video && String(video.tagName).toLowerCase() === "video")
+      video.addEventListener("ended", ended, true);
+  }
+  listener.follow("ready", ready);
+  listener.follow("destroy", cleanup);
+  listener.follow("external", cleanup);
   return cleanup;
 }
 
@@ -688,6 +838,7 @@ function DebridComponent(object) {
     var api = new DbrApi(movie);
     var history;
     var progressTimer;
+    var releaseAutoplay = function () {};
     var releasePlayback = function () {};
     var files = new Lampa.Explorer($.extend({}, object, { params: $.extend({}, object.params, { noinfo: true }) }));
     var scroll = new Lampa.Scroll({ mask: false, over: false, nopadding: true });
@@ -877,6 +1028,10 @@ function DebridComponent(object) {
         })
         .first();
       if (target.length) Lampa.Controller.collectionFocus(target, layout);
+    }
+    function resize() {
+        if (!layout[0] || !layout[0].offsetParent) return;
+        layout.css('height', Math.max(200, window.innerHeight - layout[0].getBoundingClientRect().top) + 'px');
     }
     function title() { return movie.title || movie.name || t('Видео'); }
     function provider() { return providers.filter(function (item) { return item.id === selectedProvider; })[0] || providers[0]; }
@@ -1211,7 +1366,7 @@ function DebridComponent(object) {
       } else {
         var options = DbrCore.facet(source.rows, selection, "audio");
         voicebar.find(".dbr4-voice-label").text(t("Язык"));
-        options.slice(0, 3).forEach(function (item, index) {
+        options.filter(function (item) { return ["ru", "en", "pl"].indexOf(item.value) >= 0; }).sort(function (a, b) { return ["ru", "en", "pl"].indexOf(a.value) - ["ru", "en", "pl"].indexOf(b.value); }).forEach(function (item, index) {
           voicebar.append(
             button(
               label("audio", item.value),
@@ -1229,10 +1384,11 @@ function DebridComponent(object) {
             ).attr("data-dbr-group", "voices"),
           );
         });
-        if (options.length > 3)
+        var hiddenLanguages = options.filter(function (item) { return ["ru", "en", "pl"].indexOf(item.value) < 0; }).length;
+        if (hiddenLanguages)
           voicebar.append(
             button(
-              "+" + (options.length - 3),
+              "+" + (hiddenLanguages),
               "audio-more",
               function () {
                 showFilter("audio");
@@ -1240,6 +1396,10 @@ function DebridComponent(object) {
               "dbr4-voice",
             ).attr("data-dbr-group", "voices"),
           );
+        voicebar.find('[data-dbr-key^="audio-"]').each(function () {
+            var node = $(this), text = node.text();
+            ['ru', 'en', 'pl'].some(function (code) { if (label('audio', code) !== text) return false; node.prepend(DbrPresentation.flag(code)); return true; });
+        });
         if (!options.length)
           voicebar.append(
             $('<span class="dbr4-muted"></span>').text(t("Не указаны")),
@@ -1260,12 +1420,7 @@ function DebridComponent(object) {
             filtered().forEach(function (row) {
                 var item = $('<div class="selector dbr3-stream"></div>');
                 item.append($('<div class="dbr3-quality"></div>').text(label('quality', row.quality)));
-                var details = $('<div class="dbr3-stream-copy"></div>');
-                var audio = row.audio.map(function (value) { return label('audio', value); }).join(' + ') || t('Язык не указан');
-                details.append($('<strong></strong>').text(audio + (row.voice.length ? ' · ' + row.voice.join(', ') : '')));
-                details.append($('<small></small>').text([row.codec, row.audioCodec, row.range.join(' / '), row.source].filter(Boolean).join(' · ')));
-                details.append($('<p></p>').text(row.release || row.title));
-                details.append($('<small></small>').text('CC · ' + DbrCore.values(row, 'subtitles').map(function (value) { return label('subtitles', value); }).join(', ')));
+                var details = DbrPresentation.stream(row, t, label);
                 item.append(details);
                 item.append($('<div class="dbr3-size"></div>').text(row.size === undefined ? '—' : row.size.toFixed(2) + t(' ГБ')).append($('<small></small>').text(row.external && !row.url ? t('Веб-страница') : row.cached ? t('В кэше RD') : '')));
                 item.attr('data-dbr-group', 'list');
@@ -1398,6 +1553,8 @@ function DebridComponent(object) {
                 clearInterval(progressTimer);
                 releasePlayback();
                 if (row.provider === 'aio') releasePlayback = DbrDirectPlayback(player);
+                releaseAutoplay();
+                if (DbrCore.type(movie) === 'series') releaseAutoplay = DbrAutoplay(player, function () { if (!dead && request === playbackRequest) nextEpisode(); });
                 showPlayerChoiceDialog(player, movie);
                 progressTimer = setInterval(function () {
                     var active = Lampa.Player.playdata && Lampa.Player.playdata();
@@ -1416,6 +1573,7 @@ function DebridComponent(object) {
     }
     this.create = function () {
         if (!$('#dbr3-style').length) $('head').append($('<style id="dbr3-style"></style>').text(DbrStyles));
+        window.addEventListener("resize", resize);
         files.render().addClass('dbr3');
         rightPanel.append(toolbar).append(side).append(voicebar).append(scroll.render());
         layout.append(detailPanel).append(rightPanel);
@@ -1450,6 +1608,7 @@ function DebridComponent(object) {
         var current = Lampa.Controller.enabled && Lampa.Controller.enabled();
         var controllerName = typeof current === 'string' ? current : current && current.name;
         var takeFocus = !passive || !controllerName || ['content', 'activity', 'loading'].indexOf(controllerName) !== -1;
+        resize();
         var root = files.render();
         Lampa.Controller.add('content', {
             toggle: function () {
@@ -1473,7 +1632,7 @@ function DebridComponent(object) {
         else Lampa.Activity.backward();
     };
     this.render = function () { return files.render(); };
-    this.destroy = function () { dead = true; releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
+    this.destroy = function () { dead = true; releaseAutoplay(); window.removeEventListener("resize", resize); releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
 }
 
     // ==================== PLUGIN REGISTRATION ====================
