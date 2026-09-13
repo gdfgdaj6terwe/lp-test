@@ -1,6 +1,6 @@
 /**
  * AIOStreams - Lampa Plugin
- * Version: 3.0.0
+ * Version: 3.0.1
  *
  * Plugin for integrating AIOStreams (Stremio aggregator) with Lampa
  *
@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '3.0.0';
+    var PLUGIN_VERSION = '3.0.1';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -293,7 +293,12 @@ function DbrApi(movie) {
     var pending = [];
     var timers = [];
     var epoch = 0;
-    var server = DbrCore.baseUrl(Lampa.Storage.get('debrid_lampac_url', '')) || 'http://smotret24.com';
+    var server = DbrCore.baseUrl(Lampa.Storage.get('debrid_lampac_url', '')) || 'https://rc.bwa.ad';
+    var socket;
+    var transportId = '';
+    var transportReady = false;
+    var transportWaiters = [];
+    var transportTimer;
     var addon = DbrCore.baseUrl(Lampa.Storage.get('debrid_aiostreams_url', ''));
 
     function origin(url) { var match = String(url).match(/^https?:\/\/[^/]+/i); return match ? match[0].toLowerCase() : ''; }
@@ -312,14 +317,60 @@ function DbrApi(movie) {
     }
     function movieParams() {
         return {
-            id: movie.tmdb_id || movie.id || '', imdb_id: movie.imdb_id || '', kinopoisk_id: movie.kinopoisk_id || movie.kp_id || '',
+            id: movie.tmdb_id || movie.id || '', tmdb_id: movie.tmdb_id || '', anime: movie.original_language === 'ja' ? 1 : 0, imdb_id: movie.imdb_id || '', kinopoisk_id: movie.kinopoisk_id || movie.kp_id || '',
             title: movie.title || movie.name || '', original_title: movie.original_title || movie.original_name || '',
             serial: DbrCore.type(movie) === 'series' ? 1 : 0,
             year: String(movie.release_date || movie.first_air_date || '').slice(0, 4), source: movie.source || 'tmdb', rjson: 'true'
         };
     }
-    function request(url, callback, timeout) {
+    function transport(callback) {
+        if (transportReady && socket && socket.readyState === 1) return callback('');
+        if (typeof WebSocket === 'undefined') return callback('challenge');
+        transportWaiters.push(callback);
+        if (socket && (socket.readyState === 0 || socket.readyState === 1)) return;
         var generation = epoch;
+        transportId = Lampa.Utils.uid(32).toLowerCase();
+        function finish(error) {
+            clearTimeout(transportTimer);
+            var waiters = transportWaiters;
+            transportWaiters = [];
+            if (generation === epoch) waiters.forEach(function (done) { done(error); });
+        }
+        try {
+            socket = new WebSocket(origin(server).replace(/^http/, 'ws') + '/nws?id=' + encodeURIComponent(transportId) + '&ver=1');
+        } catch (ignore) { return finish('network'); }
+        var connection = socket;
+        function send(method, args) {
+            if (connection.readyState === 1) connection.send(JSON.stringify({ method: method, args: args }));
+        }
+        transportTimer = setTimeout(function () { finish('network'); connection.close(); }, 10000);
+        connection.onmessage = function (event) {
+            if (generation !== epoch || connection !== socket) return;
+            var message;
+            try { message = JSON.parse(event.data); } catch (ignore) { return; }
+            var args = message.args || [];
+            if (message.method === 'Connected') {
+                send('RchRegistry', [{ host: location.host, rchtype: 'web', apkVersion: 0, player: 'inner' }]);
+            } else if (message.method === 'RchRegistry') {
+                transportReady = true;
+                finish('');
+            } else if (message.method === 'RchClient') {
+                // The server cannot execute code or request arbitrary URLs through this client.
+                send('RchResult', [args[0], args[1] === 'ping' ? 'pong' : '']);
+            }
+        };
+        connection.onerror = function () { finish('network'); connection.close(); };
+        connection.onclose = function () {
+            if (connection !== socket) return;
+            transportReady = false;
+            socket = undefined;
+            finish('network');
+        };
+    }
+    function request(url, callback, timeout, retried) {
+        var generation = epoch;
+        var local = origin(url) === origin(server);
+        if (local && transportReady) url = query(url, { nws_id: transportId, rchtype: 'web' });
         var net = new Lampa.Reguest();
         var finished = false;
         pending.push(net);
@@ -331,6 +382,14 @@ function DbrApi(movie) {
             if (typeof data === 'string') {
                 try { data = JSON.parse(data); } catch (ignore) { return callback('format'); }
             }
+            if (!error && local && data && data.rch && !retried && data.nws) {
+                return transport(function (failure) {
+                    if (generation !== epoch) return;
+                    if (failure) callback(failure);
+                    else request(url, callback, timeout, true);
+                });
+            }
+            if (!error && local && data && data.accsdb && /на данном устройстве недоступно/i.test(String(data.msg || ''))) return callback('device');
             callback(error, data);
         }
         net.timeout(timeout || 20000);
@@ -355,6 +414,12 @@ function DbrApi(movie) {
     }
     this.cancel = function () {
         epoch++;
+        clearTimeout(transportTimer);
+        transportWaiters = [];
+        transportReady = false;
+        var oldSocket = socket;
+        socket = undefined;
+        if (oldSocket) oldSocket.close();
         timers.forEach(function (timer) { clearTimeout(timer); });
         timers = [];
         var old = pending;
@@ -479,7 +544,7 @@ function DebridComponent(object) {
     var runningProviders = 0;
     var playbackRequest = 0;
     var labels = { audio: 'Язык', subtitles: 'Субтитры', quality: 'Качество', voice: 'Озвучка', range: 'Видео' };
-    var errors = { network: 'Не удалось подключиться', format: 'Источник вернул неподдерживаемый ответ', config: 'Укажите адрес AIOStreams в настройках', imdb: 'Не удалось определить IMDb ID', auth: 'Источник требует авторизацию', challenge: 'Источник требует проверку в своём плагине', match: 'Источник требует уточнить название', metadata: 'Не удалось загрузить сведения о сериях' };
+    var errors = { network: 'Не удалось подключиться', format: 'Источник вернул неподдерживаемый ответ', config: 'Укажите адрес AIOStreams в настройках', imdb: 'Не удалось определить IMDb ID', auth: 'Источник требует авторизацию', device: 'Источник недоступен на этом устройстве', challenge: 'Источник требует проверку в своём плагине', match: 'Источник требует уточнить название', metadata: 'Не удалось загрузить сведения о сериях' };
 
     function title() { return movie.title || movie.name || 'Видео'; }
     function provider() { return providers.filter(function (item) { return item.id === selectedProvider; })[0] || providers[0]; }
@@ -515,7 +580,7 @@ function DebridComponent(object) {
     function loading() {
         scroll.append($('<div class="dbr3-loading"></div>').text(mode === 'episodes' ? 'Загружаем серии…' : 'Ищем потоки…'));
         for (var index = 0; index < 4; index++) {
-            scroll.append('<div class="dbr3-skeleton" aria-hidden="true"><div class="dbr3-skeleton-preview"></div><div class="dbr3-skeleton-body"><div></div><div></div><div></div></div><div class="dbr3-skeleton-end"></div></div>');
+            scroll.append($('<div class="dbr3-skeleton" aria-hidden="true"><div class="dbr3-skeleton-preview"></div><div class="dbr3-skeleton-body"><div></div><div></div><div></div></div><div class="dbr3-skeleton-end"></div></div>'));
         }
     }
     function empty(message, action) {
@@ -860,10 +925,10 @@ function DebridComponent(object) {
 
         Lampa.Template.add('settings_debrid', '\
             <div>\
-                <div class="settings-param selector" data-name="debrid_lampac_url" data-type="input" placeholder="http://smotret24.com">\
+                <div class="settings-param selector" data-name="debrid_lampac_url" data-type="input" placeholder="https://rc.bwa.ad">\
                     <div class="settings-param__name">Сервер балансеров (Lampac)</div>\
                     <div class="settings-param__value"></div>\
-                    <div class="settings-param__descr">Пустое значение: smotret24.com. Можно указать другой сервер Lampac.</div>\
+                    <div class="settings-param__descr">Пустое значение: rc.bwa.ad. Можно указать другой сервер Lampac.</div>\
                 </div>\
                 <div class="settings-param selector" data-name="debrid_aiostreams_url" data-type="input" placeholder="https://...">\
                     <div class="settings-param__name">#{debrid_aiostreams_url}</div>\
