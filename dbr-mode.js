@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '3.0.2';
+    var PLUGIN_VERSION = '3.0.3';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -138,7 +138,6 @@
         if (!Lampa.Platform.is('web')) {
             Lampa.Player.play(playerData);
             showSyncModal(movie);
-            if (movie) Lampa.Timeline.update(movie);
             return;
         }
 
@@ -151,7 +150,6 @@
         console.log('AIOStreams: Opening in external player:', torrentPlayer || 'default');
         Lampa.Player.play(playerData);
         showSyncModal(movie);
-        if (movie) Lampa.Timeline.update(movie);
     }
 
     // ==================== AIOSTREAMS SOURCE ====================
@@ -288,6 +286,57 @@ var DbrCore = (function () {
     }
     return { fields: fields, escape: escape, httpUrl: httpUrl, baseUrl: baseUrl, streamUrl: streamUrl, type: type, normalize: normalize, values: values, select: select, facet: facet, sort: sort, lampacRows: lampacRows, label: label };
 })();
+
+function DbrHistory(movie) {
+  var identity = movie.imdb_id || movie.tmdb_id || movie.id;
+  var storageKey = "debrid_episode_history";
+  function timeline(season, episode) {
+    var suffix =
+      DbrCore.type(movie) === "series" ? season + "_" + episode : "movie";
+    return Lampa.Timeline.view(
+      Lampa.Utils.hash("dbr_" + identity + "_" + suffix),
+    );
+  }
+  function key() {
+    return String(timeline(1, 1).profile || 0) + ":" + identity;
+  }
+  function read() {
+    var rows = Lampa.Storage.get(storageKey, {});
+    return rows && typeof rows === "object" && !Array.isArray(rows) ? rows : {};
+  }
+  this.timeline = timeline;
+  this.last = function () {
+    var item = read()[key()];
+    if (
+      !item ||
+      !Number.isInteger(item.season) ||
+      item.season < 0 ||
+      !Number.isInteger(item.episode) ||
+      item.episode < 1
+    )
+      return undefined;
+    return { season: item.season, episode: item.episode };
+  };
+  this.save = function (season, episode) {
+    if (
+      DbrCore.type(movie) !== "series" ||
+      !Number.isInteger(season) ||
+      season < 0 ||
+      !Number.isInteger(episode) ||
+      episode < 1
+    )
+      return;
+    var rows = read();
+    rows[key()] = { season: season, episode: episode, updated: Date.now() };
+    var keys = Object.keys(rows).sort(function (a, b) {
+      return (Number(rows[b] && rows[b].updated) || 0) - (Number(rows[a] && rows[a].updated) || 0);
+    });
+    keys.slice(100).forEach(function (id) {
+      delete rows[id];
+    });
+    Lampa.Storage.set(storageKey, rows);
+  };
+}
 
 function DbrApi(movie) {
     var pending = [];
@@ -521,6 +570,8 @@ function DebridComponent(object) {
     var self = this;
     var movie = object.movie;
     var api = new DbrApi(movie);
+    var history;
+    var progressTimer;
     var files = new Lampa.Explorer($.extend({}, object, { params: $.extend({}, object.params, { noinfo: true }) }));
     var scroll = new Lampa.Scroll({ mask: true, over: true });
     var header = $('<div class="dbr3-header"></div>');
@@ -665,6 +716,11 @@ function DebridComponent(object) {
     function episodeList() {
         if (initializing) { loading(); return; }
         if (!episodes.length) { empty(errors[metadataError] || 'Список серий пока недоступен', loadEpisodes); return; }
+        var last = history.last();
+        if (last && last.season === season && episodes.some(function (item) { return item.episode_number === last.episode; })) {
+            var saved = history.timeline(last.season, last.episode);
+            scroll.append(button('Последняя серия: ' + last.episode + (saved.time && saved.percent < 90 ? ' · продолжить с ' + Lampa.Utils.secondsToTime(saved.time) : ''), 'resume-episode', function () { episode = last.episode; beginStreams(); }));
+        }
         episodes.forEach(function (item) {
             var row = $('<div class="selector dbr3-episode"></div>');
             var preview = image(item.still_path);
@@ -678,6 +734,11 @@ function DebridComponent(object) {
             content.append($('<small></small>').text(item.episode_number + ' серия' + (item.runtime ? ' · ' + item.runtime + ' мин' : '')));
             content.append($('<strong></strong>').text(item.name || 'Серия ' + item.episode_number));
             content.append($('<p></p>').text(item.overview || 'Описание отсутствует'));
+            var progress = history.timeline(season, item.episode_number);
+            if (progress.percent > 0) {
+                content.append($('<small></small>').text(progress.percent >= 90 ? 'Просмотрено' : 'Просмотрено ' + Math.round(progress.percent) + '% · ' + Lampa.Utils.secondsToTime(progress.time)));
+            }
+            content.append(Lampa.Timeline.render(progress));
             row.append(content).append('<span class="dbr3-enter">Выбрать поток ›</span>');
             scroll.append(bind(row, 'episode-' + item.episode_number, function () { episode = item.episode_number; beginStreams(); }));
         });
@@ -800,9 +861,8 @@ function DebridComponent(object) {
             function launch(url) {
                 url = DbrCore.httpUrl(String(url || '').split(' or ')[0]);
                 if (!url) { Lampa.Noty.show('Прямая ссылка на видео отсутствует'); return; }
-                var hash = Lampa.Utils.hash('dbr_' + (movie.imdb_id || movie.id) + '_' + (DbrCore.type(movie) === 'series' ? season + '_' + episode : 'movie'));
-                var timeline = Lampa.Timeline.view ? Lampa.Timeline.view(hash) : { hash: hash };
-                var player = { title: title() + (DbrCore.type(movie) === 'series' ? ' · S' + season + 'E' + episode : ''), url: url, timeline: timeline, quality: qualities };
+                var timeline = history.timeline(season, episode);
+                var player = { title: title() + (DbrCore.type(movie) === 'series' ? ' · S' + season + 'E' + episode : ''), url: url, card: movie, timeline: timeline, quality: qualities };
                 var hints = stream.behaviorHints || row.raw.behaviorHints || {};
                 if (stream.headers) player.headers = stream.headers;
                 else if (hints.proxyHeaders && hints.proxyHeaders.request) player.headers = hints.proxyHeaders.request;
@@ -810,7 +870,16 @@ function DebridComponent(object) {
                 if (DbrCore.type(movie) === 'series') { player.season = season; player.episode = episode; }
                 if (stream.hls_manifest_timeout) player.hls_manifest_timeout = stream.hls_manifest_timeout;
                 if (stream.segments) player.segments = stream.segments;
+                history.save(season, episode);
+                clearInterval(progressTimer);
                 showPlayerChoiceDialog(player, movie);
+                progressTimer = setInterval(function () {
+                    var active = Lampa.Player.playdata && Lampa.Player.playdata();
+                    if (!Lampa.Player.opened() || !active || active.timeline !== timeline) { clearInterval(progressTimer); return; }
+                    if (!timeline.waiting_for_user && !timeline.stop_recording && timeline.duration > 0 && timeline.time > 0) {
+                        timeline.handler(timeline.percent, timeline.time, timeline.duration);
+                    }
+                }, 10000);
                 Lampa.Player.playlist([player]);
             }
             var keys = Object.keys(qualities).filter(function (key) { return DbrCore.httpUrl(String(qualities[key]).split(' or ')[0]); });
@@ -833,6 +902,13 @@ function DebridComponent(object) {
                 for (var n = 1; n <= movie.number_of_seasons; n++) seasons.push({ season_number: n, name: 'Сезон ' + n });
             }
             if (seasons.length) season = seasons.filter(function (item) { return item.season_number > 0; })[0] ? seasons.filter(function (item) { return item.season_number > 0; })[0].season_number : seasons[0].season_number;
+            history = new DbrHistory(movie);
+            var last = history.last();
+            if (last && seasons.some(function (item) { return item.season_number === last.season; })) {
+                season = last.season;
+                episode = last.episode;
+                lastKey = 'episode-' + episode;
+            }
             if (DbrCore.type(movie) === 'series') loadEpisodes();
             else beginStreams();
         });
@@ -869,7 +945,7 @@ function DebridComponent(object) {
         else Lampa.Activity.backward();
     };
     this.render = function () { return files.render(); };
-    this.destroy = function () { dead = true; api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
+    this.destroy = function () { dead = true; clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
 }
 
     // ==================== PLUGIN REGISTRATION ====================
