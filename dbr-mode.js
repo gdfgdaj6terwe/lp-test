@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '3.0.3';
+    var PLUGIN_VERSION = '3.0.4';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -280,11 +280,22 @@ var DbrCore = (function () {
         });
         return rows;
     }
+    function nextVariant(rows, previous) {
+        var group = previous && previous.raw && previous.raw.behaviorHints && previous.raw.behaviorHints.bingeGroup;
+        if (!group) return undefined;
+        var matches = rows.filter(function (row) {
+            var hints = row.raw.behaviorHints || {};
+            return hints.bingeGroup === group && row.quality === previous.quality && ['audio', 'voice', 'range', 'subtitles'].every(function (key) {
+                return values(row, key).slice().sort().join('|') === values(previous, key).slice().sort().join('|');
+            });
+        });
+        return matches.length === 1 ? matches[0] : undefined;
+    }
     function label(key, value) {
         if (languageNames[value]) return languageNames[value];
         return key === 'quality' ? value === '2160' ? '4K' : value + 'p' : value;
     }
-    return { fields: fields, escape: escape, httpUrl: httpUrl, baseUrl: baseUrl, streamUrl: streamUrl, type: type, normalize: normalize, values: values, select: select, facet: facet, sort: sort, lampacRows: lampacRows, label: label };
+    return { nextVariant: nextVariant, fields: fields, escape: escape, httpUrl: httpUrl, baseUrl: baseUrl, streamUrl: streamUrl, type: type, normalize: normalize, values: values, select: select, facet: facet, sort: sort, lampacRows: lampacRows, label: label };
 })();
 
 function DbrHistory(movie) {
@@ -594,6 +605,9 @@ function DebridComponent(object) {
     var pendingProviders = [];
     var runningProviders = 0;
     var playbackRequest = 0;
+    var lastPlayback;
+    var nextRequest;
+    var advancing = false;
     var labels = { audio: 'Язык', subtitles: 'Субтитры', quality: 'Качество', voice: 'Озвучка', range: 'Видео' };
     var errors = { network: 'Не удалось подключиться', format: 'Источник вернул неподдерживаемый ответ', config: 'Укажите адрес AIOStreams в настройках', imdb: 'Не удалось определить IMDb ID', auth: 'Источник требует авторизацию', device: 'Источник недоступен на этом устройстве', challenge: 'Источник требует проверку в своём плагине', match: 'Источник требует уточнить название', metadata: 'Не удалось загрузить сведения о сериях' };
 
@@ -683,6 +697,9 @@ function DebridComponent(object) {
     }
     function loadEpisodes() {
         api.cancel();
+        advancing = false;
+        nextRequest = undefined;
+        playbackRequest++;
         mode = 'episodes';
         initializing = true;
         metadataError = '';
@@ -694,12 +711,36 @@ function DebridComponent(object) {
             render();
         });
     }
+    function nextEpisode() {
+        if (advancing) return;
+        var preference = lastPlayback && lastPlayback.season === season && lastPlayback.episode === episode ? lastPlayback : undefined;
+        var next = episodes.filter(function (item) { return item.episode_number === episode + 1; })[0];
+        function start(item) {
+            advancing = false;
+            if (!item || (item.air_date && item.air_date > new Date().toISOString().slice(0, 10))) { Lampa.Noty.show('Следующая серия пока недоступна'); return; }
+            episode = item.episode_number;
+            beginStreams(preference);
+        }
+        if (next) return start(next);
+        var later = seasons.filter(function (item) { return item.season_number > season; }).sort(function (a, b) { return a.season_number - b.season_number; })[0];
+        if (!later) { Lampa.Noty.show('Это последняя доступная серия'); return; }
+        advancing = true;
+        api.episodes(later.season_number, function (error, items) {
+            advancing = false;
+            var first = items.filter(function (item) { return item.episode_number === 1; })[0];
+            if (error || !first || (first.air_date && first.air_date > new Date().toISOString().slice(0, 10))) { Lampa.Noty.show('Следующая серия пока недоступна'); return; }
+            season = later.season_number;
+            episodes = items;
+            start(first);
+        });
+    }
     function addFilterHeader() {
         var bar = $('<div class="dbr3-filters"></div>');
         if (DbrCore.type(movie) === 'series') bar.append(button('Сезон ' + season + ' ⌄', 'season', showSeasons));
         if (mode === 'streams' && DbrCore.type(movie) === 'series') bar.append(button('Серия ' + episode + ' ⌄', 'episode', function () {
             choose('Серия', episodes.map(function (item) { return { title: item.episode_number + '. ' + item.name, number: item.episode_number }; }), function (item) { episode = item.number; beginStreams(); });
         }));
+        if (mode === 'streams' && DbrCore.type(movie) === 'series') bar.append(button('Следующая серия ›', 'next-episode', nextEpisode));
         DbrCore.fields.forEach(function (key) {
             if (mode !== 'streams') return;
             var current = (selection[key] || []).map(function (value) { return DbrCore.label(key, value); }).join(', ');
@@ -748,7 +789,7 @@ function DebridComponent(object) {
         providers.filter(function (item) { return item.id === 'aio' || (item.state === 'ready' && item.rows.length > 0); }).forEach(function (item) {
             var current = DbrCore.select(item.rows, selection).length;
             var label = item.state === 'ready' ? current + (countFilters() ? '/' + item.rows.length : '') : item.state === 'loading' || item.state === 'queued' ? '…' : '—';
-            var node = button('', 'source-' + item.id, function () { selectedProvider = item.id; render(); }, 'dbr3-source');
+            var node = button('', 'source-' + item.id, function () { nextRequest = undefined; selectedProvider = item.id; render(); }, 'dbr3-source');
             node.toggleClass('selected', item.id === selectedProvider);
             node.append($('<span></span>').text(item.name)).append($('<b></b>').text(label));
             node.append($('<small></small>').text(item.error ? errors[item.error] || 'Не удалось загрузить' : item.state === 'ready' && !item.rows.length ? 'Потоков нет' : item.id === 'aio' ? 'Stremio / Debrid' : 'Онлайн'));
@@ -821,6 +862,19 @@ function DebridComponent(object) {
             source.rows = data || [];
             source.voices = voices || [];
             render();
+            if (nextRequest && source.name === nextRequest.sourceName) {
+                var wanted = nextRequest;
+                if (!error && wanted.voiceName && source.voiceName !== wanted.voiceName) {
+                    var voice = source.voices.filter(function (item) { return (item.name || item.title) === wanted.voiceName; })[0];
+                    if (voice) { source.voiceName = wanted.voiceName; source.voiceUrl = voice.url; fetchProvider(source, done); return; }
+                }
+                nextRequest = undefined;
+                selectedProvider = source.id;
+                render();
+                var candidate = source.id === 'aio' ? DbrCore.nextVariant(filtered(), wanted.row) : wanted.voiceName && source.voiceName === wanted.voiceName && filtered().length === 1 ? filtered()[0] : undefined;
+                if (candidate) play(candidate, wanted.quality);
+                else if (!error) Lampa.Noty.show('Выберите поток следующей серии');
+            }
             if (done) done();
         }
         if (source.id === 'aio') api.aio(season, episode, finish);
@@ -832,8 +886,11 @@ function DebridComponent(object) {
             fetchProvider(pendingProviders.shift(), function () { runningProviders--; pump(); });
         }
     }
-    function beginStreams() {
+    function beginStreams(preference) {
         api.cancel();
+        playbackRequest++;
+        advancing = false;
+        nextRequest = preference;
         mode = 'streams';
         initializing = false;
         discoveryError = '';
@@ -846,19 +903,19 @@ function DebridComponent(object) {
         fetchProvider(providers[0]);
         api.providers(function (error, list) {
             discoveryError = error;
-            list.forEach(function (source) { source.state = 'queued'; source.rows = []; providers.push(source); pendingProviders.push(source); });
+            list.forEach(function (source) { if (nextRequest && source.name === nextRequest.sourceName) selectedProvider = source.id; source.state = 'queued'; source.rows = []; providers.push(source); pendingProviders.push(source); });
             render();
             pump();
         });
     }
-    function play(row) {
+    function play(row, preferredQuality) {
         if (!row.url) { Lampa.Noty.show(row.external ? 'Источник вернул веб-страницу вместо прямого видео' : 'Прямая ссылка на видео отсутствует'); return; }
         var request = ++playbackRequest;
         api.resolveStream(row, function (error, stream) {
             if (request !== playbackRequest || dead) return;
             if (error) { Lampa.Noty.show(errors[error] || 'Не удалось получить видео'); return; }
             var qualities = stream.quality || stream.qualitys || {};
-            function launch(url) {
+            function launch(url, chosenQuality) {
                 url = DbrCore.httpUrl(String(url || '').split(' or ')[0]);
                 if (!url) { Lampa.Noty.show('Прямая ссылка на видео отсутствует'); return; }
                 var timeline = history.timeline(season, episode);
@@ -870,6 +927,7 @@ function DebridComponent(object) {
                 if (DbrCore.type(movie) === 'series') { player.season = season; player.episode = episode; }
                 if (stream.hls_manifest_timeout) player.hls_manifest_timeout = stream.hls_manifest_timeout;
                 if (stream.segments) player.segments = stream.segments;
+                lastPlayback = { season: season, episode: episode, sourceName: provider().name, voiceName: provider().voiceName, row: row, quality: chosenQuality };
                 history.save(season, episode);
                 clearInterval(progressTimer);
                 showPlayerChoiceDialog(player, movie);
@@ -883,7 +941,8 @@ function DebridComponent(object) {
                 Lampa.Player.playlist([player]);
             }
             var keys = Object.keys(qualities).filter(function (key) { return DbrCore.httpUrl(String(qualities[key]).split(' or ')[0]); });
-            if (row.method === 'call' && keys.length > 1) choose('Качество', keys.map(function (key) { return { title: key, url: qualities[key] }; }), function (item) { launch(item.url); });
+            if (preferredQuality && qualities[preferredQuality]) launch(qualities[preferredQuality], preferredQuality);
+            else if (row.method === 'call' && keys.length > 1) choose('Качество', keys.map(function (key) { return { title: key, url: qualities[key] }; }), function (item) { launch(item.url, item.title); });
             else launch(row.method === 'call' ? stream.url : row.url);
         });
     }
