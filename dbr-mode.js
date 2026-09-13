@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '3.0.4';
+    var PLUGIN_VERSION = '3.0.5';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -609,7 +609,7 @@ function DebridComponent(object) {
     var nextRequest;
     var advancing = false;
     var labels = { audio: 'Язык', subtitles: 'Субтитры', quality: 'Качество', voice: 'Озвучка', range: 'Видео' };
-    var errors = { network: 'Не удалось подключиться', format: 'Источник вернул неподдерживаемый ответ', config: 'Укажите адрес AIOStreams в настройках', imdb: 'Не удалось определить IMDb ID', auth: 'Источник требует авторизацию', device: 'Источник недоступен на этом устройстве', challenge: 'Источник требует проверку в своём плагине', match: 'Источник требует уточнить название', metadata: 'Не удалось загрузить сведения о сериях' };
+    var errors = { network: 'Не удалось подключиться', playback: 'Видео недоступно на этом устройстве', format: 'Источник вернул неподдерживаемый ответ', config: 'Укажите адрес AIOStreams в настройках', imdb: 'Не удалось определить IMDb ID', auth: 'Источник требует авторизацию', device: 'Источник недоступен на этом устройстве', challenge: 'Источник требует проверку в своём плагине', match: 'Источник требует уточнить название', metadata: 'Не удалось загрузить сведения о сериях' };
 
     function title() { return movie.title || movie.name || 'Видео'; }
     function provider() { return providers.filter(function (item) { return item.id === selectedProvider; })[0] || providers[0]; }
@@ -908,18 +908,40 @@ function DebridComponent(object) {
             pump();
         });
     }
+    function playbackFailed(row, error) {
+        lastPlayback = undefined;
+        nextRequest = undefined;
+        var failed = providers.filter(function (item) { return item.id === row.provider; })[0];
+        if (failed) {
+            failed.rows = failed.rows.filter(function (item) { return item.id !== row.id; });
+            if (!failed.rows.length) { failed.state = 'error'; failed.error = error; }
+        }
+        if (failed && !failed.rows.length) {
+            var alternative = providers.filter(function (item) { return item.id !== failed.id && item.state === 'ready' && item.rows.length; })[0];
+            if (alternative) selectedProvider = alternative.id;
+        }
+        Lampa.Noty.show(errors[error] || 'Не удалось получить видео');
+        render();
+    }
     function play(row, preferredQuality) {
         if (!row.url) { Lampa.Noty.show(row.external ? 'Источник вернул веб-страницу вместо прямого видео' : 'Прямая ссылка на видео отсутствует'); return; }
         var request = ++playbackRequest;
         api.resolveStream(row, function (error, stream) {
             if (request !== playbackRequest || dead) return;
-            if (error) { Lampa.Noty.show(errors[error] || 'Не удалось получить видео'); return; }
+            if (error) { playbackFailed(row, error); return; }
             var qualities = stream.quality || stream.qualitys || {};
             function launch(url, chosenQuality) {
                 url = DbrCore.httpUrl(String(url || '').split(' or ')[0]);
                 if (!url) { Lampa.Noty.show('Прямая ссылка на видео отсутствует'); return; }
                 var timeline = history.timeline(season, episode);
                 var player = { title: title() + (DbrCore.type(movie) === 'series' ? ' · S' + season + 'E' + episode : ''), url: url, card: movie, timeline: timeline, quality: qualities };
+                player.error = function () {
+                    setTimeout(function () {
+                        if (dead || !Lampa.Player.playdata || Lampa.Player.playdata() !== player) return;
+                        Lampa.Player.close();
+                        playbackFailed(row, 'playback');
+                    }, 0);
+                };
                 var hints = stream.behaviorHints || row.raw.behaviorHints || {};
                 if (stream.headers) player.headers = stream.headers;
                 else if (hints.proxyHeaders && hints.proxyHeaders.request) player.headers = hints.proxyHeaders.request;
