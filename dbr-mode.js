@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '4.1.1';
+    var PLUGIN_VERSION = '4.2.0';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -586,12 +586,14 @@ function DbrDirectPlayback(player) {
 function DbrAutoplay(player, onEnded) {
   var listener = Lampa.Player.listener;
   var video;
+  var videoEvents = Lampa.PlayerVideo && Lampa.PlayerVideo.listener;
   var released = false;
   var timer;
   function detach() {
     listener.remove("ready", ready);
     listener.remove("destroy", cleanup);
     listener.remove("external", cleanup);
+    if (videoEvents) videoEvents.remove("loadeddata", rebind);
     if (video) video.removeEventListener("ended", ended, true);
   }
   function cleanup() {
@@ -610,16 +612,171 @@ function DbrAutoplay(player, onEnded) {
       onEnded();
     }, 0);
   }
+  function rebind() { if (Lampa.Player.playdata() === player) ready(player); }
   function ready(data) {
     if (data !== player || released) return;
+    if (video) video.removeEventListener("ended", ended, true);
     video =
       Lampa.PlayerVideo && Lampa.PlayerVideo.video && Lampa.PlayerVideo.video();
     if (video && String(video.tagName).toLowerCase() === "video")
       video.addEventListener("ended", ended, true);
   }
+  if (videoEvents) videoEvents.follow("loadeddata", rebind);
   listener.follow("ready", ready);
   listener.follow("destroy", cleanup);
   listener.follow("external", cleanup);
+  return cleanup;
+}
+
+function DbrPlayerControls(player, options) {
+  if (!Lampa.PlayerPanel || !Lampa.PlayerPanel.listener || !Lampa.PlayerVideo || !Lampa.PlayerVideo.listener) return function () {};
+  var listeners = Lampa.Player.listener;
+  var videoEvents = Lampa.PlayerVideo.listener;
+  var panel = Lampa.PlayerPanel;
+  var nativeAudioAllowed = true, nativeSubsAllowed = true;
+  var currentVideo,
+    nativeLists = [],
+    closed = false;
+  function active() {
+    return !closed && Lampa.Player.playdata() === player;
+  }
+  function updateNativeTracks() {
+    if (!active() || !currentVideo) return;
+    var audio = currentVideo.audioTracks;
+    if (nativeAudioAllowed && audio && audio.length) {
+      var tracks = [];
+      for (var n = 0; n < audio.length; n++)
+        (function (track, index) {
+          var item = {
+            index: index,
+            language: track.language,
+            label: track.label,
+            selected: !!track.enabled,
+          };
+          Object.defineProperty(item, "enabled", {
+            get: function () {
+              return track.enabled;
+            },
+            set: function (value) {
+              track.enabled = value;
+            },
+          });
+          tracks.push(item);
+        })(audio[n], n);
+      panel.setTracks(tracks);
+    }
+    var subs = currentVideo.textTracks;
+    if (
+      nativeSubsAllowed && subs &&
+      subs.length &&
+      !(currentVideo.customSubs && currentVideo.customSubs.length)
+    ) {
+      var subtitles = [];
+      for (var n = 0; n < subs.length; n++)
+        (function (track, index) {
+          if (track.kind !== "subtitles" && track.kind !== "captions") return;
+          var item = {
+            index: index,
+            language: track.language,
+            label: track.label,
+            selected: track.mode === "showing",
+          };
+          Object.defineProperty(item, "mode", {
+            get: function () {
+              return track.mode;
+            },
+            set: function (value) {
+              track.mode = value;
+            },
+          });
+          subtitles.push(item);
+        })(subs[n], n);
+      if (subtitles.length) panel.setSubs(subtitles);
+    }
+  }
+  function containsOnlyNative(items, list) {
+    if (!items || !list) return false;
+    return items.every(function (item) { for (var n = 0; n < list.length; n++) if (item === list[n]) return true; return false; });
+  }
+  function audioEvent(event) {
+    if (!active() || !currentVideo) return;
+    nativeAudioAllowed = containsOnlyNative(event.tracks, currentVideo.audioTracks);
+    updateNativeTracks();
+  }
+  function subtitleEvent(event) {
+    if (!active() || !currentVideo) return;
+    nativeSubsAllowed = containsOnlyNative(event.subs, currentVideo.textTracks);
+    updateNativeTracks();
+  }
+  function detachNative() {
+    nativeLists.forEach(function (list) {
+      list.removeEventListener("addtrack", updateNativeTracks);
+    });
+    nativeLists = [];
+  }
+  function loaded() {
+    if (!active()) return;
+    var video = Lampa.PlayerVideo.video();
+    if (video !== currentVideo) {
+      detachNative();
+      currentVideo = video;
+      nativeAudioAllowed = nativeSubsAllowed = true;
+      [video && video.audioTracks, video && video.textTracks].forEach(
+        function (list) {
+          if (list && list.addEventListener) {
+            list.addEventListener("addtrack", updateNativeTracks);
+            nativeLists.push(list);
+          }
+        },
+      );
+    }
+    if (currentVideo && player.subtitles && player.subtitles.length && !currentVideo.customSubs) Lampa.Player.subtitles(player.subtitles);
+    updateNativeTracks();
+  }
+  function ready(data) {
+    if (data !== player || !active()) return;
+    if (Object.keys(options.qualities || {}).length > 1) {
+      player.quality = options.qualities;
+      panel.quality(options.qualities, player.url);
+    }
+    loaded();
+    if (options.loadSubtitles)
+      options.loadSubtitles(function (list) {
+        if (!active() || !list.length) return;
+        var merged = (player.subtitles || [])
+          .concat(list)
+          .filter(function (sub, index, all) {
+            return (
+              all.findIndex(function (item) {
+                return item.url === sub.url;
+              }) === index
+            );
+          });
+        player.subtitles = merged;
+        Lampa.Player.subtitles(merged);
+      });
+  }
+  function quality(event) {
+    if (active() && options.onQuality) options.onQuality(event.name);
+  }
+  function cleanup() {
+    closed = true;
+    detachNative();
+    listeners.remove("ready", ready);
+    listeners.remove("destroy", cleanup);
+    listeners.remove("external", cleanup);
+    videoEvents.remove("loadeddata", loaded);
+    videoEvents.remove("subs", subtitleEvent);
+    videoEvents.remove("tracks", audioEvent);
+    panel.listener.remove("quality", quality);
+  }
+  listeners.follow("ready", ready);
+  listeners.follow("destroy", cleanup);
+  listeners.follow("external", cleanup);
+  videoEvents.follow("loadeddata", loaded);
+  videoEvents.follow("subs", subtitleEvent);
+  videoEvents.follow("tracks", audioEvent);
+  panel.listener.follow("quality", quality);
   return cleanup;
 }
 
@@ -634,6 +791,14 @@ function DbrApi(movie) {
     var transportWaiters = [];
     var transportTimer;
     var addon = DbrCore.baseUrl(Lampa.Storage.get('debrid_aiostreams_url', ''));
+    var clientType = 'web';
+    var apkVersion = 0;
+    if (Lampa.Platform && Lampa.Platform.is('android') && typeof AndroidJS !== 'undefined' && typeof AndroidJS.appVersion === 'function') {
+        var version = String(AndroidJS.appVersion()).split('-').pop();
+        apkVersion = parseInt(version, 10) || 0;
+        clientType = 'apk';
+    }
+
 
     function origin(url) { var match = String(url).match(/^https?:\/\/[^/]+/i); return match ? match[0].toLowerCase() : ''; }
     function serverUrl(url) {
@@ -684,7 +849,7 @@ function DbrApi(movie) {
             try { message = JSON.parse(event.data); } catch (ignore) { return; }
             var args = message.args || [];
             if (message.method === 'Connected') {
-                send('RchRegistry', [{ host: location.host, rchtype: 'web', apkVersion: 0, player: 'inner' }]);
+                send('RchRegistry', [{ host: location.host, rchtype: clientType, apkVersion: apkVersion, player: Lampa.Storage.field ? Lampa.Storage.field('player') || 'inner' : 'inner' }]);
             } else if (message.method === 'RchRegistry') {
                 transportReady = true;
                 finish('');
@@ -704,7 +869,7 @@ function DbrApi(movie) {
     function request(url, callback, timeout, retried) {
         var generation = epoch;
         var local = origin(url) === origin(server);
-        if (local && transportReady) url = query(url, { nws_id: transportId, rchtype: 'web' });
+        if (local && transportReady) url = query(url, { nws_id: transportId, rchtype: clientType });
         var net = new Lampa.Reguest();
         var finished = false;
         pending.push(net);
@@ -838,6 +1003,27 @@ function DbrApi(movie) {
         }
         load(provider.voiceUrl || query(provider.url, params), 0);
     };
+    var subtitleSupport;
+    this.subtitles = function (row, season, episode, callback) {
+        if (!addon || !movie.imdb_id) return callback([]);
+        function fetchSubtitles() {
+            if (!subtitleSupport) return callback([]);
+            var id = movie.imdb_id + (DbrCore.type(movie) === 'series' ? ':' + season + ':' + episode : '');
+            var hints = row.raw.behaviorHints || {}, extra = [];
+            ['filename', 'videoSize', 'videoHash'].forEach(function (key) { if (hints[key]) extra.push(key + '=' + encodeURIComponent(String(hints[key]))); });
+            var url = addon + '/subtitles/' + DbrCore.type(movie) + '/' + encodeURIComponent(id) + (extra.length ? '/' + extra.join('&') : '') + '.json';
+            request(url, function (error, data) {
+                var list = !error && data && Array.isArray(data.subtitles) ? data.subtitles : [];
+                callback(list.filter(function (item) { return item && DbrCore.httpUrl(item.url); }).map(function (item) { return { url: item.url, label: item.label || item.title || item.lang || 'Subtitles', language: item.lang || item.language || '' }; }));
+            }, 10000);
+        }
+        if (subtitleSupport !== undefined) return fetchSubtitles();
+        request(addon + '/manifest.json', function (error, manifest) {
+            if (error) return callback([]);
+            subtitleSupport = !!(manifest && Array.isArray(manifest.resources) && manifest.resources.some(function (resource) { return resource === 'subtitles' || (resource && resource.name === 'subtitles'); }));
+            fetchSubtitles();
+        }, 10000);
+    };
     this.resolveStream = function (row, callback) {
         if (row.method !== 'call') return callback('', row.raw);
         var url = serverUrl(row.url);
@@ -863,6 +1049,7 @@ function DebridComponent(object) {
     var backdropKey = '';
     var voiceRenderKey = '';
     var releaseAutoplay = function () {};
+    var releasePlayerControls = function () {};
     var releasePlayback = function () {};
     var files = new Lampa.Explorer($.extend({}, object, { params: $.extend({}, object.params, { noinfo: true }) }));
     var scroll = new Lampa.Scroll({ mask: false, over: false, nopadding: true });
@@ -1643,6 +1830,12 @@ function DebridComponent(object) {
                 if (row.provider === 'aio') releasePlayback = DbrDirectPlayback(player);
                 releaseAutoplay();
                 if (DbrCore.type(movie) === 'series') releaseAutoplay = DbrAutoplay(player, function () { if (!dead && request === playbackRequest) nextEpisode(); });
+                releasePlayerControls();
+                releasePlayerControls = DbrPlayerControls(player, {
+                    qualities: qualities,
+                    onQuality: function (quality) { if (lastPlayback) lastPlayback.quality = quality; },
+                    loadSubtitles: row.provider === 'aio' ? function (done) { api.subtitles(row, player.season || season, player.episode || episode, done); } : undefined
+                });
                 showPlayerChoiceDialog(player, movie);
                 progressTimer = setInterval(function () {
                     var active = Lampa.Player.playdata && Lampa.Player.playdata();
@@ -1726,7 +1919,7 @@ function DebridComponent(object) {
         else Lampa.Activity.backward();
     };
     this.render = function () { return files.render(); };
-    this.destroy = function () { dead = true; clearTimeout(detailTimer); clearTimeout(backdropTimer); releaseAutoplay(); window.removeEventListener("resize", viewportChanged); releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
+    this.destroy = function () { dead = true; releasePlayerControls(); clearTimeout(detailTimer); clearTimeout(backdropTimer); releaseAutoplay(); window.removeEventListener("resize", viewportChanged); releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
 }
 
     // ==================== PLUGIN REGISTRATION ====================
