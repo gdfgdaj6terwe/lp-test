@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '3.0.1';
+    var PLUGIN_VERSION = '3.0.2';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -577,6 +577,19 @@ function DebridComponent(object) {
             onSelect(item.originalItem);
         }, onBack: function () { self.start(); } });
     }
+    function filterMenu() {
+        var items = [];
+        if (DbrCore.type(movie) === 'series') {
+            items.push({ title: 'Сезон ' + season, action: 'season' });
+            if (mode === 'streams') items.push({ title: 'Выбрать серию', action: 'episodes' });
+        }
+        DbrCore.fields.forEach(function (key) { items.push({ title: labels[key], action: key }); });
+        choose('Фильтры', items, function (item) {
+            if (item.action === 'season') showSeasons();
+            else if (item.action === 'episodes') { api.cancel(); mode = 'episodes'; lastKey = 'episode-' + episode; render(); }
+            else showFilter(item.action);
+        });
+    }
     function loading() {
         scroll.append($('<div class="dbr3-loading"></div>').text(mode === 'episodes' ? 'Загружаем серии…' : 'Ищем потоки…'));
         for (var index = 0; index < 4; index++) {
@@ -671,7 +684,7 @@ function DebridComponent(object) {
     }
     function renderSources() {
         side.empty();
-        providers.forEach(function (item) {
+        providers.filter(function (item) { return item.id === 'aio' || (item.state === 'ready' && item.rows.length > 0); }).forEach(function (item) {
             var current = DbrCore.select(item.rows, selection).length;
             var label = item.state === 'ready' ? current + (countFilters() ? '/' + item.rows.length : '') : item.state === 'loading' || item.state === 'queued' ? '…' : '—';
             var node = button('', 'source-' + item.id, function () { selectedProvider = item.id; render(); }, 'dbr3-source');
@@ -680,6 +693,7 @@ function DebridComponent(object) {
             node.append($('<small></small>').text(item.error ? errors[item.error] || 'Не удалось загрузить' : item.state === 'ready' && !item.rows.length ? 'Потоков нет' : item.id === 'aio' ? 'Stremio / Debrid' : 'Онлайн'));
             side.append(node);
         });
+        if (providers.some(function (item) { return item.id !== 'aio' && (item.state === 'queued' || item.state === 'loading'); })) side.append($('<p class="dbr3-loading"></p>').text('Проверяем другие источники…'));
         if (discoveryError) side.append($('<p class="dbr3-source-error"></p>').text('Сервер балансеров: ' + (errors[discoveryError] || 'ошибка')));
     }
     function streamList() {
@@ -835,13 +849,16 @@ function DebridComponent(object) {
         var root = files.render();
         Lampa.Controller.add('content', {
             toggle: function () {
-                var last = root.find('.selector').filter(function () { return $(this).attr('data-dbr-key') === lastKey; }).first();
-                Lampa.Controller.collectionSet(root);
-                Lampa.Controller.collectionFocus(last.length ? last : root.find('.selector').first(), root);
+                var controls = layout.find('.selector').add(header.find('.selector')).filter(':visible');
+                var last = controls.filter(function () { return $(this).attr('data-dbr-key') === lastKey; }).first();
+                if (!last.length) last = controls.filter('.dbr3-episode,.dbr3-stream').first();
+                if (!last.length) last = controls.first();
+                Lampa.Controller.collectionSet(layout, header, true);
+                if (last.length) Lampa.Controller.collectionFocus(last, layout);
             },
             left: function () { if (Navigator.canmove('left')) Navigator.move('left'); else Lampa.Controller.toggle('menu'); },
-            right: function () { if (Navigator.canmove('right')) Navigator.move('right'); },
-            up: function () { if (Navigator.canmove('up')) Navigator.move('up'); else Lampa.Controller.toggle('head'); },
+            right: function () { if (Navigator.canmove('right')) Navigator.move('right'); else filterMenu(); },
+            up: function () { if (Navigator.canmove('up')) Navigator.move('up'); else filterMenu(); },
             down: function () { if (Navigator.canmove('down')) Navigator.move('down'); },
             back: function () { self.back(); }
         });
