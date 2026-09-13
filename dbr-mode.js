@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '4.1.0';
+    var PLUGIN_VERSION = '4.1.1';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -153,7 +153,7 @@
     // ==================== AIOSTREAMS SOURCE ====================
 
 
-var DbrStyles = ".dbr3 {\n  color: #f6f6f6;\n  background: #141414;\n}\n.dbr3 .explorer__files-head {\n  display: none;\n}\n.dbr3 .explorer__files {\n  width: 100%;\n  min-width: 0;\n}\n.dbr3-layout {\n  display: flex;\n  height: calc(100vh - 4em);\n  box-sizing: border-box;\n  padding: 1.2em 2em 1.2em 1em;\n  gap: 2.4em;\n  min-height: 0;\n}\n.dbr4-detail {\n  flex: 0 0 30%;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.dbr4-art {\n  height: 9em;\n  flex-shrink: 0;\n  background: #202020;\n  position: relative;\n  border-radius: 0.4em;\n  overflow: hidden;\n  margin-bottom: 1em;\n}\n.dbr4-art img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr4-art:before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(0deg, rgba(20, 20, 20, 0.3), transparent 50%);\n  z-index: 1;\n}\n.dbr4-kicker {\n  font-size: 0.68em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: #b5b5b5;\n  height: 1.6em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  flex-shrink: 0;\n}\n.dbr4-detail h1 {\n  font-size: 1.65em;\n  line-height: 1.15;\n  height: 2.3em;\n  margin: 0.35em 0 0.4em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-meta {\n  font-size: 0.78em;\n  line-height: 1.5;\n  height: 1.5em;\n  color: #bebebe;\n  flex-shrink: 0;\n}\n.dbr4-description {\n  font-size: 0.82em;\n  line-height: 1.55;\n  height: 4.65em;\n  margin: 1em 0 0.5em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-progress {\n  height: 2em;\n  flex-shrink: 0;\n  margin: 0.3em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.68em;\n  color: #b8b8b8;\n  height: 1.4em;\n}\n.dbr4-progress-track {\n  height: 2px;\n  background: #343434;\n  margin-top: 0.3em;\n}\n.dbr4-progress-fill {\n  height: 100%;\n  background: #e50914;\n}\n.dbr4-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6em;\n  margin-top: 0.4em;\n}\n.dbr3-button {\n  cursor: pointer;\n  padding: 0.65em 0.9em;\n  border-radius: 0.28em;\n  line-height: 1.25;\n  font-size: 0.84em;\n  background: #292929;\n  box-sizing: border-box;\n  min-width: 0;\n}\n.dbr4-actions .dbr3-button {\n  height: 2.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n.dbr4-primary {\n  background: #f4f4f4;\n  color: #151515;\n  font-weight: 700;\n}\n.dbr4-right {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n.dbr4-toolbar {\n  flex-shrink: 0;\n  padding: 0.25em 0.25em 0.8em;\n}\n.dbr4-tabs {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  border-bottom: 1px solid #393939;\n  padding-bottom: 0.65em;\n}\n.dbr4-tab {\n  background: transparent;\n  font-size: 1.05em;\n  padding: 0.4em 0.15em;\n  border-radius: 0;\n  position: relative;\n  color: #a7a7a7;\n}\n.dbr4-tab.selected {\n  color: white;\n}\n.dbr4-tab.selected:after {\n  content: \"\";\n  height: 3px;\n  background: #e50914;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -0.7em;\n}\n.dbr4-tools {\n  margin-left: auto;\n  display: flex;\n  gap: 0.6em;\n}\n.dbr4-dropdown {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\n.dbr4-chevron {\n  width: 1em;\n  height: 1em;\n  flex-shrink: 0;\n}\n.dbr3-sources {\n  display: flex;\n  align-items: center;\n  gap: 0.65em;\n  height: 3.2em;\n  flex-shrink: 0;\n  overflow-x: auto;\n  overflow-y: hidden;\n  padding: 0.2em 0.25em;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr3-source {\n  display: flex;\n  gap: 0.7em;\n  align-items: center;\n  flex-shrink: 0;\n  background: transparent;\n  color: #aaa;\n  font-size: 0.8em;\n  max-width: 14em;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.dbr3-source b {\n  font-size: 0.8em;\n  font-weight: 400;\n  color: inherit;\n}\n.dbr3-source.selected {\n  background: #303030;\n  color: #fff;\n}\n.dbr4-voices {\n  display: flex;\n  align-items: center;\n  gap: 0.55em;\n  height: 3.3em;\n  flex-shrink: 0;\n  padding: 0.3em 0.25em 0.6em;\n  overflow-x: auto;\n  overflow-y: hidden;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr4-voice-label {\n  font-size: 0.7em;\n  color: #999;\n  flex-shrink: 0;\n  margin-right: 0.45em;\n}\n.dbr4-voice {\n  font-size: 0.74em;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 14em;\n  flex-shrink: 0;\n  background: #242424;\n}\n.dbr4-voice.selected {\n  background: #eee;\n  color: #161616;\n}\n.dbr4-muted {\n  font-size: 0.75em;\n  color: #999;\n}\n.dbr4-right > .scroll {\n  flex: 1;\n  min-height: 0;\n  height: 100% !important;\n  width: 100%;\n  overflow: hidden;\n}\n.dbr4-right .scroll__body {\n  padding: 0.3em 0.3em 1em !important;\n}\n.dbr3 .selector.focus {\n  outline: 0.14em solid white;\n  outline-offset: 0.12em;\n  box-shadow: none;\n  background: #3b3b3b;\n  color: #fff;\n}\n.dbr3 .dbr4-primary.focus {\n  background: white;\n  color: #111;\n}\n.dbr3-stream {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7.1em;\n  padding: 1em 0.8em;\n  margin: 0.25em 0 0.45em;\n  border-bottom: 1px solid #303030;\n  border-radius: 0.3em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr3-quality {\n  flex: 0 0 3.5em;\n  font-size: 1.1em;\n  font-weight: 700;\n}\n.dbr3-stream-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-stream-copy strong {\n  display: block;\n  font-size: 0.95em;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-stream-copy small {\n  display: block;\n  font-size: 0.67em;\n  line-height: 1.4;\n  color: #aaa;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin-top: 0.25em;\n}\n.dbr3-stream-copy p {\n  font-size: 0.7em;\n  color: #999;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin: 0.35em 0;\n}\n.dbr3-size {\n  flex: 0 0 4.5em;\n  text-align: right;\n  font-size: 0.78em;\n}\n.dbr3-size small {\n  display: block;\n  color: #a7c7a7;\n  font-size: 0.75em;\n  margin-top: 0.5em;\n}\n.dbr3-count {\n  font-size: 0.7em;\n  color: #929292;\n  padding: 0.4em 0.9em 0.7em;\n}\n.dbr3-episode {\n  display: flex;\n  align-items: center;\n  gap: 0.9em;\n  height: 7.2em;\n  padding: 0.65em 0.4em;\n  margin: 0.2em 0 0.6em;\n  border-radius: 0.35em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr4-episode-number {\n  flex: 0 0 1.2em;\n  font-size: 1.1em;\n  color: #aaa;\n  text-align: center;\n}\n.dbr3-preview {\n  width: 8.7em;\n  height: 4.9em;\n  flex-shrink: 0;\n  position: relative;\n  border-radius: 0.25em;\n  overflow: hidden;\n  background: #242424;\n  color: #999;\n  font-size: 0.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.dbr3-preview img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr3-episode-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-episode-copy strong {\n  font-size: 0.95em;\n  display: block;\n  line-height: 1.35;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-episode-copy p {\n  font-size: 0.72em;\n  line-height: 1.5;\n  height: 3em;\n  margin: 0.5em 0;\n  overflow: hidden;\n  color: #aaa;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n}\n.dbr3-episode-copy .time-line {\n  height: 2px;\n}\n.dbr4-episode-status {\n  flex: 0 0 3.4em;\n  text-align: right;\n  font-size: 0.7em;\n  color: #aaa;\n}\n.dbr4-episode-status span,\n.dbr4-episode-status small {\n  display: block;\n  height: 1.6em;\n}\n.dbr4-episode-status small {\n  color: #b8cfb8;\n}\n.dbr3-empty {\n  padding: 2.5em 1em;\n  line-height: 1.6;\n  font-size: 0.95em;\n  color: #aaa;\n}\n.dbr3-loading {\n  font-size: 0.75em;\n  color: #aaa;\n  padding: 0.7em;\n}\n.dbr3-skeleton {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7em;\n  padding: 1em;\n  box-sizing: border-box;\n}\n.dbr3-skeleton-preview {\n  width: 5em;\n  height: 3em;\n}\n.dbr3-skeleton-body {\n  flex: 1;\n}\n.dbr3-skeleton-body div {\n  height: 0.65em;\n  margin: 0.75em 0;\n  width: 75%;\n}\n.dbr3-skeleton-body div:first-child {\n  width: 55%;\n  height: 0.85em;\n}\n.dbr3-skeleton-body div:last-child {\n  width: 40%;\n}\n.dbr3-skeleton-end {\n  width: 3em;\n  height: 1em;\n}\n.dbr4-source-placeholder {\n  width: 5em;\n  height: 1.5em;\n  flex-shrink: 0;\n}\n.dbr4-voice-placeholder {\n  width: 5em;\n  height: 1.8em;\n  flex-shrink: 0;\n}\n.dbr4-shimmer,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  position: relative;\n  overflow: hidden;\n  background: #242424;\n  border-radius: 0.25em;\n}\n.dbr4-shimmer:after,\n.dbr3-skeleton-preview:after,\n.dbr3-skeleton-body div:after,\n.dbr3-skeleton-end:after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(\n    105deg,\n    transparent 20%,\n    rgba(255, 255, 255, 0.08) 50%,\n    transparent 80%\n  );\n  transform: translateX(-100%);\n  animation: dbr4-shimmer 1.7s ease-in-out infinite;\n  pointer-events: none;\n}\n@keyframes dbr4-shimmer {\n  to {\n    transform: translateX(100%);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr4-shimmer:after,\n  .dbr3-skeleton *:after {\n    animation: none;\n  }\n}\n@media (max-height: 650px) {\n  .dbr4-art {\n    height: 7em;\n  }\n  .dbr4-description {\n    margin-top: 0.6em;\n  }\n  .dbr3-layout {\n    padding-top: 0.5em;\n  }\n}\n@media (max-width: 800px) {\n  .dbr3-layout {\n    gap: 1.3em;\n    padding-right: 1em;\n  }\n  .dbr4-detail {\n    flex-basis: 29%;\n  }\n  .dbr4-tools {\n    gap: 0.4em;\n  }\n  .dbr4-tabs {\n    gap: 0.7em;\n  }\n  .dbr3-preview {\n    width: 6.5em;\n    height: 3.7em;\n  }\n}\n\n.dbr4-right .scroll__content{padding:0!important}.dbr4-art{height:9.5em}.dbr4-right .scroll{mask-image:none!important;-webkit-mask-image:none!important}\n\n.dbr3 {\n  background: #242321;\n  color: #f1eee8;\n}\n.dbr3-layout {\n  position: relative;\n  isolation: isolate;\n  padding-left: 1.5em;\n}\n.dbr4-detail {\n  padding-top: 4.2em;\n  box-sizing: border-box;\n}\n.dbr4-art {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 65%;\n  height: 100%;\n  margin: 0;\n  border-radius: 0;\n  background: transparent;\n  z-index: -1;\n  pointer-events: none;\n}\n.dbr4-art img {\n  object-fit: cover;\n  object-position: 35% center;\n  opacity: 0.62;\n}\n.dbr4-art:before {\n  z-index: 1;\n  background:\n    linear-gradient(\n      90deg,\n      rgba(36, 35, 33, 0.2),\n      rgba(36, 35, 33, 0.65) 47%,\n      #242321 96%\n    ),\n    linear-gradient(\n      0deg,\n      #242321 3%,\n      rgba(36, 35, 33, 0.7) 40%,\n      transparent 90%\n    );\n}\n.dbr4-art.dbr4-shimmer:after {\n  opacity: 0.2;\n}\n.dbr4-kicker {\n  color: #c0b9ae;\n}\n.dbr4-detail h1 {\n  font-size: 1.9em;\n  height: 2.3em;\n  color: #f7f2e9;\n}\n.dbr4-meta {\n  color: #bfb7ab;\n}\n.dbr4-description {\n  color: #d5cfc5;\n}\n.dbr4-progress-label {\n  color: #bfb6a8;\n}\n.dbr4-progress-track {\n  background: #ffffff1c;\n}\n.dbr4-progress-fill,\n.dbr4-tab.selected:after {\n  background: #c7ac80;\n}\n.dbr4-tabs {\n  border-color: #ffffff20;\n}\n.dbr3-button {\n  background: #ffffff0c;\n  color: #d9d2c7;\n}\n.dbr3 .selector.focus {\n  background: #514b41;\n  color: #fff9ef;\n  outline-color: #e8d8ba;\n}\n.dbr4-primary,\n.dbr3 .dbr4-primary.focus {\n  background: #eee4d3;\n  color: #28251f;\n}\n.dbr3-source.selected {\n  background: #ffffff13;\n  color: #f4ecde;\n}\n.dbr4-voice {\n  background: #ffffff08;\n  border: 1px solid #ffffff14;\n}\n.dbr4-voice.selected {\n  background: #d9c8aa;\n  color: #28251f;\n  border-color: #d9c8aa;\n}\n.dbr3-stream {\n  border-color: #ffffff15;\n}\n.dbr3-stream-copy small,\n.dbr3-stream-copy p,\n.dbr3-episode-copy p,\n.dbr3-count,\n.dbr4-voice-label {\n  color: #b5afa6;\n}\n.dbr3-preview,\n.dbr4-source-placeholder,\n.dbr4-voice-placeholder,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  background: #34312b;\n}\n.dbr4-actions {\n  margin-top: 1em;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: transparent;\n  border: 1px solid #ffffff18;\n}\n.dbr4-actions .dbr3-button.focus {\n  background: #514b41;\n}\n.dbr4-primary {\n  max-width: 100%;\n}\n@media (max-height: 650px) {\n  .dbr4-detail {\n    padding-top: 3em;\n  }\n}\n@media (max-width: 700px) {\n  .dbr4-detail {\n    padding-top: 2em;\n  }\n}\n\n.dbr3-button {\n  border: 1px solid rgba(245, 236, 217, 0.13);\n  background: rgba(239, 231, 213, 0.045);\n  border-radius: 0.45em;\n  color: #ded8ce;\n  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);\n  transition:\n    background 0.15s,\n    border-color 0.15s,\n    box-shadow 0.15s;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: rgba(36, 34, 30, 0.32);\n  border-color: rgba(241, 232, 216, 0.17);\n}\n.dbr4-tools .dbr3-button {\n  background: rgba(232, 224, 208, 0.045);\n  border-color: rgba(241, 232, 216, 0.14);\n  padding: 0.65em 1em;\n}\n.dbr4-tab {\n  border: 0;\n  box-shadow: none;\n  background: transparent;\n  border-radius: 0;\n}\n.dbr3-source {\n  border-color: transparent;\n  box-shadow: none;\n  background: transparent;\n}\n.dbr3-source.selected {\n  background: rgba(243, 233, 210, 0.055);\n  border-color: rgba(241, 232, 216, 0.16);\n}\n.dbr4-voice {\n  background: rgba(239, 231, 213, 0.035);\n  border-color: rgba(241, 232, 216, 0.14);\n}\n.dbr4-voice.selected {\n  color: #f1e6d2;\n  background: rgba(203, 179, 136, 0.15);\n  border-color: rgba(228, 208, 173, 0.46);\n}\n.dbr4-primary {\n  border-color: rgba(255, 250, 238, 0.42);\n  background: linear-gradient(\n    135deg,\n    rgba(251, 243, 226, 0.92),\n    rgba(221, 208, 183, 0.87)\n  );\n  color: #27231b;\n  box-shadow:\n    inset 0 1px 0 rgba(255, 255, 255, 0.3),\n    0 0.15em 0.7em rgba(0, 0, 0, 0.14);\n  font-weight: 600;\n}\n.dbr3 .selector.focus {\n  background: rgba(219, 199, 163, 0.16);\n  color: #fff5e4;\n  outline: 0.12em solid rgba(244, 227, 194, 0.9);\n  outline-offset: 0.12em;\n  box-shadow: 0 0 0 0.22em rgba(221, 195, 148, 0.07);\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n  color: #242018;\n  box-shadow: 0 0.15em 1em rgba(0, 0, 0, 0.15);\n  outline-color: rgba(255, 243, 217, 0.94);\n}\n.dbr3 .dbr4-actions .dbr3-button.focus:not(.dbr4-primary) {\n  background: rgba(218, 196, 154, 0.17);\n  border-color: rgba(249, 235, 209, 0.45);\n}\n.dbr4-primary:before {\n  content: \"\";\n  display: block;\n  width: 0;\n  height: 0;\n  border-top: 0.32em solid transparent;\n  border-bottom: 0.32em solid transparent;\n  border-left: 0.5em solid currentColor;\n  margin-right: 0.65em;\n}\n.dbr4-actions {\n  max-width: 19em;\n}\n.dbr3-stream.focus,\n.dbr3-episode.focus {\n  background: rgba(230, 213, 180, 0.065);\n}\n@supports (backdrop-filter: blur(1px)) {\n  .dbr4-actions .dbr3-button,\n  .dbr4-tools .dbr3-button,\n  .dbr4-voice {\n    backdrop-filter: blur(8px);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-button {\n    transition: none;\n  }\n}\n\n.dbr4-icon {\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  flex: 0 0 1em;\n  vertical-align: middle;\n  color: #bfb4a2;\n}\n.dbr4-flag {\n  width: 1.25em;\n  height: 0.85em;\n  display: block;\n  flex-shrink: 0;\n  border-radius: 0.12em;\n  overflow: hidden;\n  opacity: 0.9;\n}\n.dbr4-language-row {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  min-height: 1.7em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-language {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  background: rgba(238, 223, 194, 0.045);\n  border: 1px solid rgba(238, 223, 194, 0.12);\n  border-radius: 0.3em;\n  padding: 0.28em 0.45em;\n  font-size: 0.72em;\n  line-height: 1.15;\n  color: #ede2d0;\n  flex-shrink: 0;\n}\n.dbr4-language > span {\n  font-size: 1em !important;\n  color: inherit !important;\n}\n.dbr4-more-languages {\n  font-size: 0.7em;\n  color: #beb3a1;\n  padding: 0.3em;\n}\n.dbr4-metadata {\n  display: flex;\n  align-items: center;\n  gap: 1.1em;\n  margin-top: 0.6em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-badge {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  font-size: 0.7em;\n  color: #bfb6a8;\n  line-height: 1.3;\n  flex-shrink: 0;\n}\n.dbr4-origin {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  margin-top: 0.55em;\n  font-size: 0.65em;\n  color: #999182;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr4-translation-name {\n  font-size: 0.85em !important;\n  font-weight: 500;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-quality {\n  font-size: 1em;\n  color: #eee4d2;\n}\n.dbr3-size {\n  font-size: 0.76em;\n}\n.dbr3-size .dbr4-icon {\n  display: inline-block;\n  margin-right: 0.3em;\n}\n.dbr4-voices .dbr4-flag {\n  display: inline-block;\n  vertical-align: middle;\n  margin-right: 0.5em;\n}\n.dbr3-stream {\n  height: 6.8em;\n}\n.dbr4-voice {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.1em;\n}\n.dbr4-art {\n  z-index: 0;\n}\n.dbr4-detail > :not(.dbr4-art),\n.dbr4-right {\n  position: relative;\n  z-index: 1;\n}\n\n.dbr3 {\n  font-size: max(1em, 1.55vw);\n}\n.dbr3-layout {\n  gap: 1.5em;\n  padding: 1em 1.4em 1em 1.3em;\n}\n.dbr4-detail {\n  flex-basis: 31%;\n  padding-top: 2em;\n}\n.dbr4-detail h1 {\n  font-size: 1.7em;\n  line-height: 1.18;\n  height: 2.36em;\n  margin: 0.5em 0;\n}\n.dbr4-kicker {\n  font-size: 0.78em;\n  letter-spacing: 0.055em;\n}\n.dbr4-meta {\n  font-size: 0.9em;\n}\n.dbr4-description {\n  font-size: 0.95em;\n  line-height: 1.5;\n  height: 4.5em;\n  margin: 0.8em 0 0.5em;\n}\n.dbr4-progress {\n  height: 1.5em;\n  margin: 0.2em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.78em;\n}\n.dbr4-actions {\n  gap: 0.6em;\n  margin-top: 0.7em;\n}\n.dbr4-actions .dbr3-button {\n  font-size: 1em;\n  height: 2.8em;\n}\n.dbr4-tabs {\n  gap: 0.9em;\n  padding-bottom: 0.55em;\n}\n.dbr4-tab {\n  font-size: 1.1em;\n}\n.dbr4-tools .dbr3-button {\n  font-size: 0.85em;\n}\n.dbr4-toolbar {\n  padding-bottom: 0.5em;\n}\n.dbr3-sources {\n  height: 2.8em;\n  gap: 0.45em;\n}\n.dbr3-source {\n  font-size: 0.85em;\n  max-width: 11em;\n  padding: 0.5em 0.65em;\n}\n.dbr4-voices {\n  height: 2.9em;\n  gap: 0.4em;\n}\n.dbr4-voice {\n  font-size: 0.85em;\n  padding: 0.5em 0.6em;\n}\n.dbr4-voice-label {\n  font-size: 0.78em;\n  margin-right: 0.15em;\n}\n.dbr3-stream {\n  height: 7.3em;\n  padding: 0.9em 0.7em;\n  gap: 0.8em;\n}\n.dbr3-quality {\n  font-size: 1.1em;\n  flex-basis: 3em;\n}\n.dbr4-language {\n  font-size: 0.9em;\n}\n.dbr4-more-languages {\n  font-size: 0.85em;\n}\n.dbr4-badge {\n  font-size: 0.83em;\n}\n.dbr4-metadata {\n  gap: 0.8em;\n}\n.dbr4-origin {\n  font-size: 0.78em;\n}\n.dbr3-size {\n  font-size: 0.85em;\n  flex-basis: 4.1em;\n}\n.dbr3-episode {\n  height: 7.8em;\n  gap: 0.8em;\n  padding: 0.6em 0.35em;\n}\n.dbr3-preview {\n  width: 8.1em;\n  height: 4.6em;\n  font-size: 1em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.05em;\n  white-space: normal;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  line-height: 1.3;\n  max-height: 2.6em;\n}\n.dbr3-episode-copy p {\n  font-size: 0.85em;\n  line-height: 1.4;\n  height: 2.8em;\n  margin: 0.4em 0;\n}\n.dbr4-episode-status {\n  font-size: 0.8em;\n  flex-basis: 3.1em;\n}\n.dbr4-episode-number {\n  font-size: 1em;\n  flex-basis: 0.8em;\n}\n.dbr3-episode-copy .time-line {\n  max-width: 10em;\n  opacity: 0.65;\n}\n.dbr3-count {\n  font-size: 0.8em;\n}\n.dbr4-translation-name {\n  font-size: 1em !important;\n}\n@media (max-aspect-ratio: 4/3) {\n  .dbr3-layout {\n    gap: 1em;\n    padding: 0.6em;\n  }\n  .dbr4-detail {\n    flex-basis: 32%;\n    padding-top: 1em;\n  }\n  .dbr3-preview {\n    width: 5.5em;\n    height: 3.1em;\n  }\n  .dbr4-tools .dbr3-button {\n    padding: 0.6em;\n  }\n  .dbr4-kicker {\n    letter-spacing: 0;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3 {\n    font-size: 16px;\n  }\n  .dbr4-detail {\n    display: none;\n  }\n  .dbr3-preview {\n    width: 6em;\n    height: 3.4em;\n  }\n  .dbr3-layout {\n    height: 100%;\n  }\n  .dbr4-tools {\n    gap: 0.3em;\n  }\n  .dbr4-tabs {\n    gap: 0.6em;\n  }\n}\n\n.dbr3-episode {\n  height: 8.5em;\n  padding: 0.8em 0.6em;\n  border: 1px solid transparent;\n  border-radius: 0.6em;\n  margin: 0.35em 0 0.7em;\n}\n.dbr3-preview {\n  width: 9.6em;\n  height: 5.4em;\n  border-radius: 0.4em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.12em;\n  line-height: 1.35;\n}\n.dbr3-episode-copy p {\n  font-size: 0.9em;\n  color: #c4bcaf;\n}\n.dbr3-episode,\n.dbr3-stream {\n  transition:\n    background 0.14s,\n    border-color 0.14s,\n    box-shadow 0.14s;\n}\n.dbr3-stream {\n  border-radius: 0.6em;\n  border: 1px solid rgba(242, 229, 205, 0.07);\n  background: rgba(24, 23, 20, 0.16);\n  margin: 0.35em 0 0.7em;\n}\n.dbr3 .selector.focus {\n  outline: none !important;\n  border-color: rgba(237, 219, 183, 0.65) !important;\n  box-shadow:\n    inset 0 0 0 1px rgba(244, 224, 190, 0.32),\n    0 0 0 2px rgba(244, 224, 190, 0.1) !important;\n  background: rgba(229, 208, 171, 0.11) !important;\n  color: #fff6e6 !important;\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd) !important;\n  color: #242018 !important;\n  box-shadow:\n    0 0 0 2px rgba(255, 239, 207, 0.5),\n    0 0.2em 0.8em rgba(0, 0, 0, 0.15) !important;\n}\n.dbr3 .dbr4-tab.focus {\n  background: transparent !important;\n  border-radius: 0.2em;\n  box-shadow: 0 0 0 2px rgba(237, 219, 183, 0.65) !important;\n}\n.dbr3-episode.focus .dbr3-preview {\n  box-shadow: 0 0.15em 0.8em rgba(0, 0, 0, 0.25);\n}\n.dbr4-actions .dbr3-button {\n  border-radius: 0.5em;\n  font-weight: 500;\n}\n.dbr4-actions .dbr4-primary {\n  font-weight: 600;\n}\n.dbr4-episode-status {\n  color: #c7bdac;\n}\n.dbr3 .selector.focus:after {\n  outline: none;\n}\n.dbr4-description {\n  color: #dfd5c5;\n}\n.dbr4-tools {\n  gap: 0.6em;\n}\n.dbr3-quality {\n  font-weight: 600;\n}\n.dbr4-metadata {\n  color: #cbbfac;\n}\n@media (hover: hover) and (pointer: fine) {\n  .dbr3 .dbr3-button:hover,\n  .dbr3 .dbr3-episode:hover,\n  .dbr3 .dbr3-stream:hover {\n    background: rgba(237, 220, 186, 0.085);\n    border-color: rgba(237, 219, 183, 0.3);\n    cursor: pointer;\n  }\n  .dbr3 .dbr4-primary:hover {\n    background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n    color: #242018;\n  }\n  .dbr3 .dbr4-tab:hover {\n    background: transparent;\n    color: #fff5e6;\n  }\n}\n@media (max-width: 900px) {\n  .dbr3-preview {\n    width: 7.5em;\n    height: 4.22em;\n  }\n  .dbr3-episode {\n    height: 8em;\n  }\n  .dbr4-detail h1 {\n    font-size: 1.55em;\n  }\n  .dbr4-metadata {\n    gap: 0.55em;\n  }\n  .dbr4-language {\n    font-size: 0.82em;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3-preview {\n    width: 6.8em;\n    height: 3.83em;\n  }\n  .dbr3-episode-copy p {\n    font-size: 0.82em;\n  }\n  .dbr4-episode-status {\n    display: none;\n  }\n  .dbr3-episode {\n    height: 7.5em;\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-episode,\n  .dbr3-stream {\n    transition: none;\n  }\n}\n\n.dbr4-detail{padding-top:.75em}.dbr4-description{height:3em;-webkit-line-clamp:2;line-height:1.5}.dbr3-episode{height:7em;padding:.55em .6em;margin:.3em 0 .4em}.dbr4-episode-status{flex-basis:3.8em;white-space:nowrap}.dbr4-episode-status span,.dbr4-episode-status small{height:auto;min-height:1.5em}.dbr4-actions{flex-shrink:0}.dbr4-detail h1{margin:.35em 0}.dbr4-tab.selected,.dbr4-tab{background:transparent!important}\n\n.dbr3{font-size:clamp(18px,1.25vw,24px)}.dbr3.dbr4-tv{font-size:max(1em,1.55vw)}.dbr3-episode{background:rgba(26,25,23,.4);border-color:rgba(242,229,205,.12)}.dbr3-stream{background:rgba(26,25,23,.48);border-color:rgba(242,229,205,.14)}.dbr3 .dbr3-episode.focus,.dbr3 .dbr3-stream.focus{background:rgba(105,94,76,.48)!important;border-color:#dac8a7!important}.dbr4-art img{opacity:.48}.dbr4-right{isolation:isolate}.dbr4-metadata{flex-wrap:wrap;row-gap:.4em}.dbr4-episode-number{color:#d5c9b4}.dbr4-actions .dbr3-button:not(.dbr4-primary){background:rgba(43,41,36,.62);border-color:rgba(237,219,183,.3)}.dbr4-detail .dbr4-description{height:3em;-webkit-line-clamp:2}.dbr3 .dbr4-tab{box-shadow:none;border-color:transparent}.dbr4-tools .dbr3-button{background:rgba(55,52,45,.6);border-color:rgba(237,219,183,.26)}\n";
+var DbrStyles = ".dbr3 {\n  color: #f6f6f6;\n  background: #141414;\n}\n.dbr3 .explorer__files-head {\n  display: none;\n}\n.dbr3 .explorer__files {\n  width: 100%;\n  min-width: 0;\n}\n.dbr3-layout {\n  display: flex;\n  height: calc(100vh - 4em);\n  box-sizing: border-box;\n  padding: 1.2em 2em 1.2em 1em;\n  gap: 2.4em;\n  min-height: 0;\n}\n.dbr4-detail {\n  flex: 0 0 30%;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.dbr4-art {\n  height: 9em;\n  flex-shrink: 0;\n  background: #202020;\n  position: relative;\n  border-radius: 0.4em;\n  overflow: hidden;\n  margin-bottom: 1em;\n}\n.dbr4-art img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr4-art:before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(0deg, rgba(20, 20, 20, 0.3), transparent 50%);\n  z-index: 1;\n}\n.dbr4-kicker {\n  font-size: 0.68em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: #b5b5b5;\n  height: 1.6em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  flex-shrink: 0;\n}\n.dbr4-detail h1 {\n  font-size: 1.65em;\n  line-height: 1.15;\n  height: 2.3em;\n  margin: 0.35em 0 0.4em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-meta {\n  font-size: 0.78em;\n  line-height: 1.5;\n  height: 1.5em;\n  color: #bebebe;\n  flex-shrink: 0;\n}\n.dbr4-description {\n  font-size: 0.82em;\n  line-height: 1.55;\n  height: 4.65em;\n  margin: 1em 0 0.5em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-progress {\n  height: 2em;\n  flex-shrink: 0;\n  margin: 0.3em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.68em;\n  color: #b8b8b8;\n  height: 1.4em;\n}\n.dbr4-progress-track {\n  height: 2px;\n  background: #343434;\n  margin-top: 0.3em;\n}\n.dbr4-progress-fill {\n  height: 100%;\n  background: #e50914;\n}\n.dbr4-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6em;\n  margin-top: 0.4em;\n}\n.dbr3-button {\n  cursor: pointer;\n  padding: 0.65em 0.9em;\n  border-radius: 0.28em;\n  line-height: 1.25;\n  font-size: 0.84em;\n  background: #292929;\n  box-sizing: border-box;\n  min-width: 0;\n}\n.dbr4-actions .dbr3-button {\n  height: 2.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n.dbr4-primary {\n  background: #f4f4f4;\n  color: #151515;\n  font-weight: 700;\n}\n.dbr4-right {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n.dbr4-toolbar {\n  flex-shrink: 0;\n  padding: 0.25em 0.25em 0.8em;\n}\n.dbr4-tabs {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  border-bottom: 1px solid #393939;\n  padding-bottom: 0.65em;\n}\n.dbr4-tab {\n  background: transparent;\n  font-size: 1.05em;\n  padding: 0.4em 0.15em;\n  border-radius: 0;\n  position: relative;\n  color: #a7a7a7;\n}\n.dbr4-tab.selected {\n  color: white;\n}\n.dbr4-tab.selected:after {\n  content: \"\";\n  height: 3px;\n  background: #e50914;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -0.7em;\n}\n.dbr4-tools {\n  margin-left: auto;\n  display: flex;\n  gap: 0.6em;\n}\n.dbr4-dropdown {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\n.dbr4-chevron {\n  width: 1em;\n  height: 1em;\n  flex-shrink: 0;\n}\n.dbr3-sources {\n  display: flex;\n  align-items: center;\n  gap: 0.65em;\n  height: 3.2em;\n  flex-shrink: 0;\n  overflow-x: auto;\n  overflow-y: hidden;\n  padding: 0.2em 0.25em;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr3-source {\n  display: flex;\n  gap: 0.7em;\n  align-items: center;\n  flex-shrink: 0;\n  background: transparent;\n  color: #aaa;\n  font-size: 0.8em;\n  max-width: 14em;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.dbr3-source b {\n  font-size: 0.8em;\n  font-weight: 400;\n  color: inherit;\n}\n.dbr3-source.selected {\n  background: #303030;\n  color: #fff;\n}\n.dbr4-voices {\n  display: flex;\n  align-items: center;\n  gap: 0.55em;\n  height: 3.3em;\n  flex-shrink: 0;\n  padding: 0.3em 0.25em 0.6em;\n  overflow-x: auto;\n  overflow-y: hidden;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr4-voice-label {\n  font-size: 0.7em;\n  color: #999;\n  flex-shrink: 0;\n  margin-right: 0.45em;\n}\n.dbr4-voice {\n  font-size: 0.74em;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 14em;\n  flex-shrink: 0;\n  background: #242424;\n}\n.dbr4-voice.selected {\n  background: #eee;\n  color: #161616;\n}\n.dbr4-muted {\n  font-size: 0.75em;\n  color: #999;\n}\n.dbr4-right > .scroll {\n  flex: 1;\n  min-height: 0;\n  height: 100% !important;\n  width: 100%;\n  overflow: hidden;\n}\n.dbr4-right .scroll__body {\n  padding: 0.3em 0.3em 1em !important;\n}\n.dbr3 .selector.focus {\n  outline: 0.14em solid white;\n  outline-offset: 0.12em;\n  box-shadow: none;\n  background: #3b3b3b;\n  color: #fff;\n}\n.dbr3 .dbr4-primary.focus {\n  background: white;\n  color: #111;\n}\n.dbr3-stream {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7.1em;\n  padding: 1em 0.8em;\n  margin: 0.25em 0 0.45em;\n  border-bottom: 1px solid #303030;\n  border-radius: 0.3em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr3-quality {\n  flex: 0 0 3.5em;\n  font-size: 1.1em;\n  font-weight: 700;\n}\n.dbr3-stream-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-stream-copy strong {\n  display: block;\n  font-size: 0.95em;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-stream-copy small {\n  display: block;\n  font-size: 0.67em;\n  line-height: 1.4;\n  color: #aaa;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin-top: 0.25em;\n}\n.dbr3-stream-copy p {\n  font-size: 0.7em;\n  color: #999;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin: 0.35em 0;\n}\n.dbr3-size {\n  flex: 0 0 4.5em;\n  text-align: right;\n  font-size: 0.78em;\n}\n.dbr3-size small {\n  display: block;\n  color: #a7c7a7;\n  font-size: 0.75em;\n  margin-top: 0.5em;\n}\n.dbr3-count {\n  font-size: 0.7em;\n  color: #929292;\n  padding: 0.4em 0.9em 0.7em;\n}\n.dbr3-episode {\n  display: flex;\n  align-items: center;\n  gap: 0.9em;\n  height: 7.2em;\n  padding: 0.65em 0.4em;\n  margin: 0.2em 0 0.6em;\n  border-radius: 0.35em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr4-episode-number {\n  flex: 0 0 1.2em;\n  font-size: 1.1em;\n  color: #aaa;\n  text-align: center;\n}\n.dbr3-preview {\n  width: 8.7em;\n  height: 4.9em;\n  flex-shrink: 0;\n  position: relative;\n  border-radius: 0.25em;\n  overflow: hidden;\n  background: #242424;\n  color: #999;\n  font-size: 0.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.dbr3-preview img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr3-episode-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-episode-copy strong {\n  font-size: 0.95em;\n  display: block;\n  line-height: 1.35;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-episode-copy p {\n  font-size: 0.72em;\n  line-height: 1.5;\n  height: 3em;\n  margin: 0.5em 0;\n  overflow: hidden;\n  color: #aaa;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n}\n.dbr3-episode-copy .time-line {\n  height: 2px;\n}\n.dbr4-episode-status {\n  flex: 0 0 3.4em;\n  text-align: right;\n  font-size: 0.7em;\n  color: #aaa;\n}\n.dbr4-episode-status span,\n.dbr4-episode-status small {\n  display: block;\n  height: 1.6em;\n}\n.dbr4-episode-status small {\n  color: #b8cfb8;\n}\n.dbr3-empty {\n  padding: 2.5em 1em;\n  line-height: 1.6;\n  font-size: 0.95em;\n  color: #aaa;\n}\n.dbr3-loading {\n  font-size: 0.75em;\n  color: #aaa;\n  padding: 0.7em;\n}\n.dbr3-skeleton {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7em;\n  padding: 1em;\n  box-sizing: border-box;\n}\n.dbr3-skeleton-preview {\n  width: 5em;\n  height: 3em;\n}\n.dbr3-skeleton-body {\n  flex: 1;\n}\n.dbr3-skeleton-body div {\n  height: 0.65em;\n  margin: 0.75em 0;\n  width: 75%;\n}\n.dbr3-skeleton-body div:first-child {\n  width: 55%;\n  height: 0.85em;\n}\n.dbr3-skeleton-body div:last-child {\n  width: 40%;\n}\n.dbr3-skeleton-end {\n  width: 3em;\n  height: 1em;\n}\n.dbr4-source-placeholder {\n  width: 5em;\n  height: 1.5em;\n  flex-shrink: 0;\n}\n.dbr4-voice-placeholder {\n  width: 5em;\n  height: 1.8em;\n  flex-shrink: 0;\n}\n.dbr4-shimmer,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  position: relative;\n  overflow: hidden;\n  background: #242424;\n  border-radius: 0.25em;\n}\n.dbr4-shimmer:after,\n.dbr3-skeleton-preview:after,\n.dbr3-skeleton-body div:after,\n.dbr3-skeleton-end:after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(\n    105deg,\n    transparent 20%,\n    rgba(255, 255, 255, 0.08) 50%,\n    transparent 80%\n  );\n  transform: translateX(-100%);\n  animation: dbr4-shimmer 1.7s ease-in-out infinite;\n  pointer-events: none;\n}\n@keyframes dbr4-shimmer {\n  to {\n    transform: translateX(100%);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr4-shimmer:after,\n  .dbr3-skeleton *:after {\n    animation: none;\n  }\n}\n@media (max-height: 650px) {\n  .dbr4-art {\n    height: 7em;\n  }\n  .dbr4-description {\n    margin-top: 0.6em;\n  }\n  .dbr3-layout {\n    padding-top: 0.5em;\n  }\n}\n@media (max-width: 800px) {\n  .dbr3-layout {\n    gap: 1.3em;\n    padding-right: 1em;\n  }\n  .dbr4-detail {\n    flex-basis: 29%;\n  }\n  .dbr4-tools {\n    gap: 0.4em;\n  }\n  .dbr4-tabs {\n    gap: 0.7em;\n  }\n  .dbr3-preview {\n    width: 6.5em;\n    height: 3.7em;\n  }\n}\n\n.dbr4-right .scroll__content{padding:0!important}.dbr4-art{height:9.5em}.dbr4-right .scroll{mask-image:none!important;-webkit-mask-image:none!important}\n\n.dbr3 {\n  background: #242321;\n  color: #f1eee8;\n}\n.dbr3-layout {\n  position: relative;\n  isolation: isolate;\n  padding-left: 1.5em;\n}\n.dbr4-detail {\n  padding-top: 4.2em;\n  box-sizing: border-box;\n}\n.dbr4-art {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 65%;\n  height: 100%;\n  margin: 0;\n  border-radius: 0;\n  background: transparent;\n  z-index: -1;\n  pointer-events: none;\n}\n.dbr4-art img {\n  object-fit: cover;\n  object-position: 35% center;\n  opacity: 0.62;\n}\n.dbr4-art:before {\n  z-index: 1;\n  background:\n    linear-gradient(\n      90deg,\n      rgba(36, 35, 33, 0.2),\n      rgba(36, 35, 33, 0.65) 47%,\n      #242321 96%\n    ),\n    linear-gradient(\n      0deg,\n      #242321 3%,\n      rgba(36, 35, 33, 0.7) 40%,\n      transparent 90%\n    );\n}\n.dbr4-art.dbr4-shimmer:after {\n  opacity: 0.2;\n}\n.dbr4-kicker {\n  color: #c0b9ae;\n}\n.dbr4-detail h1 {\n  font-size: 1.9em;\n  height: 2.3em;\n  color: #f7f2e9;\n}\n.dbr4-meta {\n  color: #bfb7ab;\n}\n.dbr4-description {\n  color: #d5cfc5;\n}\n.dbr4-progress-label {\n  color: #bfb6a8;\n}\n.dbr4-progress-track {\n  background: #ffffff1c;\n}\n.dbr4-progress-fill,\n.dbr4-tab.selected:after {\n  background: #c7ac80;\n}\n.dbr4-tabs {\n  border-color: #ffffff20;\n}\n.dbr3-button {\n  background: #ffffff0c;\n  color: #d9d2c7;\n}\n.dbr3 .selector.focus {\n  background: #514b41;\n  color: #fff9ef;\n  outline-color: #e8d8ba;\n}\n.dbr4-primary,\n.dbr3 .dbr4-primary.focus {\n  background: #eee4d3;\n  color: #28251f;\n}\n.dbr3-source.selected {\n  background: #ffffff13;\n  color: #f4ecde;\n}\n.dbr4-voice {\n  background: #ffffff08;\n  border: 1px solid #ffffff14;\n}\n.dbr4-voice.selected {\n  background: #d9c8aa;\n  color: #28251f;\n  border-color: #d9c8aa;\n}\n.dbr3-stream {\n  border-color: #ffffff15;\n}\n.dbr3-stream-copy small,\n.dbr3-stream-copy p,\n.dbr3-episode-copy p,\n.dbr3-count,\n.dbr4-voice-label {\n  color: #b5afa6;\n}\n.dbr3-preview,\n.dbr4-source-placeholder,\n.dbr4-voice-placeholder,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  background: #34312b;\n}\n.dbr4-actions {\n  margin-top: 1em;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: transparent;\n  border: 1px solid #ffffff18;\n}\n.dbr4-actions .dbr3-button.focus {\n  background: #514b41;\n}\n.dbr4-primary {\n  max-width: 100%;\n}\n@media (max-height: 650px) {\n  .dbr4-detail {\n    padding-top: 3em;\n  }\n}\n@media (max-width: 700px) {\n  .dbr4-detail {\n    padding-top: 2em;\n  }\n}\n\n.dbr3-button {\n  border: 1px solid rgba(245, 236, 217, 0.13);\n  background: rgba(239, 231, 213, 0.045);\n  border-radius: 0.45em;\n  color: #ded8ce;\n  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);\n  transition:\n    background 0.15s,\n    border-color 0.15s,\n    box-shadow 0.15s;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: rgba(36, 34, 30, 0.32);\n  border-color: rgba(241, 232, 216, 0.17);\n}\n.dbr4-tools .dbr3-button {\n  background: rgba(232, 224, 208, 0.045);\n  border-color: rgba(241, 232, 216, 0.14);\n  padding: 0.65em 1em;\n}\n.dbr4-tab {\n  border: 0;\n  box-shadow: none;\n  background: transparent;\n  border-radius: 0;\n}\n.dbr3-source {\n  border-color: transparent;\n  box-shadow: none;\n  background: transparent;\n}\n.dbr3-source.selected {\n  background: rgba(243, 233, 210, 0.055);\n  border-color: rgba(241, 232, 216, 0.16);\n}\n.dbr4-voice {\n  background: rgba(239, 231, 213, 0.035);\n  border-color: rgba(241, 232, 216, 0.14);\n}\n.dbr4-voice.selected {\n  color: #f1e6d2;\n  background: rgba(203, 179, 136, 0.15);\n  border-color: rgba(228, 208, 173, 0.46);\n}\n.dbr4-primary {\n  border-color: rgba(255, 250, 238, 0.42);\n  background: linear-gradient(\n    135deg,\n    rgba(251, 243, 226, 0.92),\n    rgba(221, 208, 183, 0.87)\n  );\n  color: #27231b;\n  box-shadow:\n    inset 0 1px 0 rgba(255, 255, 255, 0.3),\n    0 0.15em 0.7em rgba(0, 0, 0, 0.14);\n  font-weight: 600;\n}\n.dbr3 .selector.focus {\n  background: rgba(219, 199, 163, 0.16);\n  color: #fff5e4;\n  outline: 0.12em solid rgba(244, 227, 194, 0.9);\n  outline-offset: 0.12em;\n  box-shadow: 0 0 0 0.22em rgba(221, 195, 148, 0.07);\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n  color: #242018;\n  box-shadow: 0 0.15em 1em rgba(0, 0, 0, 0.15);\n  outline-color: rgba(255, 243, 217, 0.94);\n}\n.dbr3 .dbr4-actions .dbr3-button.focus:not(.dbr4-primary) {\n  background: rgba(218, 196, 154, 0.17);\n  border-color: rgba(249, 235, 209, 0.45);\n}\n.dbr4-primary:before {\n  content: \"\";\n  display: block;\n  width: 0;\n  height: 0;\n  border-top: 0.32em solid transparent;\n  border-bottom: 0.32em solid transparent;\n  border-left: 0.5em solid currentColor;\n  margin-right: 0.65em;\n}\n.dbr4-actions {\n  max-width: 19em;\n}\n.dbr3-stream.focus,\n.dbr3-episode.focus {\n  background: rgba(230, 213, 180, 0.065);\n}\n@supports (backdrop-filter: blur(1px)) {\n  .dbr4-actions .dbr3-button,\n  .dbr4-tools .dbr3-button,\n  .dbr4-voice {\n    backdrop-filter: blur(8px);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-button {\n    transition: none;\n  }\n}\n\n.dbr4-icon {\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  flex: 0 0 1em;\n  vertical-align: middle;\n  color: #bfb4a2;\n}\n.dbr4-flag {\n  width: 1.25em;\n  height: 0.85em;\n  display: block;\n  flex-shrink: 0;\n  border-radius: 0.12em;\n  overflow: hidden;\n  opacity: 0.9;\n}\n.dbr4-language-row {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  min-height: 1.7em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-language {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  background: rgba(238, 223, 194, 0.045);\n  border: 1px solid rgba(238, 223, 194, 0.12);\n  border-radius: 0.3em;\n  padding: 0.28em 0.45em;\n  font-size: 0.72em;\n  line-height: 1.15;\n  color: #ede2d0;\n  flex-shrink: 0;\n}\n.dbr4-language > span {\n  font-size: 1em !important;\n  color: inherit !important;\n}\n.dbr4-more-languages {\n  font-size: 0.7em;\n  color: #beb3a1;\n  padding: 0.3em;\n}\n.dbr4-metadata {\n  display: flex;\n  align-items: center;\n  gap: 1.1em;\n  margin-top: 0.6em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-badge {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  font-size: 0.7em;\n  color: #bfb6a8;\n  line-height: 1.3;\n  flex-shrink: 0;\n}\n.dbr4-origin {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  margin-top: 0.55em;\n  font-size: 0.65em;\n  color: #999182;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr4-translation-name {\n  font-size: 0.85em !important;\n  font-weight: 500;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-quality {\n  font-size: 1em;\n  color: #eee4d2;\n}\n.dbr3-size {\n  font-size: 0.76em;\n}\n.dbr3-size .dbr4-icon {\n  display: inline-block;\n  margin-right: 0.3em;\n}\n.dbr4-voices .dbr4-flag {\n  display: inline-block;\n  vertical-align: middle;\n  margin-right: 0.5em;\n}\n.dbr3-stream {\n  height: 6.8em;\n}\n.dbr4-voice {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.1em;\n}\n.dbr4-art {\n  z-index: 0;\n}\n.dbr4-detail > :not(.dbr4-art),\n.dbr4-right {\n  position: relative;\n  z-index: 1;\n}\n\n.dbr3 {\n  font-size: max(1em, 1.55vw);\n}\n.dbr3-layout {\n  gap: 1.5em;\n  padding: 1em 1.4em 1em 1.3em;\n}\n.dbr4-detail {\n  flex-basis: 31%;\n  padding-top: 2em;\n}\n.dbr4-detail h1 {\n  font-size: 1.7em;\n  line-height: 1.18;\n  height: 2.36em;\n  margin: 0.5em 0;\n}\n.dbr4-kicker {\n  font-size: 0.78em;\n  letter-spacing: 0.055em;\n}\n.dbr4-meta {\n  font-size: 0.9em;\n}\n.dbr4-description {\n  font-size: 0.95em;\n  line-height: 1.5;\n  height: 4.5em;\n  margin: 0.8em 0 0.5em;\n}\n.dbr4-progress {\n  height: 1.5em;\n  margin: 0.2em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.78em;\n}\n.dbr4-actions {\n  gap: 0.6em;\n  margin-top: 0.7em;\n}\n.dbr4-actions .dbr3-button {\n  font-size: 1em;\n  height: 2.8em;\n}\n.dbr4-tabs {\n  gap: 0.9em;\n  padding-bottom: 0.55em;\n}\n.dbr4-tab {\n  font-size: 1.1em;\n}\n.dbr4-tools .dbr3-button {\n  font-size: 0.85em;\n}\n.dbr4-toolbar {\n  padding-bottom: 0.5em;\n}\n.dbr3-sources {\n  height: 2.8em;\n  gap: 0.45em;\n}\n.dbr3-source {\n  font-size: 0.85em;\n  max-width: 11em;\n  padding: 0.5em 0.65em;\n}\n.dbr4-voices {\n  height: 2.9em;\n  gap: 0.4em;\n}\n.dbr4-voice {\n  font-size: 0.85em;\n  padding: 0.5em 0.6em;\n}\n.dbr4-voice-label {\n  font-size: 0.78em;\n  margin-right: 0.15em;\n}\n.dbr3-stream {\n  height: 7.3em;\n  padding: 0.9em 0.7em;\n  gap: 0.8em;\n}\n.dbr3-quality {\n  font-size: 1.1em;\n  flex-basis: 3em;\n}\n.dbr4-language {\n  font-size: 0.9em;\n}\n.dbr4-more-languages {\n  font-size: 0.85em;\n}\n.dbr4-badge {\n  font-size: 0.83em;\n}\n.dbr4-metadata {\n  gap: 0.8em;\n}\n.dbr4-origin {\n  font-size: 0.78em;\n}\n.dbr3-size {\n  font-size: 0.85em;\n  flex-basis: 4.1em;\n}\n.dbr3-episode {\n  height: 7.8em;\n  gap: 0.8em;\n  padding: 0.6em 0.35em;\n}\n.dbr3-preview {\n  width: 8.1em;\n  height: 4.6em;\n  font-size: 1em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.05em;\n  white-space: normal;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  line-height: 1.3;\n  max-height: 2.6em;\n}\n.dbr3-episode-copy p {\n  font-size: 0.85em;\n  line-height: 1.4;\n  height: 2.8em;\n  margin: 0.4em 0;\n}\n.dbr4-episode-status {\n  font-size: 0.8em;\n  flex-basis: 3.1em;\n}\n.dbr4-episode-number {\n  font-size: 1em;\n  flex-basis: 0.8em;\n}\n.dbr3-episode-copy .time-line {\n  max-width: 10em;\n  opacity: 0.65;\n}\n.dbr3-count {\n  font-size: 0.8em;\n}\n.dbr4-translation-name {\n  font-size: 1em !important;\n}\n@media (max-aspect-ratio: 4/3) {\n  .dbr3-layout {\n    gap: 1em;\n    padding: 0.6em;\n  }\n  .dbr4-detail {\n    flex-basis: 32%;\n    padding-top: 1em;\n  }\n  .dbr3-preview {\n    width: 5.5em;\n    height: 3.1em;\n  }\n  .dbr4-tools .dbr3-button {\n    padding: 0.6em;\n  }\n  .dbr4-kicker {\n    letter-spacing: 0;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3 {\n    font-size: 16px;\n  }\n  .dbr4-detail {\n    display: none;\n  }\n  .dbr3-preview {\n    width: 6em;\n    height: 3.4em;\n  }\n  .dbr3-layout {\n    height: 100%;\n  }\n  .dbr4-tools {\n    gap: 0.3em;\n  }\n  .dbr4-tabs {\n    gap: 0.6em;\n  }\n}\n\n.dbr3-episode {\n  height: 8.5em;\n  padding: 0.8em 0.6em;\n  border: 1px solid transparent;\n  border-radius: 0.6em;\n  margin: 0.35em 0 0.7em;\n}\n.dbr3-preview {\n  width: 9.6em;\n  height: 5.4em;\n  border-radius: 0.4em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.12em;\n  line-height: 1.35;\n}\n.dbr3-episode-copy p {\n  font-size: 0.9em;\n  color: #c4bcaf;\n}\n.dbr3-episode,\n.dbr3-stream {\n  transition:\n    background 0.14s,\n    border-color 0.14s,\n    box-shadow 0.14s;\n}\n.dbr3-stream {\n  border-radius: 0.6em;\n  border: 1px solid rgba(242, 229, 205, 0.07);\n  background: rgba(24, 23, 20, 0.16);\n  margin: 0.35em 0 0.7em;\n}\n.dbr3 .selector.focus {\n  outline: none !important;\n  border-color: rgba(237, 219, 183, 0.65) !important;\n  box-shadow:\n    inset 0 0 0 1px rgba(244, 224, 190, 0.32),\n    0 0 0 2px rgba(244, 224, 190, 0.1) !important;\n  background: rgba(229, 208, 171, 0.11) !important;\n  color: #fff6e6 !important;\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd) !important;\n  color: #242018 !important;\n  box-shadow:\n    0 0 0 2px rgba(255, 239, 207, 0.5),\n    0 0.2em 0.8em rgba(0, 0, 0, 0.15) !important;\n}\n.dbr3 .dbr4-tab.focus {\n  background: transparent !important;\n  border-radius: 0.2em;\n  box-shadow: 0 0 0 2px rgba(237, 219, 183, 0.65) !important;\n}\n.dbr3-episode.focus .dbr3-preview {\n  box-shadow: 0 0.15em 0.8em rgba(0, 0, 0, 0.25);\n}\n.dbr4-actions .dbr3-button {\n  border-radius: 0.5em;\n  font-weight: 500;\n}\n.dbr4-actions .dbr4-primary {\n  font-weight: 600;\n}\n.dbr4-episode-status {\n  color: #c7bdac;\n}\n.dbr3 .selector.focus:after {\n  outline: none;\n}\n.dbr4-description {\n  color: #dfd5c5;\n}\n.dbr4-tools {\n  gap: 0.6em;\n}\n.dbr3-quality {\n  font-weight: 600;\n}\n.dbr4-metadata {\n  color: #cbbfac;\n}\n@media (hover: hover) and (pointer: fine) {\n  .dbr3 .dbr3-button:hover,\n  .dbr3 .dbr3-episode:hover,\n  .dbr3 .dbr3-stream:hover {\n    background: rgba(237, 220, 186, 0.085);\n    border-color: rgba(237, 219, 183, 0.3);\n    cursor: pointer;\n  }\n  .dbr3 .dbr4-primary:hover {\n    background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n    color: #242018;\n  }\n  .dbr3 .dbr4-tab:hover {\n    background: transparent;\n    color: #fff5e6;\n  }\n}\n@media (max-width: 900px) {\n  .dbr3-preview {\n    width: 7.5em;\n    height: 4.22em;\n  }\n  .dbr3-episode {\n    height: 8em;\n  }\n  .dbr4-detail h1 {\n    font-size: 1.55em;\n  }\n  .dbr4-metadata {\n    gap: 0.55em;\n  }\n  .dbr4-language {\n    font-size: 0.82em;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3-preview {\n    width: 6.8em;\n    height: 3.83em;\n  }\n  .dbr3-episode-copy p {\n    font-size: 0.82em;\n  }\n  .dbr4-episode-status {\n    display: none;\n  }\n  .dbr3-episode {\n    height: 7.5em;\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-episode,\n  .dbr3-stream {\n    transition: none;\n  }\n}\n\n.dbr4-detail{padding-top:.75em}.dbr4-description{height:3em;-webkit-line-clamp:2;line-height:1.5}.dbr3-episode{height:7em;padding:.55em .6em;margin:.3em 0 .4em}.dbr4-episode-status{flex-basis:3.8em;white-space:nowrap}.dbr4-episode-status span,.dbr4-episode-status small{height:auto;min-height:1.5em}.dbr4-actions{flex-shrink:0}.dbr4-detail h1{margin:.35em 0}.dbr4-tab.selected,.dbr4-tab{background:transparent!important}\n\n.dbr3{font-size:clamp(18px,1.25vw,24px)}.dbr3.dbr4-tv{font-size:max(1em,1.55vw)}.dbr3-episode{background:rgba(26,25,23,.4);border-color:rgba(242,229,205,.12)}.dbr3-stream{background:rgba(26,25,23,.48);border-color:rgba(242,229,205,.14)}.dbr3 .dbr3-episode.focus,.dbr3 .dbr3-stream.focus{background:rgba(105,94,76,.48)!important;border-color:#dac8a7!important}.dbr4-art img{opacity:.48}.dbr4-right{isolation:isolate}.dbr4-metadata{flex-wrap:wrap;row-gap:.4em}.dbr4-episode-number{color:#d5c9b4}.dbr4-actions .dbr3-button:not(.dbr4-primary){background:rgba(43,41,36,.62);border-color:rgba(237,219,183,.3)}.dbr4-detail .dbr4-description{height:3em;-webkit-line-clamp:2}.dbr3 .dbr4-tab{box-shadow:none;border-color:transparent}.dbr4-tools .dbr3-button{background:rgba(55,52,45,.6);border-color:rgba(237,219,183,.26)}\n\n.dbr4-play-mark{width:2em;height:2em;display:block;padding:.3em;border:1px solid rgba(238,223,194,.25);border-radius:50%;box-sizing:border-box}.dbr4-translation-name{display:block;font-weight:600!important}.dbr4-metadata:empty{display:none}\n\n.dbr4-tv .dbr3-button{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transition:background-color .1s,border-color .1s}.dbr4-tv .dbr3-episode,.dbr4-tv .dbr3-stream{transition:background-color .1s,border-color .1s}.dbr4-tv .dbr3-preview{box-shadow:none!important}.dbr4-tv .dbr4-art img{transition:none}.dbr4-right>.scroll{contain:layout paint}\n\n.dbr3 .scroll__body{transition:transform .16s ease-out,-webkit-transform .16s ease-out!important;will-change:transform}.dbr3 .scroll__body.notransition{transition:none!important}.dbr4-tv .dbr3-episode.focus,.dbr4-tv .dbr3-stream.focus{box-shadow:inset 0 0 0 2px #dac8a7!important}@media(prefers-reduced-motion:reduce){.dbr3 .scroll__body{transition:none!important}}\n";
 
 var DbrCore = (function () {
     'use strict';
@@ -194,7 +194,7 @@ var DbrCore = (function () {
             ['it', /🇮🇹|\b(ita|italian)\b/i], ['pt', /🇵🇹|🇧🇷|\b(por|portuguese)\b/i],
             ['zh', /🇨🇳|🇹🇼|\b(zho|chi|chinese|mandarin)\b/i], ['ko', /🇰🇷|\b(kor|korean)\b/i],
             ['hi', /\b(hin|hindi)\b/i], ['nl', /🇳🇱|\b(nld|dut|dutch)\b/i], ['tr', /🇹🇷|\b(tur|turkish)\b/i],
-            ['ar', /\b(ara|arabic)\b/i], ['vi', /🇻🇳|\b(vie|vietnamese)\b/i], ['th', /🇹🇭|\b(tha|thai)\b/i],
+            ['ar', /🇸🇦|\b(ara|arabic)\b/i], ['vi', /🇻🇳|\b(vie|vietnamese)\b/i], ['th', /🇹🇭|\b(tha|thai)\b/i],
             ['id', /🇮🇩|\b(ind|indonesian)\b/i], ['ms', /🇲🇾|\b(msa|malay)\b/i]
         ];
         return rules.filter(function (rule) { return rule[1].test(text); }).map(function (rule) { return rule[0]; });
@@ -212,13 +212,18 @@ var DbrCore = (function () {
         var alias = /\b(4K|UHD)\b/i.test(text) ? '2160' : /\bQHD\b/i.test(text) ? '1440' : /\bFHD\b/i.test(text) ? '1080' : /\bHD\b/i.test(text) ? '720' : /Low Quality/i.test(text) ? 'low' : 'unknown';
         var size = text.match(/(\d+(?:[.,]\d+)?)\s*(GB|GiB|MB|MiB|ГБ|МБ)/i);
         var codec = text.match(/\b(HEVC|H\.?265|H\.?264|x265|x264|AV1|AVC)\b/i);
-        var audioText = text.split('\n').filter(function (line) { return !/subtitles?|субтитр|\bsubs\b/i.test(line); }).join('\n');
+        var subtitleSections = text.match(/(?:📝|(?:subtitles?|субтитры|\bsubs)\s*[:：])[^\n]*/ig) || [];
+        var subtitleText = subtitleSections.map(function (part) { return part.replace(/^(?:📝|(?:subtitles?|субтитры|\bsubs)\s*[:：])\s*/i, '').split(/(?:🎥|🎞|🎧|🔊|🗣|📦|📊|📡|🎭|💻|🔍)/)[0]; }).join('\n');
+        var audioText = text.replace(/(?:📝|(?:subtitles?|субтитры|\bsubs)\s*[:：])[^\n]*/ig, '').split('\n').filter(function (line) { return !/subtitles?|субтитр|\bsubs\b/i.test(line); }).join('\n');
         var explicitAudio = stream.audioLanguages || stream.languages;
         var audio = Array.isArray(explicitAudio) ? unique(explicitAudio.map(languageCode)) : languages(audioText);
         var voiceMatch = text.match(/LostFilm|NewStudio|Кубик в Кубе|Дубляж|Многоголосая|Закадровая|AniLibria|AniDUB|JAM|Lektor/ig);
         var subtitles;
         if (Array.isArray(stream.subtitles)) subtitles = unique(stream.subtitles.map(function (sub) { return languageCode(sub.lang || sub.language || sub.label || sub.title); }));
-        var hints = stream.behaviorHints || {};
+        var describedSubtitles = languages(subtitleText);
+        if (Array.isArray(stream.subtitleLanguages)) describedSubtitles = describedSubtitles.concat(stream.subtitleLanguages.map(languageCode));
+        if (describedSubtitles.length) subtitles = unique((subtitles || []).concat(describedSubtitles));
+        else if (subtitleSections.length && subtitles === undefined) subtitles = /^(?:none|no|нет|без|—|-)$/i.test(subtitleText.trim()) ? [] : ['unknown'];
         return {
             id: provider + '-' + index,
             provider: provider,
@@ -235,12 +240,20 @@ var DbrCore = (function () {
             voice: stream.dbr_voice ? [stream.dbr_voice] : unique(voiceMatch || []),
             range: /Dolby.?Vision|\bDV\b/i.test(text) ? ['Dolby Vision'] : /HDR10\+/i.test(text) ? ['HDR10+'] : /HDR/i.test(text) ? ['HDR'] : /\bSDR\b/i.test(text) ? ['SDR'] : [],
             codec: codec ? (/AVC/i.test(codec[1]) ? 'H.264' : codec[1]) : '',
-            audioCodec: (text.match(/\b(EAC3|E-AC-3|AC3|AAC|OPUS|FLAC|DTS(?:-HD)?|TRUEHD)\b/i) || [''])[0],
+            audioCodec: (text.match(/\b(EAC3|E-AC-3|AC3|AAC|OPUS|FLAC|PCM|DTS(?:-HD)?|TRUEHD)\b/i) || [''])[0],
             size: typeof hints.videoSize === 'number' && hints.videoSize > 0 ? hints.videoSize / 1073741824 : size ? parseFloat(size[1].replace(',', '.')) / (/^(M|М)/i.test(size[2]) ? 1024 : 1) : undefined,
             cached: hints.cached === true || /RD\+|Real.?Debrid.*cached/i.test(text)
         };
     }
+    function qualityValue(value) {
+        var match = String(value).match(/(2160|1440|1080|720|576|480|360|240|144)/);
+        return match ? match[1] : /4k|uhd/i.test(value) ? '2160' : 'unknown';
+    }
+    function qualityKeys(qualities) {
+        return Object.keys(qualities).filter(function (key) { return httpUrl(String(qualities[key]).split(' or ')[0]); }).sort(function (a, b) { return (parseInt(qualityValue(b), 10) || 0) - (parseInt(qualityValue(a), 10) || 0); });
+    }
     function values(row, key) {
+        if (key === 'quality' && row.qualityOptions && row.qualityOptions.length) return row.qualityOptions;
         if (row[key] === undefined) return ['unknown'];
         if (Array.isArray(row[key])) return row[key].length ? row[key] : [key === 'subtitles' ? 'none' : 'unknown'];
         return [row[key]];
@@ -248,7 +261,7 @@ var DbrCore = (function () {
     function select(rows, selected, except) {
         return rows.filter(function (row) {
             return fields.every(function (key) {
-                return key === except || !selected[key] || !selected[key].length || selected[key].some(function (value) { return values(row, key).indexOf(value) !== -1; });
+                return key === except || (key === 'quality' && row.method === 'call' && row.qualityOptions === undefined) || !selected[key] || !selected[key].length || selected[key].some(function (value) { return values(row, key).indexOf(value) !== -1; });
             });
         });
     }
@@ -269,7 +282,8 @@ var DbrCore = (function () {
             return diff || a.index - b.index;
         }).map(function (item) { return item.row; });
     }
-    function lampacRows(items, provider) {
+    function lampacRows(items, provider, metadata) {
+        metadata = metadata || {};
         var rows = [];
         items.forEach(function (item) {
             var qualities = item.quality || item.qualitys || {};
@@ -279,9 +293,9 @@ var DbrCore = (function () {
                 var stream = {};
                 Object.keys(item).forEach(function (key) { stream[key] = item[key]; });
                 stream.url = String(quality ? qualities[quality] : item.url || '').split(' or ')[0];
-                stream.name = provider;
+                stream.name = metadata.name || provider;
                 stream.description = item.title || item.translate || provider;
-                stream.dbr_voice = item.translate || item.voice_name || '';
+                stream.dbr_voice = item.translate || item.voice_name || metadata.voice || '';
                 stream.dbr_quality = quality ? String(parseInt(quality, 10)) : item.maxquality ? String(parseInt(item.maxquality, 10)) : 'unknown';
                 rows.push(normalize(stream, rows.length, provider));
             });
@@ -303,11 +317,11 @@ var DbrCore = (function () {
         if (languageNames[value]) return languageNames[value];
         return key === 'quality' ? value === '2160' ? '4K' : value + 'p' : value;
     }
-    return { nextVariant: nextVariant, fields: fields, escape: escape, httpUrl: httpUrl, baseUrl: baseUrl, streamUrl: streamUrl, type: type, normalize: normalize, values: values, select: select, facet: facet, sort: sort, lampacRows: lampacRows, label: label };
+    return { qualityValue: qualityValue, qualityKeys: qualityKeys, nextVariant: nextVariant, fields: fields, escape: escape, httpUrl: httpUrl, baseUrl: baseUrl, streamUrl: streamUrl, type: type, normalize: normalize, values: values, select: select, facet: facet, sort: sort, lampacRows: lampacRows, label: label };
 })();
 
 var DbrI18n = (function () {
-var en = {"Фильм": "Movie", "Смотреть": "Play", "Потоки": "Streams", "Серии": "Episodes", "Серия ": "Episode ", "Сезон ": "Season ", "Сезон": "Season", "Следующая серия": "Next episode", "Описание": "Description", "Описание отсутствует": "No description available", "Просмотрено": "Watched", "Просмотрено ": "Watched ", " мин": " min", "Нет превью": "No preview", "Не указаны": "Unknown", "Перевод": "Translation", "Озвучка": "Translation", "Язык": "Language", "Субтитры": "Subtitles", "Качество": "Quality", "Видео": "Video", "Фильтры": "Filters", "Список серий пока недоступен": "Episodes are not available yet", " · показано ": " · showing ", " ГБ": " GB", " из ": " of ", " потоков": " streams", " потоков нет. Выберите другой источник слева.": " has no streams. Choose another source above.", "В ": "", "В кэше RD": "RD cached", "Веб-страница": "Web page", "Видео недоступно на этом устройстве": "Video unavailable on this device", "Все варианты": "All options", "Выберите поток следующей серии": "Choose a stream for the next episode", "Выбрать серию": "Choose episode", "Готово · ": "Done · ", "Загружаем серии…": "Loading episodes…", "Информация о потоке": "Stream information", "Источник вернул веб-страницу вместо прямого видео": "Source returned a web page instead of video", "Источник вернул неподдерживаемый ответ": "Unsupported source response", "Источник недоступен": "Source unavailable", "Источник недоступен на этом устройстве": "Source unavailable on this device", "Источник требует авторизацию": "Source requires sign in", "Источник требует проверку в своём плагине": "Source requires verification in its plugin", "Источник требует уточнить название": "Source requires a title match", "Ищем потоки…": "Finding streams…", "Найдено в ": "Available on ", "Не удалось загрузить сведения о сериях": "Could not load episode details", "Не удалось определить IMDb ID": "Could not identify the IMDb ID", "Не удалось подключиться": "Could not connect", "Не удалось получить видео": "Could not retrieve video", "Повторить": "Retry", "Потоки найдены, но не подходят под выбранные фильтры.": "No streams match your filters.", "Прямая ссылка на видео отсутствует": "No direct video link available", "Сбросить фильтры": "Reset filters", "Следующая серия пока недоступна": "Next episode is not available yet", "Укажите адрес AIOStreams в настройках": "Add your AIOStreams address in settings", "Это последняя доступная серия": "This is the last available episode", "Язык не указан": "Language unknown", "Сортировка": "Sort", "Как у источника": "Source order", "Качество: выше": "Highest quality", "Размер: меньше": "Smallest size", "Низкое качество": "Low quality", "Не предоставлены": "Not provided"};
+var en = {"Загружаем качество…":"Loading quality options…","Выбранное качество недоступно":"Selected quality is unavailable","Фильм": "Movie", "Смотреть": "Play", "Потоки": "Streams", "Серии": "Episodes", "Серия ": "Episode ", "Сезон ": "Season ", "Сезон": "Season", "Следующая серия": "Next episode", "Описание": "Description", "Описание отсутствует": "No description available", "Просмотрено": "Watched", "Просмотрено ": "Watched ", " мин": " min", "Нет превью": "No preview", "Не указаны": "Unknown", "Перевод": "Translation", "Озвучка": "Translation", "Язык": "Language", "Субтитры": "Subtitles", "Качество": "Quality", "Видео": "Video", "Фильтры": "Filters", "Список серий пока недоступен": "Episodes are not available yet", " · показано ": " · showing ", " ГБ": " GB", " из ": " of ", " потоков": " streams", " потоков нет. Выберите другой источник слева.": " has no streams. Choose another source above.", "В ": "", "В кэше RD": "RD cached", "Веб-страница": "Web page", "Видео недоступно на этом устройстве": "Video unavailable on this device", "Все варианты": "All options", "Выберите поток следующей серии": "Choose a stream for the next episode", "Выбрать серию": "Choose episode", "Готово · ": "Done · ", "Загружаем серии…": "Loading episodes…", "Информация о потоке": "Stream information", "Источник вернул веб-страницу вместо прямого видео": "Source returned a web page instead of video", "Источник вернул неподдерживаемый ответ": "Unsupported source response", "Источник недоступен": "Source unavailable", "Источник недоступен на этом устройстве": "Source unavailable on this device", "Источник требует авторизацию": "Source requires sign in", "Источник требует проверку в своём плагине": "Source requires verification in its plugin", "Источник требует уточнить название": "Source requires a title match", "Ищем потоки…": "Finding streams…", "Найдено в ": "Available on ", "Не удалось загрузить сведения о сериях": "Could not load episode details", "Не удалось определить IMDb ID": "Could not identify the IMDb ID", "Не удалось подключиться": "Could not connect", "Не удалось получить видео": "Could not retrieve video", "Повторить": "Retry", "Потоки найдены, но не подходят под выбранные фильтры.": "No streams match your filters.", "Прямая ссылка на видео отсутствует": "No direct video link available", "Сбросить фильтры": "Reset filters", "Следующая серия пока недоступна": "Next episode is not available yet", "Укажите адрес AIOStreams в настройках": "Add your AIOStreams address in settings", "Это последняя доступная серия": "This is the last available episode", "Язык не указан": "Language unknown", "Сортировка": "Sort", "Как у источника": "Source order", "Качество: выше": "Highest quality", "Размер: меньше": "Smallest size", "Низкое качество": "Low quality", "Не предоставлены": "Not provided"};
 function text(value) { return Lampa.Storage.get("language", "ru") === "ru" ? value.replace("другой источник слева", "другой источник выше") : en[value] === undefined ? value : en[value]; }
 function label(key, value) { if(value === "low") return text("Низкое качество"); if(value === "unknown") return text("Не указаны"); if(value === "none") return text("Не предоставлены"); return DbrCore.label(key, value); }
 return {text:text,label:label};
@@ -419,7 +433,7 @@ var DbrPresentation = (function () {
   function stream(row, title, label) {
     var box = $('<div class="dbr3-stream-copy"></div>');
     var langs = $('<div class="dbr4-language-row"></div>');
-    var audio = row.audio.length ? row.audio : ["unknown"];
+    var audio = row.audio.length ? row.audio : row.voice.length ? [] : ["unknown"];
     audio.filter(function (code) { return ["ru", "en", "pl", "unknown"].indexOf(code) >= 0; }).sort(function (a, b) { return ["ru", "en", "pl", "unknown"].indexOf(a) - ["ru", "en", "pl", "unknown"].indexOf(b); }).forEach(function (code) {
       langs.append(language(code));
     });
@@ -446,7 +460,7 @@ var DbrPresentation = (function () {
         ),
       );
     if (row.audioCodec) metadata.append(badge("audio", row.audioCodec));
-    metadata.append(
+    if (row.provider === "aio" || row.subtitles !== undefined) metadata.append(
       badge(
         "subtitles",
         DbrCore.values(row, "subtitles")
@@ -819,7 +833,7 @@ function DbrApi(movie) {
                 var links = json.data.filter(function (item) { return item.method === 'link' && !item.similar; });
                 if (!items.length && links.length === 1) return load(links[0].url, depth + 1);
                 if (!items.length && json.type !== 'episode' && json.type !== 'movie' && json.data.length) return callback('match', [], voices);
-                callback('', DbrCore.lampacRows(items, provider.id), voices);
+                callback('', DbrCore.lampacRows(items, provider.id, { name: provider.name, voice: provider.voiceName }), voices);
             });
         }
         load(provider.voiceUrl || query(provider.url, params), 0);
@@ -843,6 +857,11 @@ function DebridComponent(object) {
     var api = new DbrApi(movie);
     var history;
     var progressTimer;
+    var qualityRequest = 0;
+    var backdropTimer;
+    var detailTimer;
+    var backdropKey = '';
+    var voiceRenderKey = '';
     var releaseAutoplay = function () {};
     var releasePlayback = function () {};
     var files = new Lampa.Explorer($.extend({}, object, { params: $.extend({}, object.params, { noinfo: true }) }));
@@ -856,6 +875,9 @@ function DebridComponent(object) {
     var voicebar = $('<div class="dbr4-voices"></div>');
     var previewEpisode = 1;
     var focusMemory = {};
+    var navigationGroups = {};
+    var navigationNodes = {};
+    var navigationIndexes = {};
     var chevron = '<svg class="dbr4-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     var side = $('<div class="dbr3-sources"></div>');
     var layout = $('<div class="dbr3-layout"></div>');
@@ -895,20 +917,20 @@ function DebridComponent(object) {
       var preview = image(
         item.still_path || movie.backdrop_path || movie.poster_path,
       );
-      if (detailPanel.find(".dbr4-art").attr("data-image") !== preview) {
-      detailPanel.find(".dbr4-art").attr("data-image", preview).empty().toggleClass("dbr4-shimmer", !!preview);
-      if (preview)
-        detailPanel.find(".dbr4-art").append(
-          $('<img alt="">')
-            .attr("src", preview)
-            .on("load", function () {
-              $(this).parent().removeClass("dbr4-shimmer");
-            })
-            .on("error", function () {
-              $(this).parent().removeClass("dbr4-shimmer");
-              $(this).remove();
-            }),
-        );
+      if (backdropKey !== preview) {
+        backdropKey = preview;
+        clearTimeout(backdropTimer);
+        backdropTimer = setTimeout(function () {
+          if (dead || backdropKey !== preview) return;
+          var art = detailPanel.find('.dbr4-art');
+          if (!preview) { art.empty().removeClass('dbr4-shimmer'); return; }
+          var img = $('<img alt="">');
+          img.on('load', function () {
+            if (!dead && backdropKey === preview) art.empty().removeClass('dbr4-shimmer').append(img);
+          }).on('error', function () {
+            if (!dead && backdropKey === preview) art.empty().removeClass('dbr4-shimmer');
+          }).attr('src', preview);
+        }, 160);
       }
       detailPanel.find(".dbr4-kicker").text(series ? title() : t("Фильм"));
       detailPanel
@@ -1010,31 +1032,40 @@ function DebridComponent(object) {
           return !group || $(this).attr("data-dbr-group") === group;
         });
     }
-    function move(direction) {
-      var groups = {};
-      controlsFor().each(function () {
-        var node = $(this),
-          group = node.attr("data-dbr-group") || "list";
-        if (!groups[group]) groups[group] = [];
-        groups[group].push(node.attr("data-dbr-key"));
-      });
-      var next = DbrNavigation.move(groups, lastKey, direction, focusMemory);
-      if (!next) return;
-      if (next.action === "filters") {
-        filterMenu();
-        return;
-      }
-      if (next.action) {
-        Lampa.Controller.toggle(next.action);
-        return;
-      }
-      var target = controlsFor()
-        .filter(function () {
-          return $(this).attr("data-dbr-key") === next.key;
-        })
-        .first();
-      if (target.length) Lampa.Controller.collectionFocus(target, layout);
+    function cacheControls() {
+        navigationGroups = {};
+        navigationNodes = {};
+        navigationIndexes = {};
+        controlsFor().each(function () {
+            var node = $(this), group = node.attr('data-dbr-group') || 'list', key = node.attr('data-dbr-key');
+            if (!navigationGroups[group]) navigationGroups[group] = [];
+            navigationIndexes[key] = navigationGroups[group].length;
+            navigationGroups[group].push(key);
+            navigationNodes[key] = node;
+        });
     }
+    function move(direction) {
+        var next = DbrNavigation.move(navigationGroups, lastKey, direction, focusMemory);
+        if (!next) return;
+        if (next.action === 'filters') { filterMenu(); return; }
+        if (next.action) { Lampa.Controller.toggle(next.action); return; }
+        var target = navigationNodes[next.key];
+        if (target && target.length) Lampa.Controller.collectionFocus(target, layout);
+    }
+    function reveal(element, group) {
+        if (group === 'sources' || group === 'voices') {
+            var bar = group === 'sources' ? side[0] : voicebar[0];
+            var itemBox = element[0].getBoundingClientRect(), barBox = bar.getBoundingClientRect();
+            if (itemBox.left < barBox.left) bar.scrollLeft += itemBox.left - barBox.left;
+            else if (itemBox.right > barBox.right) bar.scrollLeft += itemBox.right - barBox.right;
+        } else if ($.contains(scroll.render()[0], element[0])) {
+            var item = element[0].getBoundingClientRect(), box = scroll.render()[0].getBoundingClientRect();
+            var bodyTop = scroll.render().find('.scroll__body')[0].getBoundingClientRect().top;
+            var pendingShift = scroll.position() - (bodyTop - box.top);
+            if (item.top + pendingShift < box.top + 6 || item.bottom + pendingShift > box.bottom - 6) scroll.update(element, true);
+        }
+    }
+    function viewportChanged() { resize(); cacheControls(); }
     function resize() {
         if (!layout[0] || !layout[0].offsetParent) return;
         layout.css('height', Math.max(200, window.innerHeight - layout[0].getBoundingClientRect().top) + 'px');
@@ -1044,18 +1075,17 @@ function DebridComponent(object) {
     function rows() { return provider() ? provider().rows : []; }
     function filtered() { return DbrCore.sort(DbrCore.select(rows(), selection), order); }
     function countFilters() { return Object.keys(selection).reduce(function (sum, key) { return sum + selection[key].length; }, 0); }
-    function image(path) {
+    function image(path, size) {
         if (!path) return '';
         if (DbrCore.httpUrl(path)) return path;
-        return Lampa.TMDB && Lampa.TMDB.image ? Lampa.TMDB.image('t/p/w780' + path) : '';
+        return Lampa.TMDB && Lampa.TMDB.image ? Lampa.TMDB.image('t/p/' + (size || 'w780') + path) : '';
     }
     function bind(element, key, enter) {
         element.attr('data-dbr-key', key).on('hover:enter', enter).on('hover:focus', function () {
             lastKey = key;
             var group = element.attr('data-dbr-group') || 'list';
-            focusMemory[group] = controlsFor(group).index(element);
-            if (group === 'sources' || group === 'voices') element[0].scrollIntoView({ block: 'nearest', inline: 'nearest' });
-            if ($.contains(scroll.render()[0], element[0])) scroll.update(element, true);
+            focusMemory[group] = navigationIndexes[key] || 0;
+            reveal(element, group);
         });
         return element;
     }
@@ -1100,7 +1130,29 @@ function DebridComponent(object) {
         scroll.append($('<div class="dbr3-empty"></div>').text(message));
         if (action) scroll.append(button(t('Повторить'), 'retry', action));
     }
-    function showFilter(key) {
+    function loadQualityOptions(done) {
+        var pending = rows().filter(function (row) { return row.method === 'call' && !row.qualityOptions; });
+        var ticket = ++qualityRequest;
+        if (!pending.length) { done(); return; }
+        Lampa.Noty.show(t('Загружаем качество…'));
+        function next() {
+            if (dead || ticket !== qualityRequest) return;
+            var row = pending.shift();
+            if (!row) { done(); return; }
+            api.resolveStream(row, function (error, stream) {
+                if (dead || ticket !== qualityRequest) return;
+                if (!error) {
+                    var keys = DbrCore.qualityKeys(stream.quality || stream.qualitys || {});
+                    row.qualityOptions = keys.map(DbrCore.qualityValue);
+                    if (keys.length) row.quality = DbrCore.qualityValue(keys[0]);
+                }
+                next();
+            });
+        }
+        next();
+    }
+    function showFilter(key, resolved) {
+        if (key === 'quality' && !resolved) { loadQualityOptions(function () { showFilter(key, true); }); return; }
         var values = (selection[key] || []).slice();
         function show() {
             var temporary = {};
@@ -1231,7 +1283,7 @@ function DebridComponent(object) {
           "list",
         );
         var picture = $('<div class="dbr3-preview dbr4-shimmer"></div>');
-        var preview = image(item.still_path);
+        var preview = image(item.still_path, "w300");
         if (preview)
           picture.append(
             $('<img alt="">')
@@ -1281,7 +1333,9 @@ function DebridComponent(object) {
           beginStreams();
         });
         row.on("hover:focus", function () {
-          detail(item);
+          previewEpisode = item.episode_number;
+          clearTimeout(detailTimer);
+          detailTimer = setTimeout(function () { if (!dead && mode === "episodes") detail(item); }, 80);
         });
         scroll.append(row);
       });
@@ -1300,6 +1354,7 @@ function DebridComponent(object) {
             "source-" + item.id,
             function () {
               nextRequest = undefined;
+              qualityRequest++;
               selection = {};
               selectedProvider = item.id;
               render();
@@ -1321,6 +1376,9 @@ function DebridComponent(object) {
           '<div class="dbr4-source-placeholder dbr4-shimmer" aria-hidden="true"></div>',
         );
       var source = provider();
+      var voiceKey = [season, episode, source && source.id, source && source.state, source && source.voiceName, source && source.rows.length, JSON.stringify(selection.audio || [])].join('|');
+      if (voiceKey === voiceRenderKey) return;
+      voiceRenderKey = voiceKey;
       voicebar.empty();
       voicebar.append(
         $('<span class="dbr4-voice-label"></span>').text(t("Озвучка")),
@@ -1339,11 +1397,14 @@ function DebridComponent(object) {
         fetchProvider(source);
       }
       if (source.voices && source.voices.length) {
-        source.voices.slice(0, 3).forEach(function (item, index) {
+        var visibleVoices = source.voices.slice(0, 3);
+        var selectedVoice = source.voices.filter(function (item) { return (item.name || item.title) === source.voiceName; })[0];
+        if (selectedVoice && visibleVoices.indexOf(selectedVoice) === -1) visibleVoices = [selectedVoice].concat(visibleVoices.slice(0, 2));
+        visibleVoices.forEach(function (item) {
           voicebar.append(
             button(
               item.name || item.title || t("Перевод"),
-              "voice-" + index,
+              "voice-" + source.voices.indexOf(item),
               function () {
                 selectVoice(item);
               },
@@ -1425,10 +1486,17 @@ function DebridComponent(object) {
             scroll.append($('<div class="dbr3-count"></div>').text(source.name + t(' · показано ') + filtered().length + t(' из ') + source.rows.length));
             filtered().forEach(function (row) {
                 var item = $('<div class="selector dbr3-stream"></div>');
-                item.append($('<div class="dbr3-quality"></div>').text(label('quality', row.quality)));
+                var qualityBadge = $('<div class="dbr3-quality"></div>');
+                if (row.quality === 'unknown' && row.method === 'call') qualityBadge.append('<svg class="dbr4-play-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z" fill="currentColor"/></svg>');
+                else {
+                    var displayedQuality = row.quality;
+                    if (row.method === 'call' && selection.quality && row.qualityOptions) displayedQuality = row.qualityOptions.filter(function (value) { return selection.quality.indexOf(value) >= 0; }).sort(function (a, b) { return Number(b) - Number(a); })[0] || row.quality;
+                    qualityBadge.text(label('quality', displayedQuality));
+                }
+                item.append(qualityBadge);
                 var details = DbrPresentation.stream(row, t, label);
                 item.append(details);
-                item.append($('<div class="dbr3-size"></div>').text(row.size === undefined ? '—' : row.size.toFixed(2) + t(' ГБ')).append($('<small></small>').text(row.external && !row.url ? t('Веб-страница') : row.cached ? t('В кэше RD') : '')));
+                if (row.provider === 'aio' || row.size !== undefined) item.append($('<div class="dbr3-size"></div>').text(row.size === undefined ? '—' : row.size.toFixed(2) + t(' ГБ')).append($('<small></small>').text(row.external && !row.url ? t('Веб-страница') : row.cached ? t('В кэше RD') : '')));
                 item.attr('data-dbr-group', 'list');
                 bind(item, 'stream-' + row.id, function () { play(row); });
                 item.on('hover:long', function () {
@@ -1443,6 +1511,7 @@ function DebridComponent(object) {
     }
     function render() {
       if (dead) return;
+      clearTimeout(detailTimer);
       header.empty();
       buildDetail();
       addFilterHeader();
@@ -1459,16 +1528,23 @@ function DebridComponent(object) {
       if (self.activity) self.activity.loader(false);
       self.start(true);
     }
+    function refreshSource(source) {
+        if (dead) return;
+        if (mode === 'streams' && source.id !== selectedProvider) {
+            renderSources();
+            self.start(true);
+        } else render();
+    }
     function fetchProvider(source, done) {
         source.state = 'loading';
         source.error = '';
-        render();
+        refreshSource(source);
         function finish(error, data, voices) {
             source.error = error;
             source.state = error ? 'error' : 'ready';
             source.rows = data || [];
             source.voices = voices || [];
-            render();
+            refreshSource(source);
             if (nextRequest && source.name === nextRequest.sourceName) {
                 var wanted = nextRequest;
                 if (!error && wanted.voiceName && source.voiceName !== wanted.voiceName) {
@@ -1496,6 +1572,7 @@ function DebridComponent(object) {
     function beginStreams(preference) {
         api.cancel();
         playbackRequest++;
+        qualityRequest++;
         advancing = false;
         nextRequest = preference;
         mode = 'streams';
@@ -1511,7 +1588,8 @@ function DebridComponent(object) {
         api.providers(function (error, list) {
             discoveryError = error;
             list.forEach(function (source) { if (nextRequest && source.name === nextRequest.sourceName) selectedProvider = source.id; source.state = 'queued'; source.rows = []; providers.push(source); pendingProviders.push(source); });
-            render();
+            renderSources();
+            self.start(true);
             pump();
         });
     }
@@ -1541,7 +1619,9 @@ function DebridComponent(object) {
                 url = DbrCore.httpUrl(String(url || '').split(' or ')[0]);
                 if (!url) { Lampa.Noty.show(t('Прямая ссылка на видео отсутствует')); return; }
                 var timeline = history.timeline(season, episode);
-                var player = { title: title() + (DbrCore.type(movie) === 'series' ? ' · S' + season + 'E' + episode : ''), url: url, card: movie, timeline: timeline, quality: qualities };
+                var playbackQualities = {};
+                if (chosenQuality) playbackQualities[chosenQuality] = url;
+                var player = { title: title() + (DbrCore.type(movie) === 'series' ? ' · S' + season + 'E' + episode : ''), url: url, card: movie, timeline: timeline, quality: chosenQuality ? playbackQualities : qualities };
                 player.error = function () {
                     setTimeout(function () {
                         if (dead || !Lampa.Player.playdata || Lampa.Player.playdata() !== player) return;
@@ -1573,15 +1653,20 @@ function DebridComponent(object) {
                 }, 10000);
                 Lampa.Player.playlist([player]);
             }
-            var keys = Object.keys(qualities).filter(function (key) { return DbrCore.httpUrl(String(qualities[key]).split(' or ')[0]); });
-            if (preferredQuality && qualities[preferredQuality]) launch(qualities[preferredQuality], preferredQuality);
-            else if (row.method === 'call' && keys.length > 1) choose(t('Качество'), keys.map(function (key) { return { title: key, url: qualities[key] }; }), function (item) { launch(item.url, item.title); });
+            var keys = DbrCore.qualityKeys(qualities);
+            row.qualityOptions = keys.map(DbrCore.qualityValue);
+            if (keys.length) row.quality = DbrCore.qualityValue(keys[0]);
+            var allowed = (selection.quality || []).filter(function (value) { return value !== 'unknown'; });
+            var matching = allowed.length ? keys.filter(function (key) { return allowed.indexOf(DbrCore.qualityValue(key)) !== -1; }) : keys;
+            if (allowed.length && row.method === 'call' && !matching.length) { Lampa.Noty.show(t('Выбранное качество недоступно')); render(); return; }
+            var chosen = preferredQuality && matching.indexOf(preferredQuality) >= 0 ? preferredQuality : matching[0];
+            if (chosen) launch(qualities[chosen], chosen);
             else launch(row.method === 'call' ? stream.url : row.url);
         });
     }
     this.create = function () {
         if (!$('#dbr3-style').length) $('head').append($('<style id="dbr3-style"></style>').text(DbrStyles));
-        window.addEventListener("resize", resize);
+        window.addEventListener("resize", viewportChanged);
         files.render().addClass('dbr3').toggleClass('dbr4-tv', Lampa.Platform.is('android') || Lampa.Platform.is('tizen') || Lampa.Platform.is('webos') || Lampa.Platform.is('apple_tv'));
         rightPanel.append(toolbar).append(side).append(voicebar).append(scroll.render());
         layout.append(detailPanel).append(rightPanel);
@@ -1617,6 +1702,7 @@ function DebridComponent(object) {
         var controllerName = typeof current === 'string' ? current : current && current.name;
         var takeFocus = !passive || !controllerName || ['content', 'activity', 'loading'].indexOf(controllerName) !== -1;
         resize();
+        cacheControls();
         var root = files.render();
         Lampa.Controller.add('content', {
             toggle: function () {
@@ -1640,7 +1726,7 @@ function DebridComponent(object) {
         else Lampa.Activity.backward();
     };
     this.render = function () { return files.render(); };
-    this.destroy = function () { dead = true; releaseAutoplay(); window.removeEventListener("resize", resize); releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
+    this.destroy = function () { dead = true; clearTimeout(detailTimer); clearTimeout(backdropTimer); releaseAutoplay(); window.removeEventListener("resize", viewportChanged); releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
 }
 
     // ==================== PLUGIN REGISTRATION ====================
