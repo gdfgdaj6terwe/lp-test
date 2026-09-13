@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '3.0.5';
+    var PLUGIN_VERSION = '3.0.6';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -349,6 +349,49 @@ function DbrHistory(movie) {
   };
 }
 
+function DbrDirectPlayback(player) {
+  if (/\.(m3u8|mpd)(?:[?#]|$)/i.test(player.url)) return function () {};
+  var listener = Lampa.Player.listener;
+  var originalField = Lampa.Storage.field;
+  var finished = false;
+  function field(name) {
+    // Web Audio cannot process media fetched without CORS permission.
+    if (name === "player_normalization" && Lampa.Player.playdata() === player)
+      return false;
+    return originalField.apply(this, arguments);
+  }
+  function cleanup() {
+    if (finished) return;
+    finished = true;
+    listener.remove("ready", ready);
+    listener.remove("external", external);
+    listener.remove("destroy", cleanup);
+    if (Lampa.Storage.field === field) Lampa.Storage.field = originalField;
+  }
+  function external(data) {
+    if (data === player) cleanup();
+  }
+  function ready(data) {
+    if (data !== player) return;
+    cleanup();
+    var video =
+      Lampa.PlayerVideo && Lampa.PlayerVideo.video && Lampa.PlayerVideo.video();
+    if (!video || String(video.tagName).toLowerCase() !== "video") return;
+    if (!video.hasAttribute("crossorigin")) return;
+    video.removeAttribute("crossorigin");
+    video.load();
+    if (!player.timeline || !player.timeline.waiting_for_user) {
+      var started = video.play();
+      if (started && started.catch) started.catch(function () {});
+    }
+  }
+  Lampa.Storage.field = field;
+  listener.follow("ready", ready);
+  listener.follow("external", external);
+  listener.follow("destroy", cleanup);
+  return cleanup;
+}
+
 function DbrApi(movie) {
     var pending = [];
     var timers = [];
@@ -583,6 +626,7 @@ function DebridComponent(object) {
     var api = new DbrApi(movie);
     var history;
     var progressTimer;
+    var releasePlayback = function () {};
     var files = new Lampa.Explorer($.extend({}, object, { params: $.extend({}, object.params, { noinfo: true }) }));
     var scroll = new Lampa.Scroll({ mask: true, over: true });
     var header = $('<div class="dbr3-header"></div>');
@@ -952,6 +996,8 @@ function DebridComponent(object) {
                 lastPlayback = { season: season, episode: episode, sourceName: provider().name, voiceName: provider().voiceName, row: row, quality: chosenQuality };
                 history.save(season, episode);
                 clearInterval(progressTimer);
+                releasePlayback();
+                if (row.provider === 'aio') releasePlayback = DbrDirectPlayback(player);
                 showPlayerChoiceDialog(player, movie);
                 progressTimer = setInterval(function () {
                     var active = Lampa.Player.playdata && Lampa.Player.playdata();
@@ -1026,7 +1072,7 @@ function DebridComponent(object) {
         else Lampa.Activity.backward();
     };
     this.render = function () { return files.render(); };
-    this.destroy = function () { dead = true; clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
+    this.destroy = function () { dead = true; releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
 }
 
     // ==================== PLUGIN REGISTRATION ====================
