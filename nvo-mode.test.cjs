@@ -83,7 +83,7 @@ test('manifest profiles execute with the installed repository-prefixed IDs', asy
     const parts = scraper.id.split('~');
     const voice = decodeURIComponent(parts[2]);
     if (scraper.enabled) { assert.notEqual(voice, '*'); assert.notEqual(parts[3], 'any'); }
-    if (parts[1] === 'aniboom') continue; // Covered by the AnimeGO manifest execution test.
+    if (parts[1] === 'aniboom' || parts[1] === 'cvh') continue; // Covered by the AnimeGO manifest execution test.
     const r = runtime('installed:' + scraper.id, () => ({ type: 'episode', data: [stream(2, voice)] }));
     assert.equal((await r.getStreams('42', 'tv', 1, 2)).length, 1);
   }

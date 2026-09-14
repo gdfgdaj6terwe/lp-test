@@ -1,12 +1,1230 @@
 {
   "name": "NVO Lampac Test",
-  "version": "0.2.1",
-  "description": "Direct AnimeGO/AniBoom 1080p with fixed Russian dub profiles, plus Lampac sources.",
+  "version": "0.3.0",
+  "description": "AnimeGO AniBoom and CVH voice/quality profiles, plus Lampac sources.",
   "scrapers": [
+    {
+      "id": "nvo1~cvh~TVShows~1080",
+      "name": "NVO CVH / TVShows / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~TVShows~1440",
+      "name": "NVO CVH / TVShows / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~TVShows~2160",
+      "name": "NVO CVH / TVShows / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A1%D1%82%D1%83%D0%B4%D0%B8%D0%B9%D0%BD%D0%B0%D1%8F%20%D0%91%D0%B0%D0%BD%D0%B4%D0%B0~1080",
+      "name": "NVO CVH / Студийная Банда / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A1%D1%82%D1%83%D0%B4%D0%B8%D0%B9%D0%BD%D0%B0%D1%8F%20%D0%91%D0%B0%D0%BD%D0%B4%D0%B0~1440",
+      "name": "NVO CVH / Студийная Банда / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A1%D1%82%D1%83%D0%B4%D0%B8%D0%B9%D0%BD%D0%B0%D1%8F%20%D0%91%D0%B0%D0%BD%D0%B4%D0%B0~2160",
+      "name": "NVO CVH / Студийная Банда / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Amber~1080",
+      "name": "NVO CVH / Amber / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Amber~1440",
+      "name": "NVO CVH / Amber / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Amber~2160",
+      "name": "NVO CVH / Amber / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A2%D0%9E%20%D0%94%D1%83%D0%B1%D0%BB%D1%8F%D0%B6%D0%BD%D0%B0%D1%8F~1080",
+      "name": "NVO CVH / ТО Дубляжная / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A2%D0%9E%20%D0%94%D1%83%D0%B1%D0%BB%D1%8F%D0%B6%D0%BD%D0%B0%D1%8F~1440",
+      "name": "NVO CVH / ТО Дубляжная / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A2%D0%9E%20%D0%94%D1%83%D0%B1%D0%BB%D1%8F%D0%B6%D0%BD%D0%B0%D1%8F~2160",
+      "name": "NVO CVH / ТО Дубляжная / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Freedub%20Studio~1080",
+      "name": "NVO CVH / Freedub Studio / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Freedub%20Studio~1440",
+      "name": "NVO CVH / Freedub Studio / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Freedub%20Studio~2160",
+      "name": "NVO CVH / Freedub Studio / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9F%D0%92%D0%90%20%D0%A8%D0%9E%D0%A3~1080",
+      "name": "NVO CVH / ПВА ШОУ / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9F%D0%92%D0%90%20%D0%A8%D0%9E%D0%A3~1440",
+      "name": "NVO CVH / ПВА ШОУ / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9F%D0%92%D0%90%20%D0%A8%D0%9E%D0%A3~2160",
+      "name": "NVO CVH / ПВА ШОУ / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Amazing%20Dubbing~1080",
+      "name": "NVO CVH / Amazing Dubbing / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Amazing%20Dubbing~1440",
+      "name": "NVO CVH / Amazing Dubbing / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Amazing%20Dubbing~2160",
+      "name": "NVO CVH / Amazing Dubbing / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniJoy~1080",
+      "name": "NVO CVH / AniJoy / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniJoy~1440",
+      "name": "NVO CVH / AniJoy / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniJoy~2160",
+      "name": "NVO CVH / AniJoy / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~DubClub~1080",
+      "name": "NVO CVH / DubClub / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~DubClub~1440",
+      "name": "NVO CVH / DubClub / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~DubClub~2160",
+      "name": "NVO CVH / DubClub / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~FRONDA~1080",
+      "name": "NVO CVH / FRONDA / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~FRONDA~1440",
+      "name": "NVO CVH / FRONDA / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~FRONDA~2160",
+      "name": "NVO CVH / FRONDA / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Kazoku%20Project~1080",
+      "name": "NVO CVH / Kazoku Project / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Kazoku%20Project~1440",
+      "name": "NVO CVH / Kazoku Project / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Kazoku%20Project~2160",
+      "name": "NVO CVH / Kazoku Project / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Shikoku%20Studio~1080",
+      "name": "NVO CVH / Shikoku Studio / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Shikoku%20Studio~1440",
+      "name": "NVO CVH / Shikoku Studio / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Shikoku%20Studio~2160",
+      "name": "NVO CVH / Shikoku Studio / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Youkai%20Studio~1080",
+      "name": "NVO CVH / Youkai Studio / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Youkai%20Studio~1440",
+      "name": "NVO CVH / Youkai Studio / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Youkai%20Studio~2160",
+      "name": "NVO CVH / Youkai Studio / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%92%D0%B8%D1%81%D1%82%D0%B5%D1%80%D0%B8%D1%8F~1080",
+      "name": "NVO CVH / Вистерия / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%92%D0%B8%D1%81%D1%82%D0%B5%D1%80%D0%B8%D1%8F~1440",
+      "name": "NVO CVH / Вистерия / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%92%D0%B8%D1%81%D1%82%D0%B5%D1%80%D0%B8%D1%8F~2160",
+      "name": "NVO CVH / Вистерия / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9A%D0%BE%D0%BC%D0%BD%D0%B0%D1%82%D0%B0%20%D0%94%D0%B8%D0%B4%D0%B8~1080",
+      "name": "NVO CVH / Комната Диди / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9A%D0%BE%D0%BC%D0%BD%D0%B0%D1%82%D0%B0%20%D0%94%D0%B8%D0%B4%D0%B8~1440",
+      "name": "NVO CVH / Комната Диди / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9A%D0%BE%D0%BC%D0%BD%D0%B0%D1%82%D0%B0%20%D0%94%D0%B8%D0%B4%D0%B8~2160",
+      "name": "NVO CVH / Комната Диди / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~LE-Production~1080",
+      "name": "NVO CVH / LE-Production / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~LE-Production~1440",
+      "name": "NVO CVH / LE-Production / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~LE-Production~2160",
+      "name": "NVO CVH / LE-Production / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~HORIZON~1080",
+      "name": "NVO CVH / HORIZON / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~HORIZON~1440",
+      "name": "NVO CVH / HORIZON / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~HORIZON~2160",
+      "name": "NVO CVH / HORIZON / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniBaza~1080",
+      "name": "NVO CVH / AniBaza / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniBaza~1440",
+      "name": "NVO CVH / AniBaza / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniBaza~2160",
+      "name": "NVO CVH / AniBaza / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~MoonWalkers~1080",
+      "name": "NVO CVH / MoonWalkers / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~MoonWalkers~1440",
+      "name": "NVO CVH / MoonWalkers / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~MoonWalkers~2160",
+      "name": "NVO CVH / MoonWalkers / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Jam%20Club~1080",
+      "name": "NVO CVH / Jam Club / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Jam%20Club~1440",
+      "name": "NVO CVH / Jam Club / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Jam%20Club~2160",
+      "name": "NVO CVH / Jam Club / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A2%D0%B2%D0%BE%D1%80%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D1%81%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%9C%D0%98%D0%A0~1080",
+      "name": "NVO CVH / Творческая студия МИР / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A2%D0%B2%D0%BE%D1%80%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D1%81%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%9C%D0%98%D0%A0~1440",
+      "name": "NVO CVH / Творческая студия МИР / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%A2%D0%B2%D0%BE%D1%80%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D1%81%D1%82%D1%83%D0%B4%D0%B8%D1%8F%20%D0%9C%D0%98%D0%A0~2160",
+      "name": "NVO CVH / Творческая студия МИР / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~LDA%20TEAM~1080",
+      "name": "NVO CVH / LDA TEAM / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~LDA%20TEAM~1440",
+      "name": "NVO CVH / LDA TEAM / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~LDA%20TEAM~2160",
+      "name": "NVO CVH / LDA TEAM / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9E%D0%BA%D0%B0%D0%BD%D1%8D~1080",
+      "name": "NVO CVH / Оканэ / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9E%D0%BA%D0%B0%D0%BD%D1%8D~1440",
+      "name": "NVO CVH / Оканэ / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9E%D0%BA%D0%B0%D0%BD%D1%8D~2160",
+      "name": "NVO CVH / Оканэ / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniDub%20Online~1080",
+      "name": "NVO CVH / AniDub Online / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniDub%20Online~1440",
+      "name": "NVO CVH / AniDub Online / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AniDub%20Online~2160",
+      "name": "NVO CVH / AniDub Online / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Brees%20Club~1080",
+      "name": "NVO CVH / Brees Club / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Brees%20Club~1440",
+      "name": "NVO CVH / Brees Club / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Brees%20Club~2160",
+      "name": "NVO CVH / Brees Club / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Original~1080",
+      "name": "NVO CVH / Original / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ja"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Original~1440",
+      "name": "NVO CVH / Original / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ja"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Original~2160",
+      "name": "NVO CVH / Original / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ja"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AnilibriaTV~1080",
+      "name": "NVO CVH / AnilibriaTV / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AnilibriaTV~1440",
+      "name": "NVO CVH / AnilibriaTV / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~AnilibriaTV~2160",
+      "name": "NVO CVH / AnilibriaTV / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Dream%20Cast~1080",
+      "name": "NVO CVH / Dream Cast / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Dream%20Cast~1440",
+      "name": "NVO CVH / Dream Cast / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~Dream%20Cast~2160",
+      "name": "NVO CVH / Dream Cast / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9A%D0%BB%D0%B0%D0%B4%D0%B1%D0%B8%D1%89%D0%B5%20%D1%82%D0%BE%D0%BF%D0%BE%D0%B2%D1%8B%D1%85%20%D1%80%D0%B5%D0%BB%D0%B8%D0%B7%D0%BE%D0%B2~1080",
+      "name": "NVO CVH / Кладбище топовых релизов / 1080p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9A%D0%BB%D0%B0%D0%B4%D0%B1%D0%B8%D1%89%D0%B5%20%D1%82%D0%BE%D0%BF%D0%BE%D0%B2%D1%8B%D1%85%20%D1%80%D0%B5%D0%BB%D0%B8%D0%B7%D0%BE%D0%B2~1440",
+      "name": "NVO CVH / Кладбище топовых релизов / 1440p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
+    {
+      "id": "nvo1~cvh~%D0%9A%D0%BB%D0%B0%D0%B4%D0%B1%D0%B8%D1%89%D0%B5%20%D1%82%D0%BE%D0%BF%D0%BE%D0%B2%D1%8B%D1%85%20%D1%80%D0%B5%D0%BB%D0%B8%D0%B7%D0%BE%D0%B2~2160",
+      "name": "NVO CVH / Кладбище топовых релизов / 2160p",
+      "version": "0.3.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Exact voice and HLS resolution. Returns nothing when unavailable."
+    },
     {
       "id": "nvo1~aniboom~%D0%A0%D1%83%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%2F%20DEEP~1080",
       "name": "NVO AniBoom / РуАниме / DEEP / 1080p",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "tv"
@@ -20,7 +1238,7 @@
     {
       "id": "nvo1~aniboom~AniLibria~1080",
       "name": "NVO AniBoom / AniLibria / 1080p",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "tv"
@@ -34,7 +1252,7 @@
     {
       "id": "nvo1~aniboom~JAM%20CLUB~1080",
       "name": "NVO AniBoom / JAM CLUB / 1080p",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "tv"
@@ -48,7 +1266,7 @@
     {
       "id": "nvo1~kodik~AniLibria.TV~720",
       "name": "NVO kodik / AniLibria.TV / 720p",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -60,7 +1278,7 @@
     {
       "id": "nvo1~kodik~AniLibria.TV%20Old~720",
       "name": "NVO kodik / AniLibria.TV Old / 720p",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -72,7 +1290,7 @@
     {
       "id": "nvo1~kodik~AniDUB~720",
       "name": "NVO kodik / AniDUB / 720p",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -84,7 +1302,7 @@
     {
       "id": "nvo1~kodik~KANSAI%20Studio~720",
       "name": "NVO kodik / KANSAI Studio / 720p",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -96,7 +1314,7 @@
     {
       "id": "nvo1~rezka~%2A~any",
       "name": "NVO rezka / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -108,7 +1326,7 @@
     {
       "id": "nvo1~filmix~%2A~any",
       "name": "NVO filmix / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -120,7 +1338,7 @@
     {
       "id": "nvo1~collaps~%2A~any",
       "name": "NVO collaps / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -132,7 +1350,7 @@
     {
       "id": "nvo1~hdvb~%2A~any",
       "name": "NVO hdvb / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -144,7 +1362,7 @@
     {
       "id": "nvo1~kinogo~%2A~any",
       "name": "NVO kinogo / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -156,7 +1374,7 @@
     {
       "id": "nvo1~aniliberty~%2A~any",
       "name": "NVO aniliberty / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -168,7 +1386,7 @@
     {
       "id": "nvo1~animevost~%2A~any",
       "name": "NVO animevost / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -180,7 +1398,7 @@
     {
       "id": "nvo1~kodik~%2A~any",
       "name": "NVO kodik / MANUAL",
-      "version": "0.2.1",
+      "version": "0.3.0",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",

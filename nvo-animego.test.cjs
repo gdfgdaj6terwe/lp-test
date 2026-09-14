@@ -4,11 +4,32 @@ const fs = require('node:fs');
 const vm = require('node:vm');
 const path = require('node:path');
 
+test('all CVH profiles preserve exact voice, resolution and next episode', async () => {
+  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8'));
+  for (const scraper of manifest.scrapers.filter(s => s.id.startsWith('nvo1~cvh~'))) {
+    const [, , encoded, height] = scraper.id.split('~');
+    const r = setup({ cvh: true, scraperId: 'repo:' + scraper.id, voice: decodeURIComponent(encoded), height });
+    for (const ep of [1, 2]) {
+      const rows = await r.run(ep);
+      assert.equal(rows.length, 1);
+      assert.equal(rows[0].quality, height + 'p');
+      assert.equal(rows[0].url, 'https://cdn.example/quality/index.m3u8?sign=fixture');
+      assert.ok(r.calls.some(c => c.url.endsWith('/video/' + (100 + ep))));
+    }
+  }
+});
+test('CVH rejects missing voice, resolution and external audio variants', async () => {
+  const base = { cvh: true, scraperId: 'repo:nvo1~cvh~TVShows~2160', voice: 'TVShows' };
+  for (const change of [{voice:'Other'}, {height:'1080'}, {audio:true}])
+    assert.equal((await setup({...base, ...change}).run(1)).length, 0);
+});
+
 function setup(options = {}) {
   const calls = [];
   const source = { '@type': 'TVSeries', name: 'Fixture 3', alternateName: 'Fixture Season 3', datePublished: '2024-04-05', numberOfEpisodes: 2, ...options.source };
   const escape = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
   function players(ep) {
+    if (options.cvh) return '<button data-player="//animego.me/cdn-iframe/52299/TVShows/1/' + ep + '"></button>';
     return `<button data-player="//aniboom.one/embed/fixture?episode=${ep}&amp;translation=30" data-provider-title="AniBoom" data-translation-title="${options.voice || 'AniLibria'}"></button>`;
   }
   const context = {
@@ -23,6 +44,9 @@ function setup(options = {}) {
       else if (u.pathname === '/anime/fixture-123') data = `<script type="application/ld+json">${JSON.stringify(source)}</script>`;
       else if (u.pathname === '/player/123') data = { data: { content: players(1) + '<button data-episode="9002" data-episode-number="2"></button>' } };
       else if (u.pathname === '/player/videos/9002') data = { data: { content: players(2) } };
+      else if (u.pathname.endsWith('/playlist')) data = { items: [1, 2].map(ep => ({ voiceStudio: options.voice, season: 1, episode: ep, vkId: String(100 + ep) })) };
+      else if (/\/video\/10[12]$/.test(u.pathname)) data = { sources: { hlsUrl: 'https://cdn.example/dir/master.m3u8' } };
+      else if (u.pathname === '/dir/master.m3u8') data = '#EXTM3U\n#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=3840x' + (options.height || '2160') + (options.audio ? ',AUDIO="separate"' : '') + '\n../quality/index.m3u8?sign=fixture\n';
       else if (u.pathname === '/embed/fixture') data = `<video data-parameters="${escape(JSON.stringify({ qualityVideo: 1080, hls: JSON.stringify({ src: `https://cdn.example/master-${u.searchParams.get('episode')}.m3u8` }) }))}"></video>`;
       else if (/^\/master-\d.m3u8$/.test(u.pathname)) data = '#EXTM3U\n#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",URI="audio.m3u8"\n#EXT-X-STREAM-INF:BANDWIDTH=3000000,RESOLUTION=' + (options.resolution || '1920x1080') + ',AUDIO="audio"\nvideo.m3u8\n';
       else throw Error('Unexpected request ' + u.pathname);

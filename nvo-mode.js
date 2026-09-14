@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   var SERVER = "http://smotret24.com";
-  var VERSION = "0.2.1";
+  var VERSION = "0.3.0";
 
   function normalized(value) {
     return String(value || "")
@@ -144,6 +144,66 @@
     if (!/^\d{4}-\d{2}-\d{2}/.test(String(date || ""))) return NaN;
     return Date.parse(String(date).slice(0, 10) + "T00:00:00Z");
   }
+  function relativeMediaUrl(base, path) {
+    if (httpUrl(path)) return path;
+    if (path.indexOf("//") === 0) return "https:" + path;
+    var root = origin(base);
+    var full = path.charAt(0) === "/" ? path : base.slice(root.length).split(/[?#]/)[0].replace(/[^/]*$/, "") + path;
+    var pieces = full.split("/"), result = [];
+    pieces.forEach(function (part) {
+      if (part === "..") result.pop();
+      else if (part !== ".") result.push(part);
+    });
+    var url = root + result.join("/");
+    return httpUrl(url) ? url : "";
+  }
+  async function cvhStreams(content, profile, season, episode) {
+    var coordinates = [];
+    (content.match(/<button\b[^>]*>/g) || []).map(attributes).forEach(function (attr) {
+      var match = /\/cdn-iframe\/(\d+)\/[^/]+\/(\d+)\/(\d+)(?:[?#]|$)/.exec(attr["data-player"] || "");
+      if (match) {
+        var key = [match[1], match[2], match[3]].join("/");
+        if (coordinates.indexOf(key) < 0) coordinates.push(key);
+      }
+    });
+    if (coordinates.length !== 1) return [];
+    var parts = coordinates[0].split("/");
+    var api = "https://plapi.cdnvideohub.com/api/v1/player/sv";
+    var headers = { Referer: "https://animego.me/", "User-Agent": "Mozilla/5.0" };
+    var playlist = JSON.parse(await textRequest(api + "/playlist?pub=747&aggr=mali&id=" + parts[0], headers));
+    var ids = [];
+    (Array.isArray(playlist.items) ? playlist.items : []).forEach(function (item) {
+      if (normalized(item.voiceStudio || "Original") === normalized(profile.voice) &&
+          Number(item.season) === Number(parts[1]) && Number(item.episode) === Number(parts[2]) &&
+          /^\d+$/.test(String(item.vkId)) && ids.indexOf(String(item.vkId)) < 0)
+        ids.push(String(item.vkId));
+    });
+    if (ids.length !== 1) return [];
+    var video = JSON.parse(await textRequest(api + "/video/" + ids[0], headers));
+    var masterUrl = video.sources && video.sources.hlsUrl;
+    if (!httpUrl(masterUrl)) return [];
+    var master = await textRequest(masterUrl, headers);
+    if (master.indexOf("#EXTM3U") !== 0) return [];
+    var lines = master.split(/\r?\n/), urls = [];
+    for (var i = 0; i < lines.length; i++) {
+      if (lines[i].indexOf("#EXT-X-STREAM-INF:") !== 0) continue;
+      var resolution = /RESOLUTION=\d+x(\d+)(?:,|$)/.exec(lines[i]);
+      if (!resolution || resolution[1] !== profile.quality) continue;
+      // A standalone video rendition would lose an external audio group.
+      if (/(?:[:,])AUDIO=/.test(lines[i])) continue;
+      var next = i + 1;
+      while (next < lines.length && !lines[next].trim()) next++;
+      if (next >= lines.length || lines[next].charAt(0) === "#") continue;
+      var url = relativeMediaUrl(masterUrl, lines[next].trim());
+      if (url && urls.indexOf(url) < 0) urls.push(url);
+    }
+    if (!urls.length) return [];
+    return [{ name: "CVH | " + profile.voice,
+      title: "S" + season + "E" + episode + " | " + profile.voice + " | " + profile.quality + "p",
+      url: urls[0], quality: profile.quality + "p",
+      language: profile.voice === "Original" ? "Japanese" : "Russian", headers: headers }];
+  }
+
   async function animeGoStreams(profile, movie, tmdbId, season, episode) {
     if (season < 1 || !profile.strict || movie.original_language !== "ja")
       return [];
@@ -264,6 +324,7 @@
       if (episodeIds.length !== 1) return [];
       content = await playerHtml("/player/videos/" + episodeIds[0]);
     }
+    if (profile.provider === "cvh") return cvhStreams(content, profile, season, episode);
     var players = (content.match(/<button\b[^>]*>/g) || [])
       .map(attributes)
       .filter(function (attr) {
@@ -357,7 +418,7 @@
     );
     if (!movie || (!movie.title && !movie.name))
       throw new Error("NVO: metadata unavailable");
-    if (profile.provider === "aniboom") {
+    if (profile.provider === "aniboom" || profile.provider === "cvh") {
       return series
         ? animeGoStreams(profile, movie, tmdbId, season, episode)
         : [];
