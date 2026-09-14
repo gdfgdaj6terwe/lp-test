@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '4.3.0';
+    var PLUGIN_VERSION = '4.2.0';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -153,7 +153,7 @@
     // ==================== AIOSTREAMS SOURCE ====================
 
 
-var DbrStyles = ".dbr3 {\n  color: #f6f6f6;\n  background: #141414;\n}\n.dbr3 .explorer__files-head {\n  display: none;\n}\n.dbr3 .explorer__files {\n  width: 100%;\n  min-width: 0;\n}\n.dbr3-layout {\n  display: flex;\n  height: calc(100vh - 4em);\n  box-sizing: border-box;\n  padding: 1.2em 2em 1.2em 1em;\n  gap: 2.4em;\n  min-height: 0;\n}\n.dbr4-detail {\n  flex: 0 0 30%;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.dbr4-art {\n  height: 9em;\n  flex-shrink: 0;\n  background: #202020;\n  position: relative;\n  border-radius: 0.4em;\n  overflow: hidden;\n  margin-bottom: 1em;\n}\n.dbr4-art img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr4-art:before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(0deg, rgba(20,20,20, 0.3), transparent 50%);\n  z-index: 1;\n}\n.dbr4-kicker {\n  font-size: 0.68em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: #b5b5b5;\n  height: 1.6em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  flex-shrink: 0;\n}\n.dbr4-detail h1 {\n  font-size: 1.65em;\n  line-height: 1.15;\n  height: 2.3em;\n  margin: 0.35em 0 0.4em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-meta {\n  font-size: 0.78em;\n  line-height: 1.5;\n  height: 1.5em;\n  color: #bebebe;\n  flex-shrink: 0;\n}\n.dbr4-description {\n  font-size: 0.82em;\n  line-height: 1.55;\n  height: 4.65em;\n  margin: 1em 0 0.5em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-progress {\n  height: 2em;\n  flex-shrink: 0;\n  margin: 0.3em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.68em;\n  color: #b8b8b8;\n  height: 1.4em;\n}\n.dbr4-progress-track {\n  height: 2px;\n  background: #343434;\n  margin-top: 0.3em;\n}\n.dbr4-progress-fill {\n  height: 100%;\n  background: #565656;\n}\n.dbr4-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6em;\n  margin-top: 0.4em;\n}\n.dbr3-button {\n  cursor: pointer;\n  padding: 0.65em 0.9em;\n  border-radius: 0.28em;\n  line-height: 1.25;\n  font-size: 0.84em;\n  background: #292929;\n  box-sizing: border-box;\n  min-width: 0;\n}\n.dbr4-actions .dbr3-button {\n  height: 2.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n.dbr4-primary {\n  background: #f4f4f4;\n  color: #151515;\n  font-weight: 700;\n}\n.dbr4-right {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n.dbr4-toolbar {\n  flex-shrink: 0;\n  padding: 0.25em 0.25em 0.8em;\n}\n.dbr4-tabs {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  border-bottom: 1px solid #393939;\n  padding-bottom: 0.65em;\n}\n.dbr4-tab {\n  background: transparent;\n  font-size: 1.05em;\n  padding: 0.4em 0.15em;\n  border-radius: 0;\n  position: relative;\n  color: #a7a7a7;\n}\n.dbr4-tab.selected {\n  color: white;\n}\n.dbr4-tab.selected:after {\n  content: \"\";\n  height: 3px;\n  background: #565656;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -0.7em;\n}\n.dbr4-tools {\n  margin-left: auto;\n  display: flex;\n  gap: 0.6em;\n}\n.dbr4-dropdown {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\n.dbr4-chevron {\n  width: 1em;\n  height: 1em;\n  flex-shrink: 0;\n}\n.dbr3-sources {\n  display: flex;\n  align-items: center;\n  gap: 0.65em;\n  height: 3.2em;\n  flex-shrink: 0;\n  overflow-x: auto;\n  overflow-y: hidden;\n  padding: 0.2em 0.25em;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr3-source {\n  display: flex;\n  gap: 0.7em;\n  align-items: center;\n  flex-shrink: 0;\n  background: transparent;\n  color: #aaaaaa;\n  font-size: 0.8em;\n  max-width: 14em;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.dbr3-source b {\n  font-size: 0.8em;\n  font-weight: 400;\n  color: inherit;\n}\n.dbr3-source.selected {\n  background: #303030;\n  color: #ffffff;\n}\n.dbr4-voices {\n  display: flex;\n  align-items: center;\n  gap: 0.55em;\n  height: 3.3em;\n  flex-shrink: 0;\n  padding: 0.3em 0.25em 0.6em;\n  overflow-x: auto;\n  overflow-y: hidden;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr4-voice-label {\n  font-size: 0.7em;\n  color: #999999;\n  flex-shrink: 0;\n  margin-right: 0.45em;\n}\n.dbr4-voice {\n  font-size: 0.74em;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 14em;\n  flex-shrink: 0;\n  background: #141619;\n}\n.dbr4-voice.selected {\n  background: #eeeeee;\n  color: #161616;\n}\n.dbr4-muted {\n  font-size: 0.75em;\n  color: #999999;\n}\n.dbr4-right > .scroll {\n  flex: 1;\n  min-height: 0;\n  height: 100% !important;\n  width: 100%;\n  overflow: hidden;\n}\n.dbr4-right .scroll__body {\n  padding: 0.3em 0.3em 1em !important;\n}\n.dbr3 .selector.focus {\n  outline: 0.14em solid white;\n  outline-offset: 0.12em;\n  box-shadow: none;\n  background: #3b3b3b;\n  color: #ffffff;\n}\n.dbr3 .dbr4-primary.focus {\n  background: white;\n  color: #111111;\n}\n.dbr3-stream {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7.1em;\n  padding: 1em 0.8em;\n  margin: 0.25em 0 0.45em;\n  border-bottom: 1px solid #303030;\n  border-radius: 0.3em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr3-quality {\n  flex: 0 0 3.5em;\n  font-size: 1.1em;\n  font-weight: 700;\n}\n.dbr3-stream-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-stream-copy strong {\n  display: block;\n  font-size: 0.95em;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-stream-copy small {\n  display: block;\n  font-size: 0.67em;\n  line-height: 1.4;\n  color: #aaaaaa;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin-top: 0.25em;\n}\n.dbr3-stream-copy p {\n  font-size: 0.7em;\n  color: #999999;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin: 0.35em 0;\n}\n.dbr3-size {\n  flex: 0 0 4.5em;\n  text-align: right;\n  font-size: 0.78em;\n}\n.dbr3-size small {\n  display: block;\n  color: #b2b2b2;\n  font-size: 0.75em;\n  margin-top: 0.5em;\n}\n.dbr3-count {\n  font-size: 0.7em;\n  color: #929292;\n  padding: 0.4em 0.9em 0.7em;\n}\n.dbr3-episode {\n  display: flex;\n  align-items: center;\n  gap: 0.9em;\n  height: 7.2em;\n  padding: 0.65em 0.4em;\n  margin: 0.2em 0 0.6em;\n  border-radius: 0.35em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr4-episode-number {\n  flex: 0 0 1.2em;\n  font-size: 1.1em;\n  color: #aaaaaa;\n  text-align: center;\n}\n.dbr3-preview {\n  width: 8.7em;\n  height: 4.9em;\n  flex-shrink: 0;\n  position: relative;\n  border-radius: 0.25em;\n  overflow: hidden;\n  background: #141619;\n  color: #999999;\n  font-size: 0.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.dbr3-preview img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr3-episode-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-episode-copy strong {\n  font-size: 0.95em;\n  display: block;\n  line-height: 1.35;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-episode-copy p {\n  font-size: 0.72em;\n  line-height: 1.5;\n  height: 3em;\n  margin: 0.5em 0;\n  overflow: hidden;\n  color: #aaaaaa;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n}\n.dbr3-episode-copy .time-line {\n  height: 2px;\n}\n.dbr4-episode-status {\n  flex: 0 0 3.4em;\n  text-align: right;\n  font-size: 0.7em;\n  color: #aaaaaa;\n}\n.dbr4-episode-status span,\n.dbr4-episode-status small {\n  display: block;\n  height: 1.6em;\n}\n.dbr4-episode-status small {\n  color: #c0c0c0;\n}\n.dbr3-empty {\n  padding: 2.5em 1em;\n  line-height: 1.6;\n  font-size: 0.95em;\n  color: #aaaaaa;\n}\n.dbr3-loading {\n  font-size: 0.75em;\n  color: #aaaaaa;\n  padding: 0.7em;\n}\n.dbr3-skeleton {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7em;\n  padding: 1em;\n  box-sizing: border-box;\n}\n.dbr3-skeleton-preview {\n  width: 5em;\n  height: 3em;\n}\n.dbr3-skeleton-body {\n  flex: 1;\n}\n.dbr3-skeleton-body div {\n  height: 0.65em;\n  margin: 0.75em 0;\n  width: 75%;\n}\n.dbr3-skeleton-body div:first-child {\n  width: 55%;\n  height: 0.85em;\n}\n.dbr3-skeleton-body div:last-child {\n  width: 40%;\n}\n.dbr3-skeleton-end {\n  width: 3em;\n  height: 1em;\n}\n.dbr4-source-placeholder {\n  width: 5em;\n  height: 1.5em;\n  flex-shrink: 0;\n}\n.dbr4-voice-placeholder {\n  width: 5em;\n  height: 1.8em;\n  flex-shrink: 0;\n}\n.dbr4-shimmer,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  position: relative;\n  overflow: hidden;\n  background: #141619;\n  border-radius: 0.25em;\n}\n.dbr4-shimmer:after,\n.dbr3-skeleton-preview:after,\n.dbr3-skeleton-body div:after,\n.dbr3-skeleton-end:after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(\n    105deg,\n    transparent 20%,\n    rgba(255,255,255, 0.08) 50%,\n    transparent 80%\n  );\n  transform: translateX(-100%);\n  animation: dbr4-shimmer 1.7s ease-in-out infinite;\n  pointer-events: none;\n}\n@keyframes dbr4-shimmer {\n  to {\n    transform: translateX(100%);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr4-shimmer:after,\n  .dbr3-skeleton *:after {\n    animation: none;\n  }\n}\n@media (max-height: 650px) {\n  .dbr4-art {\n    height: 7em;\n  }\n  .dbr4-description {\n    margin-top: 0.6em;\n  }\n  .dbr3-layout {\n    padding-top: 0.5em;\n  }\n}\n@media (max-width: 800px) {\n  .dbr3-layout {\n    gap: 1.3em;\n    padding-right: 1em;\n  }\n  .dbr4-detail {\n    flex-basis: 29%;\n  }\n  .dbr4-tools {\n    gap: 0.4em;\n  }\n  .dbr4-tabs {\n    gap: 0.7em;\n  }\n  .dbr3-preview {\n    width: 6.5em;\n    height: 3.7em;\n  }\n}\n\n.dbr4-right .scroll__content{padding:0!important}.dbr4-art{height:9.5em}.dbr4-right .scroll{mask-image:none!important;-webkit-mask-image:none!important}\n\n.dbr3 {\n  background: #141619;\n  color: #ededed;\n}\n.dbr3-layout {\n  position: relative;\n  isolation: isolate;\n  padding-left: 1.5em;\n}\n.dbr4-detail {\n  padding-top: 4.2em;\n  box-sizing: border-box;\n}\n.dbr4-art {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 65%;\n  height: 100%;\n  margin: 0;\n  border-radius: 0;\n  background: transparent;\n  z-index: -1;\n  pointer-events: none;\n}\n.dbr4-art img {\n  object-fit: cover;\n  object-position: 35% center;\n  opacity: 0.62;\n}\n.dbr4-art:before {\n  z-index: 1;\n  background:\n    linear-gradient(\n      90deg,\n      rgba(35,35,35, 0.2),\n      rgba(35,35,35, 0.65) 47%,\n      #141619 96%\n    ),\n    linear-gradient(\n      0deg,\n      #141619 3%,\n      rgba(35,35,35, 0.7) 40%,\n      transparent 90%\n    );\n}\n.dbr4-art.dbr4-shimmer:after {\n  opacity: 0.2;\n}\n.dbr4-kicker {\n  color: #b8b8b8;\n}\n.dbr4-detail h1 {\n  font-size: 1.9em;\n  height: 2.3em;\n  color: #f1f1f1;\n}\n.dbr4-meta {\n  color: #b6b6b6;\n}\n.dbr4-description {\n  color: #cecece;\n}\n.dbr4-progress-label {\n  color: #b4b4b4;\n}\n.dbr4-progress-track {\n  background: #ffffff1c;\n}\n.dbr4-progress-fill,\n.dbr4-tab.selected:after {\n  background: #a6a6a6;\n}\n.dbr4-tabs {\n  border-color: #ffffff20;\n}\n.dbr3-button {\n  background: #ffffff0c;\n  color: #d1d1d1;\n}\n.dbr3 .selector.focus {\n  background: #4a4a4a;\n  color: #f8f8f8;\n  outline-color: #d3d3d3;\n}\n.dbr4-primary,\n.dbr3 .dbr4-primary.focus {\n  background: #e2e2e2;\n  color: #141619;\n}\n.dbr3-source.selected {\n  background: #ffffff13;\n  color: #eaeaea;\n}\n.dbr4-voice {\n  background: #ffffff08;\n  border: 1px solid #ffffff14;\n}\n.dbr4-voice.selected {\n  background: #c4c4c4;\n  color: #141619;\n  border-color: #c4c4c4;\n}\n.dbr3-stream {\n  border-color: #ffffff15;\n}\n.dbr3-stream-copy small,\n.dbr3-stream-copy p,\n.dbr3-episode-copy p,\n.dbr3-count,\n.dbr4-voice-label {\n  color: #aeaeae;\n}\n.dbr3-preview,\n.dbr4-source-placeholder,\n.dbr4-voice-placeholder,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  background: #303030;\n}\n.dbr4-actions {\n  margin-top: 1em;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: transparent;\n  border: 1px solid #ffffff18;\n}\n.dbr4-actions .dbr3-button.focus {\n  background: #4a4a4a;\n}\n.dbr4-primary {\n  max-width: 100%;\n}\n@media (max-height: 650px) {\n  .dbr4-detail {\n    padding-top: 3em;\n  }\n}\n@media (max-width: 700px) {\n  .dbr4-detail {\n    padding-top: 2em;\n  }\n}\n\n.dbr3-button {\n  border: 1px solid rgba(233,233,233, 0.13);\n  background: rgba(228,228,228, 0.045);\n  border-radius: 0.45em;\n  color: #d7d7d7;\n  box-shadow: inset 0 1px 0 rgba(255,255,255, 0.035);\n  transition:\n    background 0.15s,\n    border-color 0.15s,\n    box-shadow 0.15s;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: rgba(33,33,33, 0.32);\n  border-color: rgba(230,230,230, 0.17);\n}\n.dbr4-tools .dbr3-button {\n  background: rgba(221,221,221, 0.045);\n  border-color: rgba(230,230,230, 0.14);\n  padding: 0.65em 1em;\n}\n.dbr4-tab {\n  border: 0;\n  box-shadow: none;\n  background: transparent;\n  border-radius: 0;\n}\n.dbr3-source {\n  border-color: transparent;\n  box-shadow: none;\n  background: transparent;\n}\n.dbr3-source.selected {\n  background: rgba(229,229,229, 0.055);\n  border-color: rgba(230,230,230, 0.16);\n}\n.dbr4-voice {\n  background: rgba(228,228,228, 0.035);\n  border-color: rgba(230,230,230, 0.14);\n}\n.dbr4-voice.selected {\n  color: #e3e3e3;\n  background: rgba(173,173,173, 0.15);\n  border-color: rgba(203,203,203, 0.46);\n}\n.dbr4-primary {\n  border-color: rgba(248,248,248, 0.42);\n  background: linear-gradient(\n    135deg,\n    rgba(240,240,240, 0.92),\n    rgba(204,204,204, 0.87)\n  );\n  color: #222222;\n  box-shadow:\n    inset 0 1px 0 rgba(255,255,255, 0.3),\n    0 0.15em 0.7em rgba(0,0,0, 0.14);\n  font-weight: 600;\n}\n.dbr3 .selector.focus {\n  background: rgba(194,194,194, 0.16);\n  color: #f3f3f3;\n  outline: 0.12em solid rgba(222,222,222, 0.9);\n  outline-offset: 0.12em;\n  box-shadow: 0 0 0 0.22em rgba(188,188,188, 0.07);\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #f2f2f2, #d4d4d4);\n  color: #1f1f1f;\n  box-shadow: 0 0.15em 1em rgba(0,0,0, 0.15);\n  outline-color: rgba(238,238,238, 0.94);\n}\n.dbr3 .dbr4-actions .dbr3-button.focus:not(.dbr4-primary) {\n  background: rgba(189,189,189, 0.17);\n  border-color: rgba(231,231,231, 0.45);\n}\n.dbr4-primary:before {\n  content: \"\";\n  display: block;\n  width: 0;\n  height: 0;\n  border-top: 0.32em solid transparent;\n  border-bottom: 0.32em solid transparent;\n  border-left: 0.5em solid currentColor;\n  margin-right: 0.65em;\n}\n.dbr4-actions {\n  max-width: 19em;\n}\n.dbr3-stream.focus,\n.dbr3-episode.focus {\n  background: rgba(208,208,208, 0.065);\n}\n@supports (backdrop-filter: blur(1px)) {\n  .dbr4-actions .dbr3-button,\n  .dbr4-tools .dbr3-button,\n  .dbr4-voice {\n    backdrop-filter: blur(8px);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-button {\n    transition: none;\n  }\n}\n\n.dbr4-icon {\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  flex: 0 0 1em;\n  vertical-align: middle;\n  color: #b2b2b2;\n}\n.dbr4-flag {\n  width: 1.25em;\n  height: 0.85em;\n  display: block;\n  flex-shrink: 0;\n  border-radius: 0.12em;\n  overflow: hidden;\n  opacity: 0.9;\n}\n.dbr4-language-row {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  min-height: 1.7em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-language {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  background: rgba(218,218,218, 0.045);\n  border: 1px solid rgba(218,218,218, 0.12);\n  border-radius: 0.3em;\n  padding: 0.28em 0.45em;\n  font-size: 0.72em;\n  line-height: 1.15;\n  color: #e0e0e0;\n  flex-shrink: 0;\n}\n.dbr4-language > span {\n  font-size: 1em !important;\n  color: inherit !important;\n}\n.dbr4-more-languages {\n  font-size: 0.7em;\n  color: #b1b1b1;\n  padding: 0.3em;\n}\n.dbr4-metadata {\n  display: flex;\n  align-items: center;\n  gap: 1.1em;\n  margin-top: 0.6em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-badge {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  font-size: 0.7em;\n  color: #b4b4b4;\n  line-height: 1.3;\n  flex-shrink: 0;\n}\n.dbr4-origin {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  margin-top: 0.55em;\n  font-size: 0.65em;\n  color: #8f8f8f;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr4-translation-name {\n  font-size: 0.85em !important;\n  font-weight: 500;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-quality {\n  font-size: 1em;\n  color: #e1e1e1;\n}\n.dbr3-size {\n  font-size: 0.76em;\n}\n.dbr3-size .dbr4-icon {\n  display: inline-block;\n  margin-right: 0.3em;\n}\n.dbr4-voices .dbr4-flag {\n  display: inline-block;\n  vertical-align: middle;\n  margin-right: 0.5em;\n}\n.dbr3-stream {\n  height: 6.8em;\n}\n.dbr4-voice {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.1em;\n}\n.dbr4-art {\n  z-index: 0;\n}\n.dbr4-detail > :not(.dbr4-art),\n.dbr4-right {\n  position: relative;\n  z-index: 1;\n}\n\n.dbr3 {\n  font-size: max(1em, 1.55vw);\n}\n.dbr3-layout {\n  gap: 1.5em;\n  padding: 1em 1.4em 1em 1.3em;\n}\n.dbr4-detail {\n  flex-basis: 31%;\n  padding-top: 2em;\n}\n.dbr4-detail h1 {\n  font-size: 1.7em;\n  line-height: 1.18;\n  height: 2.36em;\n  margin: 0.5em 0;\n}\n.dbr4-kicker {\n  font-size: 0.78em;\n  letter-spacing: 0.055em;\n}\n.dbr4-meta {\n  font-size: 0.9em;\n}\n.dbr4-description {\n  font-size: 0.95em;\n  line-height: 1.5;\n  height: 4.5em;\n  margin: 0.8em 0 0.5em;\n}\n.dbr4-progress {\n  height: 1.5em;\n  margin: 0.2em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.78em;\n}\n.dbr4-actions {\n  gap: 0.6em;\n  margin-top: 0.7em;\n}\n.dbr4-actions .dbr3-button {\n  font-size: 1em;\n  height: 2.8em;\n}\n.dbr4-tabs {\n  gap: 0.9em;\n  padding-bottom: 0.55em;\n}\n.dbr4-tab {\n  font-size: 1.1em;\n}\n.dbr4-tools .dbr3-button {\n  font-size: 0.85em;\n}\n.dbr4-toolbar {\n  padding-bottom: 0.5em;\n}\n.dbr3-sources {\n  height: 2.8em;\n  gap: 0.45em;\n}\n.dbr3-source {\n  font-size: 0.85em;\n  max-width: 11em;\n  padding: 0.5em 0.65em;\n}\n.dbr4-voices {\n  height: 2.9em;\n  gap: 0.4em;\n}\n.dbr4-voice {\n  font-size: 0.85em;\n  padding: 0.5em 0.6em;\n}\n.dbr4-voice-label {\n  font-size: 0.78em;\n  margin-right: 0.15em;\n}\n.dbr3-stream {\n  height: 7.3em;\n  padding: 0.9em 0.7em;\n  gap: 0.8em;\n}\n.dbr3-quality {\n  font-size: 1.1em;\n  flex-basis: 3em;\n}\n.dbr4-language {\n  font-size: 0.9em;\n}\n.dbr4-more-languages {\n  font-size: 0.85em;\n}\n.dbr4-badge {\n  font-size: 0.83em;\n}\n.dbr4-metadata {\n  gap: 0.8em;\n}\n.dbr4-origin {\n  font-size: 0.78em;\n}\n.dbr3-size {\n  font-size: 0.85em;\n  flex-basis: 4.1em;\n}\n.dbr3-episode {\n  height: 7.8em;\n  gap: 0.8em;\n  padding: 0.6em 0.35em;\n}\n.dbr3-preview {\n  width: 8.1em;\n  height: 4.6em;\n  font-size: 1em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.05em;\n  white-space: normal;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  line-height: 1.3;\n  max-height: 2.6em;\n}\n.dbr3-episode-copy p {\n  font-size: 0.85em;\n  line-height: 1.4;\n  height: 2.8em;\n  margin: 0.4em 0;\n}\n.dbr4-episode-status {\n  font-size: 0.8em;\n  flex-basis: 3.1em;\n}\n.dbr4-episode-number {\n  font-size: 1em;\n  flex-basis: 0.8em;\n}\n.dbr3-episode-copy .time-line {\n  max-width: 10em;\n  opacity: 0.65;\n}\n.dbr3-count {\n  font-size: 0.8em;\n}\n.dbr4-translation-name {\n  font-size: 1em !important;\n}\n@media (max-aspect-ratio: 4/3) {\n  .dbr3-layout {\n    gap: 1em;\n    padding: 0.6em;\n  }\n  .dbr4-detail {\n    flex-basis: 32%;\n    padding-top: 1em;\n  }\n  .dbr3-preview {\n    width: 5.5em;\n    height: 3.1em;\n  }\n  .dbr4-tools .dbr3-button {\n    padding: 0.6em;\n  }\n  .dbr4-kicker {\n    letter-spacing: 0;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3 {\n    font-size: 16px;\n  }\n  .dbr4-detail {\n    display: none;\n  }\n  .dbr3-preview {\n    width: 6em;\n    height: 3.4em;\n  }\n  .dbr3-layout {\n    height: 100%;\n  }\n  .dbr4-tools {\n    gap: 0.3em;\n  }\n  .dbr4-tabs {\n    gap: 0.6em;\n  }\n}\n\n.dbr3-episode {\n  height: 8.5em;\n  padding: 0.8em 0.6em;\n  border: 1px solid transparent;\n  border-radius: 0.6em;\n  margin: 0.35em 0 0.7em;\n}\n.dbr3-preview {\n  width: 9.6em;\n  height: 5.4em;\n  border-radius: 0.4em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.12em;\n  line-height: 1.35;\n}\n.dbr3-episode-copy p {\n  font-size: 0.9em;\n  color: #bababa;\n}\n.dbr3-episode,\n.dbr3-stream {\n  transition:\n    background 0.14s,\n    border-color 0.14s,\n    box-shadow 0.14s;\n}\n.dbr3-stream {\n  border-radius: 0.6em;\n  border: 1px solid rgba(225,225,225, 0.07);\n  background: rgba(22,22,22, 0.16);\n  margin: 0.35em 0 0.7em;\n}\n.dbr3 .selector.focus {\n  outline: none !important;\n  border-color: rgba(213,213,213, 0.65) !important;\n  box-shadow:\n    inset 0 0 0 1px rgba(219,219,219, 0.32),\n    0 0 0 2px rgba(219,219,219, 0.1) !important;\n  background: rgba(203,203,203, 0.11) !important;\n  color: #f4f4f4 !important;\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #f2f2f2, #d4d4d4) !important;\n  color: #1f1f1f !important;\n  box-shadow:\n    0 0 0 2px rgba(234,234,234, 0.5),\n    0 0.2em 0.8em rgba(0,0,0, 0.15) !important;\n}\n.dbr3 .dbr4-tab.focus {\n  background: transparent !important;\n  border-radius: 0.2em;\n  box-shadow: 0 0 0 2px rgba(213,213,213, 0.65) !important;\n}\n.dbr3-episode.focus .dbr3-preview {\n  box-shadow: 0 0.15em 0.8em rgba(0,0,0, 0.25);\n}\n.dbr4-actions .dbr3-button {\n  border-radius: 0.5em;\n  font-weight: 500;\n}\n.dbr4-actions .dbr4-primary {\n  font-weight: 600;\n}\n.dbr4-episode-status {\n  color: #bbbbbb;\n}\n.dbr3 .selector.focus:after {\n  outline: none;\n}\n.dbr4-description {\n  color: #d3d3d3;\n}\n.dbr4-tools {\n  gap: 0.6em;\n}\n.dbr3-quality {\n  font-weight: 600;\n}\n.dbr4-metadata {\n  color: #bdbdbd;\n}\n@media (hover: hover) and (pointer: fine) {\n  .dbr3 .dbr3-button:hover,\n  .dbr3 .dbr3-episode:hover,\n  .dbr3 .dbr3-stream:hover {\n    background: rgba(214,214,214, 0.085);\n    border-color: rgba(213,213,213, 0.3);\n    cursor: pointer;\n  }\n  .dbr3 .dbr4-primary:hover {\n    background: linear-gradient(135deg, #f2f2f2, #d4d4d4);\n    color: #1f1f1f;\n  }\n  .dbr3 .dbr4-tab:hover {\n    background: transparent;\n    color: #f3f3f3;\n  }\n}\n@media (max-width: 900px) {\n  .dbr3-preview {\n    width: 7.5em;\n    height: 4.22em;\n  }\n  .dbr3-episode {\n    height: 8em;\n  }\n  .dbr4-detail h1 {\n    font-size: 1.55em;\n  }\n  .dbr4-metadata {\n    gap: 0.55em;\n  }\n  .dbr4-language {\n    font-size: 0.82em;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3-preview {\n    width: 6.8em;\n    height: 3.83em;\n  }\n  .dbr3-episode-copy p {\n    font-size: 0.82em;\n  }\n  .dbr4-episode-status {\n    display: none;\n  }\n  .dbr3-episode {\n    height: 7.5em;\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-episode,\n  .dbr3-stream {\n    transition: none;\n  }\n}\n\n.dbr4-detail{padding-top:.75em}.dbr4-description{height:3em;-webkit-line-clamp:2;line-height:1.5}.dbr3-episode{height:7em;padding:.55em .6em;margin:.3em 0 .4em}.dbr4-episode-status{flex-basis:3.8em;white-space:nowrap}.dbr4-episode-status span,.dbr4-episode-status small{height:auto;min-height:1.5em}.dbr4-actions{flex-shrink:0}.dbr4-detail h1{margin:.35em 0}.dbr4-tab.selected,.dbr4-tab{background:transparent!important}\n\n.dbr3{font-size:clamp(18px,1.25vw,24px)}.dbr3.dbr4-tv{font-size:max(1em,1.55vw)}.dbr3-episode{background:rgba(25,25,25,.4);border-color:rgba(225,225,225,.12)}.dbr3-stream{background:rgba(25,25,25,.48);border-color:rgba(225,225,225,.14)}.dbr3 .dbr3-episode.focus,.dbr3 .dbr3-stream.focus{background:rgba(92,92,92,.48)!important;border-color:#c3c3c3!important}.dbr4-art img{opacity:.48}.dbr4-right{isolation:isolate}.dbr4-metadata{flex-wrap:wrap;row-gap:.4em}.dbr4-episode-number{color:#c6c6c6}.dbr4-actions .dbr3-button:not(.dbr4-primary){background:rgba(40,40,40,.62);border-color:rgba(213,213,213,.3)}.dbr4-detail .dbr4-description{height:3em;-webkit-line-clamp:2}.dbr3 .dbr4-tab{box-shadow:none;border-color:transparent}.dbr4-tools .dbr3-button{background:rgba(51,51,51,.6);border-color:rgba(213,213,213,.26)}\n\n.dbr4-play-mark{width:2em;height:2em;display:block;padding:.3em;border:1px solid rgba(218,218,218,.25);border-radius:50%;box-sizing:border-box}.dbr4-translation-name{display:block;font-weight:600!important}.dbr4-metadata:empty{display:none}\n\n.dbr4-tv .dbr3-button{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transition:background-color .1s,border-color .1s}.dbr4-tv .dbr3-episode,.dbr4-tv .dbr3-stream{transition:background-color .1s,border-color .1s}.dbr4-tv .dbr3-preview{box-shadow:none!important}.dbr4-tv .dbr4-art img{transition:none}.dbr4-right>.scroll{contain:layout paint}\n\n.dbr3 .scroll__body{transition:transform .16s ease-out,-webkit-transform .16s ease-out!important;will-change:transform}.dbr3 .scroll__body.notransition{transition:none!important}.dbr4-tv .dbr3-episode.focus,.dbr4-tv .dbr3-stream.focus{box-shadow:inset 0 0 0 2px #c3c3c3!important}@media(prefers-reduced-motion:reduce){.dbr3 .scroll__body{transition:none!important}}\n\nbody.dbr-active .head{background:#181b20!important;color:#f4f5f7}.dbr3{background:#141619;color:#f4f5f7}.dbr3 .dbr4-primary{background:#f1f3f5!important;color:#15171a!important}.dbr3 .dbr4-primary.focus{background:#fff!important}.dbr3 .selector.focus{outline-color:#fff!important}.dbr3 .dbr3-stream.focus,.dbr3 .dbr3-episode.focus{border-color:#fff!important;box-shadow:inset 0 0 0 2px #fff!important}\n";
+var DbrStyles = ".dbr3 {\n  color: #f6f6f6;\n  background: #141414;\n}\n.dbr3 .explorer__files-head {\n  display: none;\n}\n.dbr3 .explorer__files {\n  width: 100%;\n  min-width: 0;\n}\n.dbr3-layout {\n  display: flex;\n  height: calc(100vh - 4em);\n  box-sizing: border-box;\n  padding: 1.2em 2em 1.2em 1em;\n  gap: 2.4em;\n  min-height: 0;\n}\n.dbr4-detail {\n  flex: 0 0 30%;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  overflow: hidden;\n}\n.dbr4-art {\n  height: 9em;\n  flex-shrink: 0;\n  background: #202020;\n  position: relative;\n  border-radius: 0.4em;\n  overflow: hidden;\n  margin-bottom: 1em;\n}\n.dbr4-art img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr4-art:before {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(0deg, rgba(20, 20, 20, 0.3), transparent 50%);\n  z-index: 1;\n}\n.dbr4-kicker {\n  font-size: 0.68em;\n  letter-spacing: 0.1em;\n  text-transform: uppercase;\n  color: #b5b5b5;\n  height: 1.6em;\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  flex-shrink: 0;\n}\n.dbr4-detail h1 {\n  font-size: 1.65em;\n  line-height: 1.15;\n  height: 2.3em;\n  margin: 0.35em 0 0.4em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-meta {\n  font-size: 0.78em;\n  line-height: 1.5;\n  height: 1.5em;\n  color: #bebebe;\n  flex-shrink: 0;\n}\n.dbr4-description {\n  font-size: 0.82em;\n  line-height: 1.55;\n  height: 4.65em;\n  margin: 1em 0 0.5em;\n  overflow: hidden;\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  -webkit-box-orient: vertical;\n  flex-shrink: 0;\n}\n.dbr4-progress {\n  height: 2em;\n  flex-shrink: 0;\n  margin: 0.3em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.68em;\n  color: #b8b8b8;\n  height: 1.4em;\n}\n.dbr4-progress-track {\n  height: 2px;\n  background: #343434;\n  margin-top: 0.3em;\n}\n.dbr4-progress-fill {\n  height: 100%;\n  background: #e50914;\n}\n.dbr4-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 0.6em;\n  margin-top: 0.4em;\n}\n.dbr3-button {\n  cursor: pointer;\n  padding: 0.65em 0.9em;\n  border-radius: 0.28em;\n  line-height: 1.25;\n  font-size: 0.84em;\n  background: #292929;\n  box-sizing: border-box;\n  min-width: 0;\n}\n.dbr4-actions .dbr3-button {\n  height: 2.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  flex-shrink: 0;\n}\n.dbr4-primary {\n  background: #f4f4f4;\n  color: #151515;\n  font-weight: 700;\n}\n.dbr4-right {\n  flex: 1;\n  min-width: 0;\n  display: flex;\n  flex-direction: column;\n  min-height: 0;\n}\n.dbr4-toolbar {\n  flex-shrink: 0;\n  padding: 0.25em 0.25em 0.8em;\n}\n.dbr4-tabs {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  border-bottom: 1px solid #393939;\n  padding-bottom: 0.65em;\n}\n.dbr4-tab {\n  background: transparent;\n  font-size: 1.05em;\n  padding: 0.4em 0.15em;\n  border-radius: 0;\n  position: relative;\n  color: #a7a7a7;\n}\n.dbr4-tab.selected {\n  color: white;\n}\n.dbr4-tab.selected:after {\n  content: \"\";\n  height: 3px;\n  background: #e50914;\n  position: absolute;\n  left: 0;\n  right: 0;\n  bottom: -0.7em;\n}\n.dbr4-tools {\n  margin-left: auto;\n  display: flex;\n  gap: 0.6em;\n}\n.dbr4-dropdown {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n}\n.dbr4-chevron {\n  width: 1em;\n  height: 1em;\n  flex-shrink: 0;\n}\n.dbr3-sources {\n  display: flex;\n  align-items: center;\n  gap: 0.65em;\n  height: 3.2em;\n  flex-shrink: 0;\n  overflow-x: auto;\n  overflow-y: hidden;\n  padding: 0.2em 0.25em;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr3-source {\n  display: flex;\n  gap: 0.7em;\n  align-items: center;\n  flex-shrink: 0;\n  background: transparent;\n  color: #aaa;\n  font-size: 0.8em;\n  max-width: 14em;\n  white-space: nowrap;\n  overflow: hidden;\n}\n.dbr3-source b {\n  font-size: 0.8em;\n  font-weight: 400;\n  color: inherit;\n}\n.dbr3-source.selected {\n  background: #303030;\n  color: #fff;\n}\n.dbr4-voices {\n  display: flex;\n  align-items: center;\n  gap: 0.55em;\n  height: 3.3em;\n  flex-shrink: 0;\n  padding: 0.3em 0.25em 0.6em;\n  overflow-x: auto;\n  overflow-y: hidden;\n  box-sizing: border-box;\n  scrollbar-width: none;\n}\n.dbr4-voice-label {\n  font-size: 0.7em;\n  color: #999;\n  flex-shrink: 0;\n  margin-right: 0.45em;\n}\n.dbr4-voice {\n  font-size: 0.74em;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  max-width: 14em;\n  flex-shrink: 0;\n  background: #242424;\n}\n.dbr4-voice.selected {\n  background: #eee;\n  color: #161616;\n}\n.dbr4-muted {\n  font-size: 0.75em;\n  color: #999;\n}\n.dbr4-right > .scroll {\n  flex: 1;\n  min-height: 0;\n  height: 100% !important;\n  width: 100%;\n  overflow: hidden;\n}\n.dbr4-right .scroll__body {\n  padding: 0.3em 0.3em 1em !important;\n}\n.dbr3 .selector.focus {\n  outline: 0.14em solid white;\n  outline-offset: 0.12em;\n  box-shadow: none;\n  background: #3b3b3b;\n  color: #fff;\n}\n.dbr3 .dbr4-primary.focus {\n  background: white;\n  color: #111;\n}\n.dbr3-stream {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7.1em;\n  padding: 1em 0.8em;\n  margin: 0.25em 0 0.45em;\n  border-bottom: 1px solid #303030;\n  border-radius: 0.3em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr3-quality {\n  flex: 0 0 3.5em;\n  font-size: 1.1em;\n  font-weight: 700;\n}\n.dbr3-stream-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-stream-copy strong {\n  display: block;\n  font-size: 0.95em;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-stream-copy small {\n  display: block;\n  font-size: 0.67em;\n  line-height: 1.4;\n  color: #aaa;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin-top: 0.25em;\n}\n.dbr3-stream-copy p {\n  font-size: 0.7em;\n  color: #999;\n  line-height: 1.4;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  margin: 0.35em 0;\n}\n.dbr3-size {\n  flex: 0 0 4.5em;\n  text-align: right;\n  font-size: 0.78em;\n}\n.dbr3-size small {\n  display: block;\n  color: #a7c7a7;\n  font-size: 0.75em;\n  margin-top: 0.5em;\n}\n.dbr3-count {\n  font-size: 0.7em;\n  color: #929292;\n  padding: 0.4em 0.9em 0.7em;\n}\n.dbr3-episode {\n  display: flex;\n  align-items: center;\n  gap: 0.9em;\n  height: 7.2em;\n  padding: 0.65em 0.4em;\n  margin: 0.2em 0 0.6em;\n  border-radius: 0.35em;\n  box-sizing: border-box;\n  cursor: pointer;\n}\n.dbr4-episode-number {\n  flex: 0 0 1.2em;\n  font-size: 1.1em;\n  color: #aaa;\n  text-align: center;\n}\n.dbr3-preview {\n  width: 8.7em;\n  height: 4.9em;\n  flex-shrink: 0;\n  position: relative;\n  border-radius: 0.25em;\n  overflow: hidden;\n  background: #242424;\n  color: #999;\n  font-size: 0.8em;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n}\n.dbr3-preview img {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n}\n.dbr3-episode-copy {\n  flex: 1;\n  min-width: 0;\n}\n.dbr3-episode-copy strong {\n  font-size: 0.95em;\n  display: block;\n  line-height: 1.35;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-episode-copy p {\n  font-size: 0.72em;\n  line-height: 1.5;\n  height: 3em;\n  margin: 0.5em 0;\n  overflow: hidden;\n  color: #aaa;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n}\n.dbr3-episode-copy .time-line {\n  height: 2px;\n}\n.dbr4-episode-status {\n  flex: 0 0 3.4em;\n  text-align: right;\n  font-size: 0.7em;\n  color: #aaa;\n}\n.dbr4-episode-status span,\n.dbr4-episode-status small {\n  display: block;\n  height: 1.6em;\n}\n.dbr4-episode-status small {\n  color: #b8cfb8;\n}\n.dbr3-empty {\n  padding: 2.5em 1em;\n  line-height: 1.6;\n  font-size: 0.95em;\n  color: #aaa;\n}\n.dbr3-loading {\n  font-size: 0.75em;\n  color: #aaa;\n  padding: 0.7em;\n}\n.dbr3-skeleton {\n  display: flex;\n  align-items: center;\n  gap: 1em;\n  height: 7em;\n  padding: 1em;\n  box-sizing: border-box;\n}\n.dbr3-skeleton-preview {\n  width: 5em;\n  height: 3em;\n}\n.dbr3-skeleton-body {\n  flex: 1;\n}\n.dbr3-skeleton-body div {\n  height: 0.65em;\n  margin: 0.75em 0;\n  width: 75%;\n}\n.dbr3-skeleton-body div:first-child {\n  width: 55%;\n  height: 0.85em;\n}\n.dbr3-skeleton-body div:last-child {\n  width: 40%;\n}\n.dbr3-skeleton-end {\n  width: 3em;\n  height: 1em;\n}\n.dbr4-source-placeholder {\n  width: 5em;\n  height: 1.5em;\n  flex-shrink: 0;\n}\n.dbr4-voice-placeholder {\n  width: 5em;\n  height: 1.8em;\n  flex-shrink: 0;\n}\n.dbr4-shimmer,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  position: relative;\n  overflow: hidden;\n  background: #242424;\n  border-radius: 0.25em;\n}\n.dbr4-shimmer:after,\n.dbr3-skeleton-preview:after,\n.dbr3-skeleton-body div:after,\n.dbr3-skeleton-end:after {\n  content: \"\";\n  position: absolute;\n  inset: 0;\n  background: linear-gradient(\n    105deg,\n    transparent 20%,\n    rgba(255, 255, 255, 0.08) 50%,\n    transparent 80%\n  );\n  transform: translateX(-100%);\n  animation: dbr4-shimmer 1.7s ease-in-out infinite;\n  pointer-events: none;\n}\n@keyframes dbr4-shimmer {\n  to {\n    transform: translateX(100%);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr4-shimmer:after,\n  .dbr3-skeleton *:after {\n    animation: none;\n  }\n}\n@media (max-height: 650px) {\n  .dbr4-art {\n    height: 7em;\n  }\n  .dbr4-description {\n    margin-top: 0.6em;\n  }\n  .dbr3-layout {\n    padding-top: 0.5em;\n  }\n}\n@media (max-width: 800px) {\n  .dbr3-layout {\n    gap: 1.3em;\n    padding-right: 1em;\n  }\n  .dbr4-detail {\n    flex-basis: 29%;\n  }\n  .dbr4-tools {\n    gap: 0.4em;\n  }\n  .dbr4-tabs {\n    gap: 0.7em;\n  }\n  .dbr3-preview {\n    width: 6.5em;\n    height: 3.7em;\n  }\n}\n\n.dbr4-right .scroll__content{padding:0!important}.dbr4-art{height:9.5em}.dbr4-right .scroll{mask-image:none!important;-webkit-mask-image:none!important}\n\n.dbr3 {\n  background: #242321;\n  color: #f1eee8;\n}\n.dbr3-layout {\n  position: relative;\n  isolation: isolate;\n  padding-left: 1.5em;\n}\n.dbr4-detail {\n  padding-top: 4.2em;\n  box-sizing: border-box;\n}\n.dbr4-art {\n  position: absolute;\n  left: 0;\n  top: 0;\n  width: 65%;\n  height: 100%;\n  margin: 0;\n  border-radius: 0;\n  background: transparent;\n  z-index: -1;\n  pointer-events: none;\n}\n.dbr4-art img {\n  object-fit: cover;\n  object-position: 35% center;\n  opacity: 0.62;\n}\n.dbr4-art:before {\n  z-index: 1;\n  background:\n    linear-gradient(\n      90deg,\n      rgba(36, 35, 33, 0.2),\n      rgba(36, 35, 33, 0.65) 47%,\n      #242321 96%\n    ),\n    linear-gradient(\n      0deg,\n      #242321 3%,\n      rgba(36, 35, 33, 0.7) 40%,\n      transparent 90%\n    );\n}\n.dbr4-art.dbr4-shimmer:after {\n  opacity: 0.2;\n}\n.dbr4-kicker {\n  color: #c0b9ae;\n}\n.dbr4-detail h1 {\n  font-size: 1.9em;\n  height: 2.3em;\n  color: #f7f2e9;\n}\n.dbr4-meta {\n  color: #bfb7ab;\n}\n.dbr4-description {\n  color: #d5cfc5;\n}\n.dbr4-progress-label {\n  color: #bfb6a8;\n}\n.dbr4-progress-track {\n  background: #ffffff1c;\n}\n.dbr4-progress-fill,\n.dbr4-tab.selected:after {\n  background: #c7ac80;\n}\n.dbr4-tabs {\n  border-color: #ffffff20;\n}\n.dbr3-button {\n  background: #ffffff0c;\n  color: #d9d2c7;\n}\n.dbr3 .selector.focus {\n  background: #514b41;\n  color: #fff9ef;\n  outline-color: #e8d8ba;\n}\n.dbr4-primary,\n.dbr3 .dbr4-primary.focus {\n  background: #eee4d3;\n  color: #28251f;\n}\n.dbr3-source.selected {\n  background: #ffffff13;\n  color: #f4ecde;\n}\n.dbr4-voice {\n  background: #ffffff08;\n  border: 1px solid #ffffff14;\n}\n.dbr4-voice.selected {\n  background: #d9c8aa;\n  color: #28251f;\n  border-color: #d9c8aa;\n}\n.dbr3-stream {\n  border-color: #ffffff15;\n}\n.dbr3-stream-copy small,\n.dbr3-stream-copy p,\n.dbr3-episode-copy p,\n.dbr3-count,\n.dbr4-voice-label {\n  color: #b5afa6;\n}\n.dbr3-preview,\n.dbr4-source-placeholder,\n.dbr4-voice-placeholder,\n.dbr3-skeleton-preview,\n.dbr3-skeleton-body div,\n.dbr3-skeleton-end {\n  background: #34312b;\n}\n.dbr4-actions {\n  margin-top: 1em;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: transparent;\n  border: 1px solid #ffffff18;\n}\n.dbr4-actions .dbr3-button.focus {\n  background: #514b41;\n}\n.dbr4-primary {\n  max-width: 100%;\n}\n@media (max-height: 650px) {\n  .dbr4-detail {\n    padding-top: 3em;\n  }\n}\n@media (max-width: 700px) {\n  .dbr4-detail {\n    padding-top: 2em;\n  }\n}\n\n.dbr3-button {\n  border: 1px solid rgba(245, 236, 217, 0.13);\n  background: rgba(239, 231, 213, 0.045);\n  border-radius: 0.45em;\n  color: #ded8ce;\n  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);\n  transition:\n    background 0.15s,\n    border-color 0.15s,\n    box-shadow 0.15s;\n}\n.dbr4-actions .dbr3-button:not(.dbr4-primary) {\n  background: rgba(36, 34, 30, 0.32);\n  border-color: rgba(241, 232, 216, 0.17);\n}\n.dbr4-tools .dbr3-button {\n  background: rgba(232, 224, 208, 0.045);\n  border-color: rgba(241, 232, 216, 0.14);\n  padding: 0.65em 1em;\n}\n.dbr4-tab {\n  border: 0;\n  box-shadow: none;\n  background: transparent;\n  border-radius: 0;\n}\n.dbr3-source {\n  border-color: transparent;\n  box-shadow: none;\n  background: transparent;\n}\n.dbr3-source.selected {\n  background: rgba(243, 233, 210, 0.055);\n  border-color: rgba(241, 232, 216, 0.16);\n}\n.dbr4-voice {\n  background: rgba(239, 231, 213, 0.035);\n  border-color: rgba(241, 232, 216, 0.14);\n}\n.dbr4-voice.selected {\n  color: #f1e6d2;\n  background: rgba(203, 179, 136, 0.15);\n  border-color: rgba(228, 208, 173, 0.46);\n}\n.dbr4-primary {\n  border-color: rgba(255, 250, 238, 0.42);\n  background: linear-gradient(\n    135deg,\n    rgba(251, 243, 226, 0.92),\n    rgba(221, 208, 183, 0.87)\n  );\n  color: #27231b;\n  box-shadow:\n    inset 0 1px 0 rgba(255, 255, 255, 0.3),\n    0 0.15em 0.7em rgba(0, 0, 0, 0.14);\n  font-weight: 600;\n}\n.dbr3 .selector.focus {\n  background: rgba(219, 199, 163, 0.16);\n  color: #fff5e4;\n  outline: 0.12em solid rgba(244, 227, 194, 0.9);\n  outline-offset: 0.12em;\n  box-shadow: 0 0 0 0.22em rgba(221, 195, 148, 0.07);\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n  color: #242018;\n  box-shadow: 0 0.15em 1em rgba(0, 0, 0, 0.15);\n  outline-color: rgba(255, 243, 217, 0.94);\n}\n.dbr3 .dbr4-actions .dbr3-button.focus:not(.dbr4-primary) {\n  background: rgba(218, 196, 154, 0.17);\n  border-color: rgba(249, 235, 209, 0.45);\n}\n.dbr4-primary:before {\n  content: \"\";\n  display: block;\n  width: 0;\n  height: 0;\n  border-top: 0.32em solid transparent;\n  border-bottom: 0.32em solid transparent;\n  border-left: 0.5em solid currentColor;\n  margin-right: 0.65em;\n}\n.dbr4-actions {\n  max-width: 19em;\n}\n.dbr3-stream.focus,\n.dbr3-episode.focus {\n  background: rgba(230, 213, 180, 0.065);\n}\n@supports (backdrop-filter: blur(1px)) {\n  .dbr4-actions .dbr3-button,\n  .dbr4-tools .dbr3-button,\n  .dbr4-voice {\n    backdrop-filter: blur(8px);\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-button {\n    transition: none;\n  }\n}\n\n.dbr4-icon {\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  flex: 0 0 1em;\n  vertical-align: middle;\n  color: #bfb4a2;\n}\n.dbr4-flag {\n  width: 1.25em;\n  height: 0.85em;\n  display: block;\n  flex-shrink: 0;\n  border-radius: 0.12em;\n  overflow: hidden;\n  opacity: 0.9;\n}\n.dbr4-language-row {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  min-height: 1.7em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-language {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  background: rgba(238, 223, 194, 0.045);\n  border: 1px solid rgba(238, 223, 194, 0.12);\n  border-radius: 0.3em;\n  padding: 0.28em 0.45em;\n  font-size: 0.72em;\n  line-height: 1.15;\n  color: #ede2d0;\n  flex-shrink: 0;\n}\n.dbr4-language > span {\n  font-size: 1em !important;\n  color: inherit !important;\n}\n.dbr4-more-languages {\n  font-size: 0.7em;\n  color: #beb3a1;\n  padding: 0.3em;\n}\n.dbr4-metadata {\n  display: flex;\n  align-items: center;\n  gap: 1.1em;\n  margin-top: 0.6em;\n  overflow: hidden;\n  white-space: nowrap;\n}\n.dbr4-badge {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.4em;\n  font-size: 0.7em;\n  color: #bfb6a8;\n  line-height: 1.3;\n  flex-shrink: 0;\n}\n.dbr4-origin {\n  display: flex;\n  align-items: center;\n  gap: 0.45em;\n  margin-top: 0.55em;\n  font-size: 0.65em;\n  color: #999182;\n  white-space: nowrap;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr4-translation-name {\n  font-size: 0.85em !important;\n  font-weight: 500;\n  overflow: hidden;\n  text-overflow: ellipsis;\n}\n.dbr3-quality {\n  font-size: 1em;\n  color: #eee4d2;\n}\n.dbr3-size {\n  font-size: 0.76em;\n}\n.dbr3-size .dbr4-icon {\n  display: inline-block;\n  margin-right: 0.3em;\n}\n.dbr4-voices .dbr4-flag {\n  display: inline-block;\n  vertical-align: middle;\n  margin-right: 0.5em;\n}\n.dbr3-stream {\n  height: 6.8em;\n}\n.dbr4-voice {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.1em;\n}\n.dbr4-art {\n  z-index: 0;\n}\n.dbr4-detail > :not(.dbr4-art),\n.dbr4-right {\n  position: relative;\n  z-index: 1;\n}\n\n.dbr3 {\n  font-size: max(1em, 1.55vw);\n}\n.dbr3-layout {\n  gap: 1.5em;\n  padding: 1em 1.4em 1em 1.3em;\n}\n.dbr4-detail {\n  flex-basis: 31%;\n  padding-top: 2em;\n}\n.dbr4-detail h1 {\n  font-size: 1.7em;\n  line-height: 1.18;\n  height: 2.36em;\n  margin: 0.5em 0;\n}\n.dbr4-kicker {\n  font-size: 0.78em;\n  letter-spacing: 0.055em;\n}\n.dbr4-meta {\n  font-size: 0.9em;\n}\n.dbr4-description {\n  font-size: 0.95em;\n  line-height: 1.5;\n  height: 4.5em;\n  margin: 0.8em 0 0.5em;\n}\n.dbr4-progress {\n  height: 1.5em;\n  margin: 0.2em 0 0.5em;\n}\n.dbr4-progress-label {\n  font-size: 0.78em;\n}\n.dbr4-actions {\n  gap: 0.6em;\n  margin-top: 0.7em;\n}\n.dbr4-actions .dbr3-button {\n  font-size: 1em;\n  height: 2.8em;\n}\n.dbr4-tabs {\n  gap: 0.9em;\n  padding-bottom: 0.55em;\n}\n.dbr4-tab {\n  font-size: 1.1em;\n}\n.dbr4-tools .dbr3-button {\n  font-size: 0.85em;\n}\n.dbr4-toolbar {\n  padding-bottom: 0.5em;\n}\n.dbr3-sources {\n  height: 2.8em;\n  gap: 0.45em;\n}\n.dbr3-source {\n  font-size: 0.85em;\n  max-width: 11em;\n  padding: 0.5em 0.65em;\n}\n.dbr4-voices {\n  height: 2.9em;\n  gap: 0.4em;\n}\n.dbr4-voice {\n  font-size: 0.85em;\n  padding: 0.5em 0.6em;\n}\n.dbr4-voice-label {\n  font-size: 0.78em;\n  margin-right: 0.15em;\n}\n.dbr3-stream {\n  height: 7.3em;\n  padding: 0.9em 0.7em;\n  gap: 0.8em;\n}\n.dbr3-quality {\n  font-size: 1.1em;\n  flex-basis: 3em;\n}\n.dbr4-language {\n  font-size: 0.9em;\n}\n.dbr4-more-languages {\n  font-size: 0.85em;\n}\n.dbr4-badge {\n  font-size: 0.83em;\n}\n.dbr4-metadata {\n  gap: 0.8em;\n}\n.dbr4-origin {\n  font-size: 0.78em;\n}\n.dbr3-size {\n  font-size: 0.85em;\n  flex-basis: 4.1em;\n}\n.dbr3-episode {\n  height: 7.8em;\n  gap: 0.8em;\n  padding: 0.6em 0.35em;\n}\n.dbr3-preview {\n  width: 8.1em;\n  height: 4.6em;\n  font-size: 1em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.05em;\n  white-space: normal;\n  display: -webkit-box;\n  -webkit-line-clamp: 2;\n  -webkit-box-orient: vertical;\n  line-height: 1.3;\n  max-height: 2.6em;\n}\n.dbr3-episode-copy p {\n  font-size: 0.85em;\n  line-height: 1.4;\n  height: 2.8em;\n  margin: 0.4em 0;\n}\n.dbr4-episode-status {\n  font-size: 0.8em;\n  flex-basis: 3.1em;\n}\n.dbr4-episode-number {\n  font-size: 1em;\n  flex-basis: 0.8em;\n}\n.dbr3-episode-copy .time-line {\n  max-width: 10em;\n  opacity: 0.65;\n}\n.dbr3-count {\n  font-size: 0.8em;\n}\n.dbr4-translation-name {\n  font-size: 1em !important;\n}\n@media (max-aspect-ratio: 4/3) {\n  .dbr3-layout {\n    gap: 1em;\n    padding: 0.6em;\n  }\n  .dbr4-detail {\n    flex-basis: 32%;\n    padding-top: 1em;\n  }\n  .dbr3-preview {\n    width: 5.5em;\n    height: 3.1em;\n  }\n  .dbr4-tools .dbr3-button {\n    padding: 0.6em;\n  }\n  .dbr4-kicker {\n    letter-spacing: 0;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3 {\n    font-size: 16px;\n  }\n  .dbr4-detail {\n    display: none;\n  }\n  .dbr3-preview {\n    width: 6em;\n    height: 3.4em;\n  }\n  .dbr3-layout {\n    height: 100%;\n  }\n  .dbr4-tools {\n    gap: 0.3em;\n  }\n  .dbr4-tabs {\n    gap: 0.6em;\n  }\n}\n\n.dbr3-episode {\n  height: 8.5em;\n  padding: 0.8em 0.6em;\n  border: 1px solid transparent;\n  border-radius: 0.6em;\n  margin: 0.35em 0 0.7em;\n}\n.dbr3-preview {\n  width: 9.6em;\n  height: 5.4em;\n  border-radius: 0.4em;\n}\n.dbr3-episode-copy strong {\n  font-size: 1.12em;\n  line-height: 1.35;\n}\n.dbr3-episode-copy p {\n  font-size: 0.9em;\n  color: #c4bcaf;\n}\n.dbr3-episode,\n.dbr3-stream {\n  transition:\n    background 0.14s,\n    border-color 0.14s,\n    box-shadow 0.14s;\n}\n.dbr3-stream {\n  border-radius: 0.6em;\n  border: 1px solid rgba(242, 229, 205, 0.07);\n  background: rgba(24, 23, 20, 0.16);\n  margin: 0.35em 0 0.7em;\n}\n.dbr3 .selector.focus {\n  outline: none !important;\n  border-color: rgba(237, 219, 183, 0.65) !important;\n  box-shadow:\n    inset 0 0 0 1px rgba(244, 224, 190, 0.32),\n    0 0 0 2px rgba(244, 224, 190, 0.1) !important;\n  background: rgba(229, 208, 171, 0.11) !important;\n  color: #fff6e6 !important;\n}\n.dbr3 .dbr4-primary.focus {\n  background: linear-gradient(135deg, #fff5e3, #e7d9bd) !important;\n  color: #242018 !important;\n  box-shadow:\n    0 0 0 2px rgba(255, 239, 207, 0.5),\n    0 0.2em 0.8em rgba(0, 0, 0, 0.15) !important;\n}\n.dbr3 .dbr4-tab.focus {\n  background: transparent !important;\n  border-radius: 0.2em;\n  box-shadow: 0 0 0 2px rgba(237, 219, 183, 0.65) !important;\n}\n.dbr3-episode.focus .dbr3-preview {\n  box-shadow: 0 0.15em 0.8em rgba(0, 0, 0, 0.25);\n}\n.dbr4-actions .dbr3-button {\n  border-radius: 0.5em;\n  font-weight: 500;\n}\n.dbr4-actions .dbr4-primary {\n  font-weight: 600;\n}\n.dbr4-episode-status {\n  color: #c7bdac;\n}\n.dbr3 .selector.focus:after {\n  outline: none;\n}\n.dbr4-description {\n  color: #dfd5c5;\n}\n.dbr4-tools {\n  gap: 0.6em;\n}\n.dbr3-quality {\n  font-weight: 600;\n}\n.dbr4-metadata {\n  color: #cbbfac;\n}\n@media (hover: hover) and (pointer: fine) {\n  .dbr3 .dbr3-button:hover,\n  .dbr3 .dbr3-episode:hover,\n  .dbr3 .dbr3-stream:hover {\n    background: rgba(237, 220, 186, 0.085);\n    border-color: rgba(237, 219, 183, 0.3);\n    cursor: pointer;\n  }\n  .dbr3 .dbr4-primary:hover {\n    background: linear-gradient(135deg, #fff5e3, #e7d9bd);\n    color: #242018;\n  }\n  .dbr3 .dbr4-tab:hover {\n    background: transparent;\n    color: #fff5e6;\n  }\n}\n@media (max-width: 900px) {\n  .dbr3-preview {\n    width: 7.5em;\n    height: 4.22em;\n  }\n  .dbr3-episode {\n    height: 8em;\n  }\n  .dbr4-detail h1 {\n    font-size: 1.55em;\n  }\n  .dbr4-metadata {\n    gap: 0.55em;\n  }\n  .dbr4-language {\n    font-size: 0.82em;\n  }\n}\n@media (max-width: 600px) {\n  .dbr3-preview {\n    width: 6.8em;\n    height: 3.83em;\n  }\n  .dbr3-episode-copy p {\n    font-size: 0.82em;\n  }\n  .dbr4-episode-status {\n    display: none;\n  }\n  .dbr3-episode {\n    height: 7.5em;\n  }\n}\n@media (prefers-reduced-motion: reduce) {\n  .dbr3-episode,\n  .dbr3-stream {\n    transition: none;\n  }\n}\n\n.dbr4-detail{padding-top:.75em}.dbr4-description{height:3em;-webkit-line-clamp:2;line-height:1.5}.dbr3-episode{height:7em;padding:.55em .6em;margin:.3em 0 .4em}.dbr4-episode-status{flex-basis:3.8em;white-space:nowrap}.dbr4-episode-status span,.dbr4-episode-status small{height:auto;min-height:1.5em}.dbr4-actions{flex-shrink:0}.dbr4-detail h1{margin:.35em 0}.dbr4-tab.selected,.dbr4-tab{background:transparent!important}\n\n.dbr3{font-size:clamp(18px,1.25vw,24px)}.dbr3.dbr4-tv{font-size:max(1em,1.55vw)}.dbr3-episode{background:rgba(26,25,23,.4);border-color:rgba(242,229,205,.12)}.dbr3-stream{background:rgba(26,25,23,.48);border-color:rgba(242,229,205,.14)}.dbr3 .dbr3-episode.focus,.dbr3 .dbr3-stream.focus{background:rgba(105,94,76,.48)!important;border-color:#dac8a7!important}.dbr4-art img{opacity:.48}.dbr4-right{isolation:isolate}.dbr4-metadata{flex-wrap:wrap;row-gap:.4em}.dbr4-episode-number{color:#d5c9b4}.dbr4-actions .dbr3-button:not(.dbr4-primary){background:rgba(43,41,36,.62);border-color:rgba(237,219,183,.3)}.dbr4-detail .dbr4-description{height:3em;-webkit-line-clamp:2}.dbr3 .dbr4-tab{box-shadow:none;border-color:transparent}.dbr4-tools .dbr3-button{background:rgba(55,52,45,.6);border-color:rgba(237,219,183,.26)}\n\n.dbr4-play-mark{width:2em;height:2em;display:block;padding:.3em;border:1px solid rgba(238,223,194,.25);border-radius:50%;box-sizing:border-box}.dbr4-translation-name{display:block;font-weight:600!important}.dbr4-metadata:empty{display:none}\n\n.dbr4-tv .dbr3-button{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;transition:background-color .1s,border-color .1s}.dbr4-tv .dbr3-episode,.dbr4-tv .dbr3-stream{transition:background-color .1s,border-color .1s}.dbr4-tv .dbr3-preview{box-shadow:none!important}.dbr4-tv .dbr4-art img{transition:none}.dbr4-right>.scroll{contain:layout paint}\n\n.dbr3 .scroll__body{transition:transform .16s ease-out,-webkit-transform .16s ease-out!important;will-change:transform}.dbr3 .scroll__body.notransition{transition:none!important}.dbr4-tv .dbr3-episode.focus,.dbr4-tv .dbr3-stream.focus{box-shadow:inset 0 0 0 2px #dac8a7!important}@media(prefers-reduced-motion:reduce){.dbr3 .scroll__body{transition:none!important}}\n";
 
 var DbrCore = (function () {
     'use strict';
@@ -321,7 +321,7 @@ var DbrCore = (function () {
 })();
 
 var DbrI18n = (function () {
-var en = {"Лучшее":"Best","Загружаем качество…":"Loading quality options…","Выбранное качество недоступно":"Selected quality is unavailable","Фильм": "Movie", "Смотреть": "Play", "Потоки": "Streams", "Серии": "Episodes", "Серия ": "Episode ", "Сезон ": "Season ", "Сезон": "Season", "Следующая серия": "Next episode", "Описание": "Description", "Описание отсутствует": "No description available", "Просмотрено": "Watched", "Просмотрено ": "Watched ", " мин": " min", "Нет превью": "No preview", "Не указаны": "Unknown", "Перевод": "Translation", "Озвучка": "Translation", "Язык": "Language", "Субтитры": "Subtitles", "Качество": "Quality", "Видео": "Video", "Фильтры": "Filters", "Список серий пока недоступен": "Episodes are not available yet", " · показано ": " · showing ", " ГБ": " GB", " из ": " of ", " потоков": " streams", " потоков нет. Выберите другой источник слева.": " has no streams. Choose another source above.", "В ": "", "В кэше RD": "RD cached", "Веб-страница": "Web page", "Видео недоступно на этом устройстве": "Video unavailable on this device", "Все варианты": "All options", "Выберите поток следующей серии": "Choose a stream for the next episode", "Выбрать серию": "Choose episode", "Готово · ": "Done · ", "Загружаем серии…": "Loading episodes…", "Информация о потоке": "Stream information", "Источник вернул веб-страницу вместо прямого видео": "Source returned a web page instead of video", "Источник вернул неподдерживаемый ответ": "Unsupported source response", "Источник недоступен": "Source unavailable", "Источник недоступен на этом устройстве": "Source unavailable on this device", "Источник требует авторизацию": "Source requires sign in", "Источник требует проверку в своём плагине": "Source requires verification in its plugin", "Источник требует уточнить название": "Source requires a title match", "Ищем потоки…": "Finding streams…", "Найдено в ": "Available on ", "Не удалось загрузить сведения о сериях": "Could not load episode details", "Не удалось определить IMDb ID": "Could not identify the IMDb ID", "Не удалось подключиться": "Could not connect", "Не удалось получить видео": "Could not retrieve video", "Повторить": "Retry", "Потоки найдены, но не подходят под выбранные фильтры.": "No streams match your filters.", "Прямая ссылка на видео отсутствует": "No direct video link available", "Сбросить фильтры": "Reset filters", "Следующая серия пока недоступна": "Next episode is not available yet", "Укажите адрес AIOStreams в настройках": "Add your AIOStreams address in settings", "Это последняя доступная серия": "This is the last available episode", "Язык не указан": "Language unknown", "Сортировка": "Sort", "Как у источника": "Source order", "Качество: выше": "Highest quality", "Размер: меньше": "Smallest size", "Низкое качество": "Low quality", "Не предоставлены": "Not provided"};
+var en = {"Загружаем качество…":"Loading quality options…","Выбранное качество недоступно":"Selected quality is unavailable","Фильм": "Movie", "Смотреть": "Play", "Потоки": "Streams", "Серии": "Episodes", "Серия ": "Episode ", "Сезон ": "Season ", "Сезон": "Season", "Следующая серия": "Next episode", "Описание": "Description", "Описание отсутствует": "No description available", "Просмотрено": "Watched", "Просмотрено ": "Watched ", " мин": " min", "Нет превью": "No preview", "Не указаны": "Unknown", "Перевод": "Translation", "Озвучка": "Translation", "Язык": "Language", "Субтитры": "Subtitles", "Качество": "Quality", "Видео": "Video", "Фильтры": "Filters", "Список серий пока недоступен": "Episodes are not available yet", " · показано ": " · showing ", " ГБ": " GB", " из ": " of ", " потоков": " streams", " потоков нет. Выберите другой источник слева.": " has no streams. Choose another source above.", "В ": "", "В кэше RD": "RD cached", "Веб-страница": "Web page", "Видео недоступно на этом устройстве": "Video unavailable on this device", "Все варианты": "All options", "Выберите поток следующей серии": "Choose a stream for the next episode", "Выбрать серию": "Choose episode", "Готово · ": "Done · ", "Загружаем серии…": "Loading episodes…", "Информация о потоке": "Stream information", "Источник вернул веб-страницу вместо прямого видео": "Source returned a web page instead of video", "Источник вернул неподдерживаемый ответ": "Unsupported source response", "Источник недоступен": "Source unavailable", "Источник недоступен на этом устройстве": "Source unavailable on this device", "Источник требует авторизацию": "Source requires sign in", "Источник требует проверку в своём плагине": "Source requires verification in its plugin", "Источник требует уточнить название": "Source requires a title match", "Ищем потоки…": "Finding streams…", "Найдено в ": "Available on ", "Не удалось загрузить сведения о сериях": "Could not load episode details", "Не удалось определить IMDb ID": "Could not identify the IMDb ID", "Не удалось подключиться": "Could not connect", "Не удалось получить видео": "Could not retrieve video", "Повторить": "Retry", "Потоки найдены, но не подходят под выбранные фильтры.": "No streams match your filters.", "Прямая ссылка на видео отсутствует": "No direct video link available", "Сбросить фильтры": "Reset filters", "Следующая серия пока недоступна": "Next episode is not available yet", "Укажите адрес AIOStreams в настройках": "Add your AIOStreams address in settings", "Это последняя доступная серия": "This is the last available episode", "Язык не указан": "Language unknown", "Сортировка": "Sort", "Как у источника": "Source order", "Качество: выше": "Highest quality", "Размер: меньше": "Smallest size", "Низкое качество": "Low quality", "Не предоставлены": "Not provided"};
 function text(value) { return Lampa.Storage.get("language", "ru") === "ru" ? value.replace("другой источник слева", "другой источник выше") : en[value] === undefined ? value : en[value]; }
 function label(key, value) { if(value === "low") return text("Низкое качество"); if(value === "unknown") return text("Не указаны"); if(value === "none") return text("Не предоставлены"); return DbrCore.label(key, value); }
 return {text:text,label:label};
@@ -780,452 +780,6 @@ function DbrPlayerControls(player, options) {
   return cleanup;
 }
 
-function DbrAnime(movie, network, metadata) {
-    var TMDB_API_KEY = 'lampa-metadata';
-    var SERVER = '';
-    var cache = {}, serial = Promise.resolve();
-    function fetch(url, options) {
-        var key = url + JSON.stringify(options || {});
-        if (!cache[key]) cache[key] = serial.then(function () {
-            return new Promise(function (resolve) { setTimeout(resolve, 300); });
-        }).then(function () {
-            if (url.indexOf('https://api.themoviedb.org/3/') === 0) {
-                return metadata(url.split('/3/')[1].split('?')[0]);
-            }
-            return network(url, options && options.headers);
-        }).then(function (data) {
-            return {ok:true, status:200, text:function () { return Promise.resolve(typeof data === 'string' ? data : JSON.stringify(data)); }, json:function () { return Promise.resolve(typeof data === 'string' ? JSON.parse(data) : data); }};
-        });
-        serial = cache[key].catch(function () {});
-        return cache[key];
-    }
-  function normalized(value) {
-    return String(value || "")
-      .trim()
-      .toLowerCase()
-      .replace(/\s+/g, " ");
-  }
-  function origin(url) {
-    var m = String(url).match(/^https?:\/\/[^/]+/i);
-    return m ? m[0].toLowerCase() : "";
-  }
-  function localUrl(url) {
-    if (typeof url !== "string") return "";
-    if (/^\/(?!\/)/.test(url)) url = origin(SERVER) + url;
-    return origin(url) === origin(SERVER) && !/[\s\\]/.test(url) ? url : "";
-  }
-  function httpUrl(url) {
-    return (
-      typeof url === "string" &&
-      /^https?:\/\/[^\s/]+/i.test(url) &&
-      !/[\s\\]/.test(url)
-    );
-  }
-  function query(url, params) {
-    Object.keys(params).forEach(function (key) {
-      var value = encodeURIComponent(params[key]);
-      var re = new RegExp("([?&])" + key + "=[^&]*");
-      url = re.test(url)
-        ? url.replace(re, "$1" + key + "=" + value)
-        : url + (url.indexOf("?") < 0 ? "?" : "&") + key + "=" + value;
-    });
-    return url;
-  }
-  async function json(url) {
-    var response;
-    try {
-      response = await fetch(url);
-    } catch (_) {
-      throw new Error("NVO: network request failed");
-    }
-    if (!response.ok) throw new Error("NVO: HTTP " + response.status);
-    var data;
-    try {
-      data = await response.json();
-    } catch (_) {
-      throw new Error("NVO: invalid JSON");
-    }
-    if (data && data.rch)
-      throw new Error(
-        "NVO: Lampac requires WebSocket RCH; this Nuvio JS runtime cannot perform it",
-      );
-    if (data && data.accsdb)
-      throw new Error("NVO: Lampac requires server authorization");
-    return data;
-  }
-  function profileFromId(id) {
-    var parts = String(id || "")
-      .replace(/^.*:/, "")
-      .split("~");
-    if (
-      parts.length !== 4 ||
-      parts[0] !== "nvo1" ||
-      !/^[a-z0-9_-]+$/.test(parts[1])
-    )
-      throw new Error("NVO: invalid manifest profile");
-    var voice = decodeURIComponent(parts[2]);
-    if (parts[3] !== "any" && !/^\d{3,4}$/.test(parts[3]))
-      throw new Error("NVO: invalid quality profile");
-    return {
-      provider: parts[1],
-      voice: voice,
-      quality: parts[3],
-      strict: voice !== "*" && parts[3] !== "any",
-    };
-  }
-  function decodeHtml(value) {
-    return String(value || "").replace(
-      /&(?:quot|apos|amp|lt|gt|#\d+|#x[\da-f]+);/gi,
-      function (entity) {
-        var named = {
-          "&quot;": '"',
-          "&apos;": "'",
-          "&amp;": "&",
-          "&lt;": "<",
-          "&gt;": ">",
-        };
-        if (named[entity.toLowerCase()]) return named[entity.toLowerCase()];
-        var hex = entity.toLowerCase().indexOf("&#x") === 0;
-        return String.fromCodePoint(
-          parseInt(entity.slice(hex ? 3 : 2, -1), hex ? 16 : 10),
-        );
-      },
-    );
-  }
-  function attributes(tag) {
-    var result = {},
-      match,
-      pattern = /([a-zA-Z0-9-]+)="([^"]*)"/g;
-    while ((match = pattern.exec(tag))) result[match[1]] = decodeHtml(match[2]);
-    return result;
-  }
-  async function textRequest(url, extraHeaders) {
-    var headers = { "User-Agent": "Mozilla/5.0" };
-    Object.keys(extraHeaders || {}).forEach(function (key) {
-      headers[key] = extraHeaders[key];
-    });
-    var response;
-    try {
-      response = await fetch(url, { headers: headers });
-    } catch (_) {
-      throw new Error("NVO: AnimeGO network request failed");
-    }
-    if (!response.ok) throw new Error("NVO: AnimeGO HTTP " + response.status);
-    return response.text();
-  }
-  function titleKey(value) {
-    return normalized(value)
-      .replace(/ё/g, "е")
-      .replace(/[\s.,:!?"'()[\]–—-]+/g, "");
-  }
-  function relatedTitle(source, movie) {
-    var alternatives = [movie.name, movie.original_name];
-    [movie.name, movie.original_name].forEach(function (name) {
-      String(name || "")
-        .split(":")
-        .forEach(function (part) {
-          if (titleKey(part).length >= 8) alternatives.push(part);
-        });
-    });
-    var expected = alternatives.map(titleKey).filter(Boolean);
-    return [source.name, source.alternateName].some(function (name) {
-      var key = titleKey(name);
-      return expected.some(function (base) {
-        return key === base || (base.length >= 4 && key.indexOf(base) === 0);
-      });
-    });
-  }
-  function dateValue(date) {
-    if (!/^\d{4}-\d{2}-\d{2}/.test(String(date || ""))) return NaN;
-    return Date.parse(String(date).slice(0, 10) + "T00:00:00Z");
-  }
-  function relativeMediaUrl(base, path) {
-    if (httpUrl(path)) return path;
-    if (path.indexOf("//") === 0) return "https:" + path;
-    var root = origin(base);
-    var full = path.charAt(0) === "/" ? path : base.slice(root.length).split(/[?#]/)[0].replace(/[^/]*$/, "") + path;
-    var pieces = full.split("/"), result = [];
-    pieces.forEach(function (part) {
-      if (part === "..") result.pop();
-      else if (part !== ".") result.push(part);
-    });
-    var url = root + result.join("/");
-    return httpUrl(url) ? url : "";
-  }
-  async function cvhStreams(content, profile, season, episode) {
-    var coordinates = [];
-    (content.match(/<button\b[^>]*>/g) || []).map(attributes).forEach(function (attr) {
-      var match = /\/cdn-iframe\/(\d+)\/[^/]+\/(\d+)\/(\d+)(?:[?#]|$)/.exec(attr["data-player"] || "");
-      if (match) {
-        var key = [match[1], match[2], match[3]].join("/");
-        if (coordinates.indexOf(key) < 0) coordinates.push(key);
-      }
-    });
-    if (coordinates.length !== 1) return [];
-    var parts = coordinates[0].split("/");
-    var api = "https://plapi.cdnvideohub.com/api/v1/player/sv";
-    var headers = { Referer: "https://animego.me/", "User-Agent": "Mozilla/5.0" };
-    var playlist = JSON.parse(await textRequest(api + "/playlist?pub=747&aggr=mali&id=" + parts[0], headers));
-    var ids = [];
-    (Array.isArray(playlist.items) ? playlist.items : []).forEach(function (item) {
-      if (normalized(item.voiceStudio || "Original") === normalized(profile.voice) &&
-          Number(item.season) === Number(parts[1]) && Number(item.episode) === Number(parts[2]) &&
-          /^\d+$/.test(String(item.vkId)) && ids.indexOf(String(item.vkId)) < 0)
-        ids.push(String(item.vkId));
-    });
-    if (ids.length !== 1) return [];
-    var video = JSON.parse(await textRequest(api + "/video/" + ids[0], headers));
-    var masterUrl = video.sources && video.sources.hlsUrl;
-    if (!httpUrl(masterUrl)) return [];
-    var master = await textRequest(masterUrl, headers);
-    if (master.indexOf("#EXTM3U") !== 0) return [];
-    var lines = master.split(/\r?\n/), urls = [];
-    for (var i = 0; i < lines.length; i++) {
-      if (lines[i].indexOf("#EXT-X-STREAM-INF:") !== 0) continue;
-      var resolution = /RESOLUTION=\d+x(\d+)(?:,|$)/.exec(lines[i]);
-      if (!resolution || resolution[1] !== profile.quality) continue;
-      // A standalone video rendition would lose an external audio group.
-      if (/(?:[:,])AUDIO=/.test(lines[i])) continue;
-      var next = i + 1;
-      while (next < lines.length && !lines[next].trim()) next++;
-      if (next >= lines.length || lines[next].charAt(0) === "#") continue;
-      var url = relativeMediaUrl(masterUrl, lines[next].trim());
-      if (url && urls.indexOf(url) < 0) urls.push(url);
-    }
-    if (!urls.length) return [];
-    return [{ name: "CVH | " + profile.voice,
-      title: "S" + season + "E" + episode + " | " + profile.voice + " | " + profile.quality + "p",
-      url: urls[0], quality: profile.quality + "p",
-      language: profile.voice === "Original" ? "Japanese" : "Russian", headers: headers }];
-  }
-
-  async function animeGoStreams(profile, movie, tmdbId, season, episode) {
-    if (season < 1 || !profile.strict || movie.original_language !== "ja")
-      return [];
-    var site = "https://animego.me";
-    var episodeData = await json(
-      query("https://api.themoviedb.org/3/tv/" + tmdbId + "/season/" + season, {
-        api_key: TMDB_API_KEY,
-        language: "ru-RU",
-      }),
-    );
-    var episodes =
-      episodeData && Array.isArray(episodeData.episodes)
-        ? episodeData.episodes
-        : [];
-    episodes = episodes.slice().sort(function (a, b) {
-      return a.episode_number - b.episode_number;
-    });
-    var targetIndex = episodes.findIndex(function (item) {
-      return item.episode_number === episode;
-    });
-    if (
-      targetIndex < 0 ||
-      !Number.isFinite(dateValue(episodes[targetIndex].air_date))
-    )
-      return [];
-    var search = await textRequest(
-      site + "/search/anime?q=" + encodeURIComponent(movie.name),
-    );
-    var paths = [];
-    (search.match(/<a\b[^>]*>/g) || [])
-      .map(attributes)
-      .forEach(function (link) {
-        if (
-          /^\/anime\/[a-z0-9-]+-\d+$/.test(link.href || "") &&
-          link.title &&
-          relatedTitle({ name: link.title }, movie) &&
-          paths.indexOf(link.href) < 0
-        )
-          paths.push(link.href);
-      });
-    var candidates = await Promise.all(
-      paths.slice(0, 10).map(async function (path) {
-        try {
-          var page = await textRequest(site + path);
-          var block =
-            /<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i.exec(
-              page,
-            );
-          if (!block) return undefined;
-          var source = JSON.parse(block[1]);
-          if (source["@type"] !== "TVSeries" || !relatedTitle(source, movie))
-            return undefined;
-          var sourceDate = dateValue(source.datePublished);
-          var starts = episodes
-            .map(function (ep, index) {
-              return {
-                index: index,
-                difference: Math.abs(dateValue(ep.air_date) - sourceDate),
-              };
-            })
-            .filter(function (item) {
-              return item.index <= targetIndex && item.difference <= 86400000;
-            });
-          if (starts.length !== 1) return undefined;
-          var first = starts[0].index,
-            localEpisode = targetIndex - first + 1;
-          if (
-            !Number.isInteger(Number(source.numberOfEpisodes)) ||
-            localEpisode > Number(source.numberOfEpisodes)
-          )
-            return undefined;
-          return {
-            id: path.match(/-(\d+)$/)[1],
-            first: first,
-            episode: localEpisode,
-          };
-        } catch (_) {
-          return undefined;
-        }
-      }),
-    );
-    candidates = candidates.filter(Boolean).sort(function (a, b) {
-      return b.first - a.first;
-    });
-    if (
-      !candidates.length ||
-      (candidates.length > 1 && candidates[0].first === candidates[1].first)
-    )
-      return [];
-    var chosen = candidates[0];
-    var playerHeaders = {
-      Referer: site + "/",
-      "X-Requested-With": "XMLHttpRequest",
-    };
-    async function playerHtml(path) {
-      var result = JSON.parse(await textRequest(site + path, playerHeaders));
-      return result && result.data && typeof result.data.content === "string"
-        ? result.data.content
-        : "";
-    }
-    var content = await playerHtml("/player/" + chosen.id);
-    if (chosen.episode !== 1) {
-      var tags = content.match(/<[^>]+\bdata-episode[^>]*>/g) || [];
-      var episodeIds = tags
-        .map(attributes)
-        .filter(function (attr) {
-          return (
-            Number(attr["data-episode-number"]) === chosen.episode &&
-            /^\d+$/.test(attr["data-episode"] || "")
-          );
-        })
-        .map(function (attr) {
-          return attr["data-episode"];
-        });
-      episodeIds = episodeIds.filter(function (id, index) {
-        return episodeIds.indexOf(id) === index;
-      });
-      if (episodeIds.length !== 1) return [];
-      content = await playerHtml("/player/videos/" + episodeIds[0]);
-    }
-    if (profile.provider === "cvh") return cvhStreams(content, profile, season, episode);
-    if (profile.provider === "discover") return content;
-    var players = (content.match(/<button\b[^>]*>/g) || [])
-      .map(attributes)
-      .filter(function (attr) {
-        return (
-          normalized(attr["data-provider-title"]) === "aniboom" &&
-          normalized(attr["data-translation-title"]) ===
-            normalized(profile.voice)
-        );
-      });
-    var embeds = players
-      .map(function (attr) {
-        var url = attr["data-player"] || "";
-        return url.indexOf("//") === 0 ? "https:" + url : url;
-      })
-      .filter(function (url, index, all) {
-        return (
-          /^https:\/\/aniboom\.(one|tv)\/embed\/[^\s]+$/.test(url) &&
-          all.indexOf(url) === index
-        );
-      });
-    if (embeds.length !== 1) return [];
-    var embed = embeds[0],
-      embedOrigin = origin(embed);
-    var page = await textRequest(embed, { Referer: site + "/" });
-    var video = /<video\b[^>]*\bdata-parameters="([^"]+)"/i.exec(page);
-    if (!video) return [];
-    var data = JSON.parse(decodeHtml(video[1]));
-    var hls = typeof data.hls === "string" ? JSON.parse(data.hls) : data.hls;
-    if (!hls || !httpUrl(hls.src)) return [];
-    var playbackHeaders = {
-      Referer: embedOrigin + "/",
-      Origin: embedOrigin,
-      "User-Agent": "Mozilla/5.0",
-    };
-    var master = await textRequest(hls.src, playbackHeaders);
-    if (master.indexOf("#EXTM3U") !== 0) return [];
-    var heights = [],
-      resolution,
-      resolutions = /RESOLUTION=\d+x(\d+)/g;
-    while ((resolution = resolutions.exec(master)))
-      heights.push(Number(resolution[1]));
-    if (heights.indexOf(Number(profile.quality)) < 0) return [];
-    // Keep the master: its audio rendition is separate from the video variants.
-    return [
-      {
-        name: "AniBoom | " + profile.voice,
-        title:
-          "S" +
-          season +
-          "E" +
-          episode +
-          " | " +
-          profile.voice +
-          " | Adaptive up to " +
-          Math.max.apply(Math, heights) +
-          "p",
-        url: hls.src,
-        quality: profile.quality + "p",
-        language: "Russian",
-        headers: playbackHeaders,
-      },
-    ];
-  }
-
-    this.load = async function (season, episode) {
-        var id = movie.tmdb_id || movie.id;
-        var content = await animeGoStreams({provider:'discover',voice:'discovery',quality:'1080',strict:true},movie,id,season,episode);
-        if (typeof content !== 'string') return [];
-        var profiles = [], seen = {};
-        function add(provider, voice) {
-            var key = provider + '|' + voice;
-            if (!seen[key]) { seen[key] = true; profiles.push({provider:provider,voice:voice,quality:'1080',strict:true}); }
-        }
-        var buttons=(content.match(/<button\b[^>]*>/g)||[]).map(attributes);
-        buttons.forEach(function (b) {
-            if (normalized(b['data-provider-title']) === 'aniboom' && b['data-translation-title']) add('aniboom',b['data-translation-title']);
-        });
-        var coordinates = [];
-        buttons.forEach(function (b) {
-            var m=/\/cdn-iframe\/(\d+)\/[^/]+\/(\d+)\/(\d+)(?:[?#]|$)/.exec(b['data-player']||'');
-            if (m && coordinates.indexOf(m[1]+'/'+m[2]+'/'+m[3])<0) coordinates.push(m[1]+'/'+m[2]+'/'+m[3]);
-        });
-        if (coordinates.length === 1) {
-            var c=coordinates[0].split('/');
-            var list=JSON.parse(await textRequest('https://plapi.cdnvideohub.com/api/v1/player/sv/playlist?pub=747&aggr=mali&id='+c[0], {Referer:'https://animego.me/','User-Agent':'Mozilla/5.0'}));
-            (list.items||[]).forEach(function (item) { if (Number(item.season)===Number(c[1]) && Number(item.episode)===Number(c[2])) add('cvh',item.voiceStudio||'Original'); });
-        }
-        var rows=[], failures=0;
-        for (var i=0;i<profiles.length;i++) {
-            var profile=profiles[i], quality={}, headers, max=0, adaptive=false;
-            try {
-                var levels=profile.provider==='cvh'?['2160','1440','1080']:['1080'];
-                for (var j=0;j<levels.length;j++) {
-                    profile.quality=levels[j];
-                    var streams=await animeGoStreams(profile,movie,id,season,episode);
-                    if (streams.length) { quality[levels[j]+'p']=streams[0].url; headers=streams[0].headers; max=Math.max(max,Number(levels[j])); adaptive=profile.provider==='aniboom'; }
-                }
-                if (max) rows.push({name:profile.provider==='cvh'?'CVH':'AniBoom', title:profile.voice+(adaptive?' · Adaptive':''), dbr_voice:profile.voice, dbr_quality:String(max), quality:quality, url:quality[max+'p'], headers:headers, behaviorHints:{bingeGroup:'dbr-anime|'+profile.provider+'|'+profile.voice}, dbr_anime:true, audioLanguages:[profile.voice==='Original'?'ja':'ru']});
-            } catch (e) { failures++; }
-        }
-        if (!rows.length && failures) throw new Error('Anime source unavailable');
-        return rows.sort(function (a,b) { return Number(b.dbr_quality)-Number(a.dbr_quality); });
-    };
-}
-
 function DbrApi(movie) {
     var pending = [];
     var timers = [];
@@ -1381,9 +935,6 @@ function DbrApi(movie) {
                 if (data) {
                     if (!movie.imdb_id) movie.imdb_id = data.imdb_id || (data.external_ids && data.external_ids.imdb_id) || '';
                     if (Array.isArray(data.seasons)) movie.seasons = data.seasons;
-                    movie.original_language = data.original_language || movie.original_language;
-                    movie.original_name = data.original_name || movie.original_name;
-                    movie.name = data.name || movie.name;
                 }
                 callback(error && !movie.imdb_id ? error : '');
             });
@@ -1401,34 +952,6 @@ function DbrApi(movie) {
         tmdb('tv/' + movie.tmdb_id + '/season/' + season, function (error, json) {
             callback(error, json && Array.isArray(json.episodes) ? json.episodes : []);
         });
-    };
-    this.anime = function (season, episode, callback) {
-        var generation = epoch;
-        var engine = new DbrAnime(movie, function (url, headers) {
-            return new Promise(function (resolve, reject) {
-                if (generation !== epoch) return reject(new Error('Cancelled'));
-                var net = new Lampa.Reguest(); pending.push(net); net.timeout(20000);
-                function finish(error, data) {
-                    pending = pending.filter(function (item) { return item !== net; });
-                    if (error || generation !== epoch) reject(new Error('Anime network request failed'));
-                    else resolve(data);
-                }
-                net.native(url, function (data) { finish(false, data); }, function () { finish(true); }, false, {dataType:'text', headers:headers});
-            });
-        }, function (path) {
-            return new Promise(function (resolve,reject) {
-                if (generation !== epoch) return reject(new Error('Cancelled'));
-                tmdb(path,function (error,data) { if (error) reject(new Error('Metadata unavailable')); else resolve(data); });
-            });
-        });
-        engine.load(season,episode).then(function (streams) {
-            if (generation !== epoch) return;
-            callback('',streams.map(function (stream,index) {
-                var row=DbrCore.normalize(stream,index,'anime');
-                row.qualityOptions=DbrCore.qualityKeys(stream.quality).map(DbrCore.qualityValue);
-                return row;
-            }),[]);
-        }).catch(function () { if (generation === epoch) callback('network',[],[]); });
     };
     this.aio = function (season, episode, callback) {
         if (!addon) return callback('config', []);
@@ -1553,7 +1076,7 @@ function DebridComponent(object) {
     var providers = [];
     var selectedProvider = 'aio';
     var selection = {};
-    var order = 'quality';
+    var order = 'source';
     var lastKey = '';
     var renderedListKey = '';
     var dead = false;
@@ -1663,6 +1186,28 @@ function DebridComponent(object) {
             "detail",
           ),
         );
+      actions.append(
+        button(t("Описание"), "description", function () {
+          Lampa.Modal.open({
+            title: title(),
+            html: $('<div class="about"></div>').text(
+              episodes.filter(function (item) {
+                return item.episode_number === previewEpisode;
+              })[0]
+                ? episodes.filter(function (item) {
+                    return item.episode_number === previewEpisode;
+                  })[0].overview ||
+                    movie.overview ||
+                    ""
+                : movie.overview || "",
+            ),
+            onBack: function () {
+              Lampa.Modal.close();
+              self.start();
+            },
+          });
+        }).attr("data-dbr-group", "detail"),
+      );
       detailPanel.append(actions);
       detail();
     }
@@ -1987,7 +1532,7 @@ function DebridComponent(object) {
       providers
         .filter(function (item) {
           return (
-            item.id === "aio" || item.id === "anime" || (item.state === "ready" && item.rows.length > 0)
+            item.id === "aio" || (item.state === "ready" && item.rows.length > 0)
           );
         })
         .forEach(function (item) {
@@ -2132,7 +1677,7 @@ function DebridComponent(object) {
                 if (row.quality === 'unknown' && row.method === 'call') qualityBadge.append('<svg class="dbr4-play-mark" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z" fill="currentColor"/></svg>');
                 else {
                     var displayedQuality = row.quality;
-                    if ((row.method === 'call' || row.provider === 'anime') && selection.quality && row.qualityOptions) displayedQuality = row.qualityOptions.filter(function (value) { return selection.quality.indexOf(value) >= 0; }).sort(function (a, b) { return Number(b) - Number(a); })[0] || row.quality;
+                    if (row.method === 'call' && selection.quality && row.qualityOptions) displayedQuality = row.qualityOptions.filter(function (value) { return selection.quality.indexOf(value) >= 0; }).sort(function (a, b) { return Number(b) - Number(a); })[0] || row.quality;
                     qualityBadge.text(label('quality', displayedQuality));
                 }
                 item.append(qualityBadge);
@@ -2197,18 +1742,12 @@ function DebridComponent(object) {
                 selectedProvider = source.id;
                 render();
                 var candidate = source.id === 'aio' ? DbrCore.nextVariant(filtered(), wanted.row) : wanted.voiceName && source.voiceName === wanted.voiceName && filtered().length === 1 ? filtered()[0] : undefined;
-                if (source.id === 'anime') {
-                    var group = wanted.row.raw.behaviorHints.bingeGroup;
-                    var matches = source.rows.filter(function (row) { return row.raw.behaviorHints.bingeGroup === group && (!wanted.quality || row.raw.quality[wanted.quality]); });
-                    candidate = matches.length === 1 ? matches[0] : undefined;
-                }
                 if (candidate) play(candidate, wanted.quality);
                 else if (!error) Lampa.Noty.show(t('Выберите поток следующей серии'));
             }
             if (done) done();
         }
         if (source.id === 'aio') api.aio(season, episode, finish);
-        else if (source.id === 'anime') api.anime(season, episode, finish);
         else api.lampac(source, season, episode, finish);
     }
     function pump() {
@@ -2233,10 +1772,6 @@ function DebridComponent(object) {
         lastKey = '';
         render();
         fetchProvider(providers[0]);
-        if (movie.original_language === 'ja' && DbrCore.type(movie) === 'series') {
-            var anime={id:'anime',name:t('Лучшее'),state:'queued',rows:[]};
-            providers.push(anime); pendingProviders.push(anime); pump();
-        }
         api.providers(function (error, list) {
             discoveryError = error;
             list.forEach(function (source) { if (nextRequest && source.name === nextRequest.sourceName) selectedProvider = source.id; source.state = 'queued'; source.rows = []; providers.push(source); pendingProviders.push(source); });
@@ -2317,8 +1852,6 @@ function DebridComponent(object) {
             var allowed = (selection.quality || []).filter(function (value) { return value !== 'unknown'; });
             var matching = allowed.length ? keys.filter(function (key) { return allowed.indexOf(DbrCore.qualityValue(key)) !== -1; }) : keys;
             if (allowed.length && row.method === 'call' && !matching.length) { Lampa.Noty.show(t('Выбранное качество недоступно')); render(); return; }
-            if (row.provider === 'anime' && preferredQuality && keys.indexOf(preferredQuality) < 0) { Lampa.Noty.show(t('Выбранное качество недоступно')); return; }
-            if (row.provider === 'anime' && preferredQuality) matching = [preferredQuality];
             var chosen = preferredQuality && matching.indexOf(preferredQuality) >= 0 ? preferredQuality : matching[0];
             if (chosen) launch(qualities[chosen], chosen);
             else launch(row.method === 'call' ? stream.url : row.url);
@@ -2354,7 +1887,6 @@ function DebridComponent(object) {
         return files.render();
     };
     this.start = function (passive) {
-        $("body").addClass("dbr-active");
         if (dead || !self.activity) return;
         var active = Lampa.Activity.active && Lampa.Activity.active();
         if (active && active.activity !== self.activity) return;
@@ -2384,146 +1916,11 @@ function DebridComponent(object) {
     };
     this.back = function () {
         if (mode === 'streams' && DbrCore.type(movie) === 'series') { api.cancel(); mode = 'episodes'; lastKey = 'episode-' + episode; render(); }
-        else { $("body").removeClass("dbr-active"); Lampa.Activity.backward(); }
+        else Lampa.Activity.backward();
     };
     this.render = function () { return files.render(); };
-    this.destroy = function () { $("body").removeClass("dbr-active"); dead = true; releasePlayerControls(); clearTimeout(detailTimer); clearTimeout(backdropTimer); releaseAutoplay(); window.removeEventListener("resize", viewportChanged); releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
+    this.destroy = function () { dead = true; releasePlayerControls(); clearTimeout(detailTimer); clearTimeout(backdropTimer); releaseAutoplay(); window.removeEventListener("resize", viewportChanged); releasePlayback(); clearInterval(progressTimer); api.cancel(); scroll.destroy(); files.destroy(); pendingProviders = []; };
 }
-
-var DbrTraktHome = (function () {
-  var cache = {},
-    account;
-  function api() {
-    return window.TraktTV && window.TraktTV.api;
-  }
-  function cached(key, load) {
-    var current = Lampa.Storage.get("trakt_token", "");
-    if (current !== account) {
-      account = current;
-      cache = {};
-    }
-    var entry = cache[key];
-    if (!entry || Date.now() - entry.time > 60000) {
-      entry = { time: Date.now(), value: Promise.resolve().then(load) };
-      cache[key] = entry;
-      entry.value.catch(function () {
-        if (cache[key] === entry) delete cache[key];
-      });
-    }
-    return entry.value;
-  }
-  function cards(data) {
-    return ((data && data.results) || [])
-      .filter(function (item) {
-        return item && item.id;
-      })
-      .map(function (item) {
-        var card = Object.assign({}, item);
-        var tv =
-          /^(tv|show|series)$/.test(
-            item.method || item.type || item.card_type || "",
-          ) || !!item.name;
-        card.type = card.card_type = tv ? "tv" : "movie";
-        if (tv) {
-          card.name = item.name || item.title;
-          card.first_air_date = item.first_air_date || item.release_date;
-        }
-        return card;
-      });
-  }
-  function loader(kind, title) {
-    return function (done) {
-      var service = api();
-      if (!service || !Lampa.Storage.get("trakt_token", "")) return done();
-      var work;
-      if (kind === "upnext")
-        work = cached(kind, function () {
-          return service.upnext({ limit: 100, page: 1 });
-        }).then(cards);
-      else if (kind === "liked")
-        work = cached(kind, function () {
-          return service
-            .likesLists({ limit: 100, page: 1 })
-            .then(function (data) {
-              var result = [],
-                chain = Promise.resolve();
-              (data.results || []).forEach(function (list) {
-                chain = chain
-                  .then(function () {
-                    return service.list({ id: list.id, limit: 100, page: 1 });
-                  })
-                  .then(function (contents) {
-                    result = result.concat(cards(contents));
-                  });
-              });
-              return chain.then(function () {
-                var seen = {};
-                return result.filter(function (card) {
-                  var key = card.type + ":" + card.id;
-                  if (seen[key]) return false;
-                  seen[key] = true;
-                  return true;
-                });
-              });
-            });
-        });
-      else
-        work = cached("watchlist", function () {
-          return service.watchlist({ limit: 10000, page: 1 });
-        }).then(function (data) {
-          return cards(data).filter(function (card) {
-            return card.type === kind;
-          });
-        });
-      work
-        .then(function (results) {
-          done(results.length ? { title: title, results: results } : undefined);
-        })
-        .catch(function () {
-          done();
-        });
-    };
-  }
-  function init() {
-    if (window.dbrTraktHomeInstalled || !Lampa.ContentRows) return;
-    window.dbrTraktHomeInstalled = true;
-    Lampa.ContentRows.add({
-      name: "DbrTraktHome",
-      title: "Trakt: Up Next / Watchlist / Liked",
-      index: 0,
-      screen: ["main"],
-      call: function () {
-        if (!api() || !Lampa.Storage.get("trakt_token", "")) return;
-        var ru = Lampa.Storage.get("language", "ru") === "ru";
-        return [
-          loader("upnext", "Trakt · Up Next"),
-          loader(
-            "movie",
-            ru ? "Trakt · Смотреть позже: фильмы" : "Trakt · Watchlist: movies",
-          ),
-          loader(
-            "tv",
-            ru
-              ? "Trakt · Смотреть позже: сериалы"
-              : "Trakt · Watchlist: series",
-          ),
-          loader(
-            "liked",
-            ru
-              ? "Trakt · Из понравившихся списков"
-              : "Trakt · From liked lists",
-          ),
-        ];
-      },
-    });
-  }
-  if (window.appready) init();
-  else
-    Lampa.Listener.follow("app", function (event) {
-      if (event.type === "ready") init();
-    });
-  return { cards: cards };
-})();
 
     // ==================== PLUGIN REGISTRATION ====================
 
