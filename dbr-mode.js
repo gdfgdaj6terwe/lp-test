@@ -14,7 +14,7 @@
     'use strict';
 
     var PLUGIN_NAME = 'aiostreams';
-    var PLUGIN_VERSION = '4.3.1';
+    var PLUGIN_VERSION = '4.3.2';
     var PLUGIN_TITLE = 'AIOStreams';
     var PLUGIN_LOGO = 'https://raw.githubusercontent.com/Viren070/AIOStreams/refs/heads/main/packages/frontend/public/logo.png';
 
@@ -1609,31 +1609,47 @@ function DbrApi(movie) {
     };
     this.anime = function (season, episode, callback) {
         var generation = epoch;
+        var lastStage = 'metadata', failure = '';
+        function diagnostic(reason) { return 'anime:' + (failure || lastStage + ':' + reason) + ':' + clientType + '-' + apkVersion; }
+        function stage(url) {
+            if (url.indexOf('/search/anime') >= 0) return 'search';
+            if (url.indexOf('/anime/') >= 0) return 'title';
+            if (url.indexOf('/player/videos/') >= 0) return 'episode';
+            if (url.indexOf('animego.me/player/') >= 0) return 'player';
+            if (url.indexOf('/playlist?') >= 0) return 'cvh-list';
+            if (url.indexOf('/player/sv/video/') >= 0) return 'cvh-video';
+            if (url.indexOf('aniboom.one') >= 0) return 'aniboom';
+            return 'hls';
+        }
         var engine = new DbrAnime(movie, function (url, headers) {
             return new Promise(function (resolve, reject) {
                 if (generation !== epoch) return reject(new Error('Cancelled'));
+                lastStage = stage(url);
+                var requestStage = lastStage;
                 var net = new Lampa.Reguest(); pending.push(net); net.timeout(20000);
                 function finish(error, data) {
                     pending = pending.filter(function (item) { return item !== net; });
+                    if (error && generation === epoch) failure = requestStage + ':HTTP-' + (data && Number(data.status) || 0);
                     if (error || generation !== epoch) reject(new Error('Anime network request failed'));
                     else resolve(data);
                 }
-                net.native(url, function (data) { finish(false, data); }, function () { finish(true); }, false, {dataType:'text', headers:headers});
+                net.native(url, function (data) { finish(false, data); }, function (error) { finish(true, error); }, false, {dataType:'text', headers:headers});
             });
         }, function (path) {
             return new Promise(function (resolve,reject) {
                 if (generation !== epoch) return reject(new Error('Cancelled'));
-                tmdb(path,function (error,data) { if (error) reject(new Error('Metadata unavailable')); else resolve(data); });
+                tmdb(path,function (error,data) { if (error) { failure = 'metadata:failed'; reject(new Error('Metadata unavailable')); } else resolve(data); });
             });
         });
         engine.load(season,episode).then(function (streams) {
             if (generation !== epoch) return;
+            if (!streams.length) return callback(diagnostic('empty'),[],[]);
             callback('',streams.map(function (stream,index) {
                 var row=DbrCore.normalize(stream,index,'anime');
                 row.qualityOptions=DbrCore.qualityKeys(stream.quality).map(DbrCore.qualityValue);
                 return row;
             }),[]);
-        }).catch(function () { if (generation === epoch) callback('network',[],[]); });
+        }).catch(function () { if (generation === epoch) callback(diagnostic('parse-or-request'),[],[]); });
     };
     this.aio = function (season, episode, callback) {
         if (!addon) return callback('config', []);
@@ -2324,7 +2340,7 @@ function DebridComponent(object) {
         var source = provider();
         if (!source) { loading(); return; }
         if (source.state === 'loading' || source.state === 'queued') { loading(); return; }
-        if (source.error) empty(errors[source.error] || t('Источник недоступен'), function () { fetchProvider(source); });
+        if (source.error) empty(source.error.indexOf('anime:') === 0 ? 'Anime 4.3.2 · ' + source.error.slice(6).split(':').join(' · ') : errors[source.error] || t('Источник недоступен'), function () { fetchProvider(source); });
         else if (!source.rows.length) empty(t('В ') + source.name + t(' потоков нет. Выберите другой источник слева.'), function () { fetchProvider(source); });
         else if (!filtered().length) {
             empty(t('Потоки найдены, но не подходят под выбранные фильтры.'));
