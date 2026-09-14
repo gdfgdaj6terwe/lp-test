@@ -1,13 +1,13 @@
 # Nuvio Lampac prototype
 
-Files: `nvo-mode.js`, `nvo-manifest.json`, `nvo-mode.test.cjs`.
+Files: `nvo-mode.js`, `manifest.json`, `nvo-mode.test.cjs`.
 Target: official NuvioTV `0.9.2-beta` (release commit `e54a749`).
 
 ## Install
 
-GitHub Pages manifest: https://gdfgdaj6terwe.github.io/lp-test/nvo-manifest.json
+GitHub Pages manifest: https://gdfgdaj6terwe.github.io/lp-test/manifest.json
 
-Serve only the JS and manifest together in an isolated HTTP directory, or publish those two files to a static host. Add the URL ending in `/nvo-manifest.json` under Nuvio's plugin repositories. Keep the installed AIOStreams addon. Lampac results appear alongside its sources in Nuvio's normal source picker.
+Serve only the JS and manifest together in an isolated HTTP directory, or publish those two files to a static host. Add the URL ending in `/manifest.json` under Nuvio's plugin repositories. Keep the installed AIOStreams addon. Lampac results appear alongside its sources in Nuvio's normal source picker.
 
 Do not serve the whole lp-test directory: it contains unrelated configuration. GitHub Pages installation requires no local server.
 

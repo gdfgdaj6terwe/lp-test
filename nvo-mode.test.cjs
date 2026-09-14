@@ -76,7 +76,7 @@ test('season zero is a valid exact season', async () => {
   assert.equal((await r.getStreams('42', 'tv', 0, 1)).length, 1);
 });
 test('manifest profiles execute with the installed repository-prefixed IDs', async () => {
-  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'nvo-manifest.json'), 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, 'manifest.json'), 'utf8'));
   assert.equal(new Set(manifest.scrapers.map(s => s.id)).size, manifest.scrapers.length);
   for (const scraper of manifest.scrapers) {
     assert.equal(scraper.filename, 'nvo-mode.js');

@@ -1,4 +1,4 @@
-/* NuvioTV 0.9.2-beta provider. Install through nvo-manifest.json. */
+/* NuvioTV 0.9.2-beta provider. Install through manifest.json. */
 (function () {
   "use strict";
   var SERVER = "http://smotret24.com";
