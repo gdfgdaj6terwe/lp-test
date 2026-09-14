@@ -1,12 +1,26 @@
 {
   "name": "NVO Lampac Test",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Direct AnimeGO/AniBoom 1080p with fixed Russian dub profiles, plus Lampac sources.",
   "scrapers": [
     {
+      "id": "nvo1~aniboom~%D0%A0%D1%83%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%2F%20DEEP~1080",
+      "name": "NVO AniBoom / РуАниме / DEEP / 1080p",
+      "version": "0.2.1",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "tv"
+      ],
+      "enabled": true,
+      "contentLanguage": [
+        "ru"
+      ],
+      "description": "Direct AnimeGO HLS with this exact dub and a verified 1080p rendition. Adaptive playback preserves separate audio. No RD required."
+    },
+    {
       "id": "nvo1~aniboom~AniLibria~1080",
       "name": "NVO AniBoom / AniLibria / 1080p",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "tv"
@@ -20,7 +34,7 @@
     {
       "id": "nvo1~aniboom~JAM%20CLUB~1080",
       "name": "NVO AniBoom / JAM CLUB / 1080p",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "tv"
@@ -34,7 +48,7 @@
     {
       "id": "nvo1~kodik~AniLibria.TV~720",
       "name": "NVO kodik / AniLibria.TV / 720p",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -46,7 +60,7 @@
     {
       "id": "nvo1~kodik~AniLibria.TV%20Old~720",
       "name": "NVO kodik / AniLibria.TV Old / 720p",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -58,7 +72,7 @@
     {
       "id": "nvo1~kodik~AniDUB~720",
       "name": "NVO kodik / AniDUB / 720p",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -70,7 +84,7 @@
     {
       "id": "nvo1~kodik~KANSAI%20Studio~720",
       "name": "NVO kodik / KANSAI Studio / 720p",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -82,7 +96,7 @@
     {
       "id": "nvo1~rezka~%2A~any",
       "name": "NVO rezka / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -94,7 +108,7 @@
     {
       "id": "nvo1~filmix~%2A~any",
       "name": "NVO filmix / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -106,7 +120,7 @@
     {
       "id": "nvo1~collaps~%2A~any",
       "name": "NVO collaps / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -118,7 +132,7 @@
     {
       "id": "nvo1~hdvb~%2A~any",
       "name": "NVO hdvb / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -130,7 +144,7 @@
     {
       "id": "nvo1~kinogo~%2A~any",
       "name": "NVO kinogo / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -142,7 +156,7 @@
     {
       "id": "nvo1~aniliberty~%2A~any",
       "name": "NVO aniliberty / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -154,7 +168,7 @@
     {
       "id": "nvo1~animevost~%2A~any",
       "name": "NVO animevost / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",
@@ -166,7 +180,7 @@
     {
       "id": "nvo1~kodik~%2A~any",
       "name": "NVO kodik / MANUAL",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "filename": "nvo-mode.js",
       "supportedTypes": [
         "movie",

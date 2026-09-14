@@ -3,6 +3,12 @@
 Files: `nvo-mode.js`, `manifest.json`, `nvo-mode.test.cjs`, `nvo-animego.test.cjs`.
 Target: official NuvioTV `0.9.2-beta` (release commit `e54a749`).
 
+## Version 0.2.1: Slime S4E9
+
+Added the fixed profile NVO AniBoom / РуАниме / DEEP / 1080p. AnimeGO provides this episode through AniBoom in that voice. AniLibria is present only through Kodik, and JAM CLUB is absent from the tested episode response. Therefore the two earlier AniBoom profiles correctly return no result for S4E9 and Nuvio removes their red source chips.
+
+The new profile returned one source in QuickJS using the Nuvio fetch polyfill. Existing studio profiles stay exact: they never silently switch to DEEP. Refresh the plugin repository and select the DEEP profile for this episode. Availability still varies by episode and studio.
+
 ## Version 0.2.0: direct 1080p anime
 
 Refresh the existing plugin repository. Two enabled profiles now appear at the top:

@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   var SERVER = "http://smotret24.com";
-  var VERSION = "0.2.0";
+  var VERSION = "0.2.1";
 
   function normalized(value) {
     return String(value || "")
