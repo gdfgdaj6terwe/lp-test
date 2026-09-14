@@ -2,7 +2,7 @@
 (function () {
   "use strict";
   var SERVER = "http://smotret24.com";
-  var VERSION = "0.1.0";
+  var VERSION = "0.2.0";
 
   function normalized(value) {
     return String(value || "")
@@ -78,6 +78,255 @@
       strict: voice !== "*" && parts[3] !== "any",
     };
   }
+  function decodeHtml(value) {
+    return String(value || "").replace(
+      /&(?:quot|apos|amp|lt|gt|#\d+|#x[\da-f]+);/gi,
+      function (entity) {
+        var named = {
+          "&quot;": '"',
+          "&apos;": "'",
+          "&amp;": "&",
+          "&lt;": "<",
+          "&gt;": ">",
+        };
+        if (named[entity.toLowerCase()]) return named[entity.toLowerCase()];
+        var hex = entity.toLowerCase().indexOf("&#x") === 0;
+        return String.fromCodePoint(
+          parseInt(entity.slice(hex ? 3 : 2, -1), hex ? 16 : 10),
+        );
+      },
+    );
+  }
+  function attributes(tag) {
+    var result = {},
+      match,
+      pattern = /([a-zA-Z0-9-]+)="([^"]*)"/g;
+    while ((match = pattern.exec(tag))) result[match[1]] = decodeHtml(match[2]);
+    return result;
+  }
+  async function textRequest(url, extraHeaders) {
+    var headers = { "User-Agent": "Mozilla/5.0" };
+    Object.keys(extraHeaders || {}).forEach(function (key) {
+      headers[key] = extraHeaders[key];
+    });
+    var response;
+    try {
+      response = await fetch(url, { headers: headers });
+    } catch (_) {
+      throw new Error("NVO: AnimeGO network request failed");
+    }
+    if (!response.ok) throw new Error("NVO: AnimeGO HTTP " + response.status);
+    return response.text();
+  }
+  function titleKey(value) {
+    return normalized(value)
+      .replace(/ё/g, "е")
+      .replace(/[\s.,:!?"'()[\]–—-]+/g, "");
+  }
+  function relatedTitle(source, movie) {
+    var alternatives = [movie.name, movie.original_name];
+    [movie.name, movie.original_name].forEach(function (name) {
+      String(name || "")
+        .split(":")
+        .forEach(function (part) {
+          if (titleKey(part).length >= 8) alternatives.push(part);
+        });
+    });
+    var expected = alternatives.map(titleKey).filter(Boolean);
+    return [source.name, source.alternateName].some(function (name) {
+      var key = titleKey(name);
+      return expected.some(function (base) {
+        return key === base || (base.length >= 4 && key.indexOf(base) === 0);
+      });
+    });
+  }
+  function dateValue(date) {
+    if (!/^\d{4}-\d{2}-\d{2}/.test(String(date || ""))) return NaN;
+    return Date.parse(String(date).slice(0, 10) + "T00:00:00Z");
+  }
+  async function animeGoStreams(profile, movie, tmdbId, season, episode) {
+    if (season < 1 || !profile.strict || movie.original_language !== "ja")
+      return [];
+    var site = "https://animego.me";
+    var episodeData = await json(
+      query("https://api.themoviedb.org/3/tv/" + tmdbId + "/season/" + season, {
+        api_key: TMDB_API_KEY,
+        language: "ru-RU",
+      }),
+    );
+    var episodes =
+      episodeData && Array.isArray(episodeData.episodes)
+        ? episodeData.episodes
+        : [];
+    episodes = episodes.slice().sort(function (a, b) {
+      return a.episode_number - b.episode_number;
+    });
+    var targetIndex = episodes.findIndex(function (item) {
+      return item.episode_number === episode;
+    });
+    if (
+      targetIndex < 0 ||
+      !Number.isFinite(dateValue(episodes[targetIndex].air_date))
+    )
+      return [];
+    var search = await textRequest(
+      site + "/search/anime?q=" + encodeURIComponent(movie.name),
+    );
+    var paths = [];
+    (search.match(/<a\b[^>]*>/g) || [])
+      .map(attributes)
+      .forEach(function (link) {
+        if (
+          /^\/anime\/[a-z0-9-]+-\d+$/.test(link.href || "") &&
+          link.title &&
+          relatedTitle({ name: link.title }, movie) &&
+          paths.indexOf(link.href) < 0
+        )
+          paths.push(link.href);
+      });
+    var candidates = await Promise.all(
+      paths.slice(0, 10).map(async function (path) {
+        try {
+          var page = await textRequest(site + path);
+          var block =
+            /<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/i.exec(
+              page,
+            );
+          if (!block) return undefined;
+          var source = JSON.parse(block[1]);
+          if (source["@type"] !== "TVSeries" || !relatedTitle(source, movie))
+            return undefined;
+          var sourceDate = dateValue(source.datePublished);
+          var starts = episodes
+            .map(function (ep, index) {
+              return {
+                index: index,
+                difference: Math.abs(dateValue(ep.air_date) - sourceDate),
+              };
+            })
+            .filter(function (item) {
+              return item.index <= targetIndex && item.difference <= 86400000;
+            });
+          if (starts.length !== 1) return undefined;
+          var first = starts[0].index,
+            localEpisode = targetIndex - first + 1;
+          if (
+            !Number.isInteger(Number(source.numberOfEpisodes)) ||
+            localEpisode > Number(source.numberOfEpisodes)
+          )
+            return undefined;
+          return {
+            id: path.match(/-(\d+)$/)[1],
+            first: first,
+            episode: localEpisode,
+          };
+        } catch (_) {
+          return undefined;
+        }
+      }),
+    );
+    candidates = candidates.filter(Boolean).sort(function (a, b) {
+      return b.first - a.first;
+    });
+    if (
+      !candidates.length ||
+      (candidates.length > 1 && candidates[0].first === candidates[1].first)
+    )
+      return [];
+    var chosen = candidates[0];
+    var playerHeaders = {
+      Referer: site + "/",
+      "X-Requested-With": "XMLHttpRequest",
+    };
+    async function playerHtml(path) {
+      var result = JSON.parse(await textRequest(site + path, playerHeaders));
+      return result && result.data && typeof result.data.content === "string"
+        ? result.data.content
+        : "";
+    }
+    var content = await playerHtml("/player/" + chosen.id);
+    if (chosen.episode !== 1) {
+      var tags = content.match(/<[^>]+\bdata-episode[^>]*>/g) || [];
+      var episodeIds = tags
+        .map(attributes)
+        .filter(function (attr) {
+          return (
+            Number(attr["data-episode-number"]) === chosen.episode &&
+            /^\d+$/.test(attr["data-episode"] || "")
+          );
+        })
+        .map(function (attr) {
+          return attr["data-episode"];
+        });
+      episodeIds = episodeIds.filter(function (id, index) {
+        return episodeIds.indexOf(id) === index;
+      });
+      if (episodeIds.length !== 1) return [];
+      content = await playerHtml("/player/videos/" + episodeIds[0]);
+    }
+    var players = (content.match(/<button\b[^>]*>/g) || [])
+      .map(attributes)
+      .filter(function (attr) {
+        return (
+          normalized(attr["data-provider-title"]) === "aniboom" &&
+          normalized(attr["data-translation-title"]) ===
+            normalized(profile.voice)
+        );
+      });
+    var embeds = players
+      .map(function (attr) {
+        var url = attr["data-player"] || "";
+        return url.indexOf("//") === 0 ? "https:" + url : url;
+      })
+      .filter(function (url, index, all) {
+        return (
+          /^https:\/\/aniboom\.(one|tv)\/embed\/[^\s]+$/.test(url) &&
+          all.indexOf(url) === index
+        );
+      });
+    if (embeds.length !== 1) return [];
+    var embed = embeds[0],
+      embedOrigin = origin(embed);
+    var page = await textRequest(embed, { Referer: site + "/" });
+    var video = /<video\b[^>]*\bdata-parameters="([^"]+)"/i.exec(page);
+    if (!video) return [];
+    var data = JSON.parse(decodeHtml(video[1]));
+    var hls = typeof data.hls === "string" ? JSON.parse(data.hls) : data.hls;
+    if (!hls || !httpUrl(hls.src)) return [];
+    var playbackHeaders = {
+      Referer: embedOrigin + "/",
+      Origin: embedOrigin,
+      "User-Agent": "Mozilla/5.0",
+    };
+    var master = await textRequest(hls.src, playbackHeaders);
+    if (master.indexOf("#EXTM3U") !== 0) return [];
+    var heights = [],
+      resolution,
+      resolutions = /RESOLUTION=\d+x(\d+)/g;
+    while ((resolution = resolutions.exec(master)))
+      heights.push(Number(resolution[1]));
+    if (heights.indexOf(Number(profile.quality)) < 0) return [];
+    // Keep the master: its audio rendition is separate from the video variants.
+    return [
+      {
+        name: "AniBoom | " + profile.voice,
+        title:
+          "S" +
+          season +
+          "E" +
+          episode +
+          " | " +
+          profile.voice +
+          " | Adaptive up to " +
+          Math.max.apply(Math, heights) +
+          "p",
+        url: hls.src,
+        quality: profile.quality + "p",
+        language: "Russian",
+        headers: playbackHeaders,
+      },
+    ];
+  }
   async function getStreams(tmdbId, mediaType, season, episode) {
     var profile = profileFromId(
       typeof SCRAPER_ID === "string" ? SCRAPER_ID : "",
@@ -108,6 +357,11 @@
     );
     if (!movie || (!movie.title && !movie.name))
       throw new Error("NVO: metadata unavailable");
+    if (profile.provider === "aniboom") {
+      return series
+        ? animeGoStreams(profile, movie, tmdbId, season, episode)
+        : [];
+    }
     var params = {
       id: tmdbId,
       tmdb_id: tmdbId,

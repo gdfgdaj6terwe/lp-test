@@ -1,7 +1,28 @@
-# Nuvio Lampac prototype
+# Nuvio direct anime and Lampac providers
 
-Files: `nvo-mode.js`, `manifest.json`, `nvo-mode.test.cjs`.
+Files: `nvo-mode.js`, `manifest.json`, `nvo-mode.test.cjs`, `nvo-animego.test.cjs`.
 Target: official NuvioTV `0.9.2-beta` (release commit `e54a749`).
+
+## Version 0.2.0: direct 1080p anime
+
+Refresh the existing plugin repository. Two enabled profiles now appear at the top:
+
+- **NVO AniBoom / AniLibria / 1080p**
+- **NVO AniBoom / JAM CLUB / 1080p**
+
+They run directly in Nuvio without Real-Debrid, AIOStreams, or another paid account. Existing Kodik profile IDs and behavior remain unchanged. Keep the same next-episode settings listed below.
+
+The resolver searches AnimeGO, checks the title and release date against TMDB episode dates, and maps split anime releases to their local episode numbers. Full localized halves of bilingual titles are accepted. Unrelated shows, ambiguous matches, missing episodes, specials and missing studios return no stream instead of guessing. This route supports Japanese-language series.
+
+AniBoom provides an HLS master with separate audio. The plugin confirms that the master offers 1080p and returns it intact with the required playback headers. Returning only its video variant would lose sound. Playback is adaptive up to 1080p; use the native player quality selector to pin 1080p if needed. The plugin does not force track selection.
+
+Live full-resolver checks passed for Slime S3E1 and S3E2 in AniLibria and JAM CLUB, plus Solo Leveling S1E1 in AniLibria. They used actual TMDB, AnimeGO and AniBoom responses. Final runs took about 0.45-1.07 seconds and 8-10 requests per profile.
+
+ffprobe found a real 1920x1080 H.264 rendition and AAC audio in both Slime voices. ffmpeg decoded two seconds of S3E2 at 1080p with audio for both, exit 0. Studio names come from AnimeGO; the audio language tag itself is unspecified. Playback of this new provider inside the TV app and automatic episode transitions remain unverified. The user confirmed that the earlier separate voice profiles switch correctly in Nuvio.
+
+Coverage follows AnimeGO. Slime S3 is verified; the first two seasons were not found in the tested searches. This does not promise every title or season. Existing Kodik profiles remain available as a 720p fallback.
+
+All 22 fixture tests pass, including audio preservation, exact voice matching, adjacent episodes, split releases, wrong dates, bilingual titles and actual manifest IDs. Run `node --test nvo-mode.test.cjs nvo-animego.test.cjs`.
 
 ## Install
 
@@ -11,7 +32,7 @@ Serve only the JS and manifest together in an isolated HTTP directory, or publis
 
 Do not serve the whole lp-test directory: it contains unrelated configuration. GitHub Pages installation requires no local server.
 
-The manifest enables four fixed Kodik profiles: AniLibria.TV, AniLibria.TV Old, AniDUB and KANSAI Studio, all at 720p. Other balancers have optional MANUAL profiles, disabled initially. Enable these in the plugin list when browsing their sources. Their availability has not been established by the adjacent-episode smoke check.
+The manifest also enables four fixed Kodik profiles: AniLibria.TV, AniLibria.TV Old, AniDUB and KANSAI Studio, all at 720p. Other balancers have optional MANUAL profiles, disabled initially. Enable these in the plugin list when browsing their sources. Their availability has not been established by the adjacent-episode smoke check.
 
 ## Next episode
 
@@ -47,6 +68,9 @@ Automated fixtures cover adjacent episodes, missing voice/quality, exact season 
 Not yet verified: installation in the TV app, actual playback, the end-to-next-episode transition, the other balancers, and long-term server availability. RCH and authorization failures raise explicit errors; Nuvio may show these only in plugin diagnostics. A successful link response does not prove successful playback.
 
 ## Source references
+
+- [AnimeGO/AniBoom protocol reference](https://github.com/ialakey/anime-dl-core/blob/main/src/anime_dl_core/players/aniboom.py)
+- [AnimeGO catalog/player reference](https://github.com/ialakey/anime-dl-core/blob/main/src/anime_dl_core/sources/animego.py)
 
 - [Plugin result conversion](https://github.com/NuvioMedia/NuvioTV/blob/0.9.2-beta/app/src/main/java/com/nuvio/tv/domain/model/Plugin.kt)
 - [Plugin manager and installed IDs](https://github.com/NuvioMedia/NuvioTV/blob/0.9.2-beta/app/src/full/java/com/nuvio/tv/core/plugin/PluginManager.kt)
