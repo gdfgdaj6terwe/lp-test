@@ -1,0 +1,151 @@
+{
+  "name": "NVO Lampac Test",
+  "version": "0.1.0",
+  "description": "Lampac sources beside Stremio addons. Fixed voice profiles support Nuvio next-episode matching.",
+  "scrapers": [
+    {
+      "id": "nvo1~kodik~AniLibria.TV~720",
+      "name": "NVO kodik / AniLibria.TV / 720p",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "description": "Exact voice and quality; no substitute when unavailable."
+    },
+    {
+      "id": "nvo1~kodik~AniLibria.TV%20Old~720",
+      "name": "NVO kodik / AniLibria.TV Old / 720p",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "description": "Exact voice and quality; no substitute when unavailable."
+    },
+    {
+      "id": "nvo1~kodik~AniDUB~720",
+      "name": "NVO kodik / AniDUB / 720p",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "description": "Exact voice and quality; no substitute when unavailable."
+    },
+    {
+      "id": "nvo1~kodik~KANSAI%20Studio~720",
+      "name": "NVO kodik / KANSAI Studio / 720p",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": true,
+      "description": "Exact voice and quality; no substitute when unavailable."
+    },
+    {
+      "id": "nvo1~rezka~%2A~any",
+      "name": "NVO rezka / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    },
+    {
+      "id": "nvo1~filmix~%2A~any",
+      "name": "NVO filmix / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    },
+    {
+      "id": "nvo1~collaps~%2A~any",
+      "name": "NVO collaps / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    },
+    {
+      "id": "nvo1~hdvb~%2A~any",
+      "name": "NVO hdvb / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    },
+    {
+      "id": "nvo1~kinogo~%2A~any",
+      "name": "NVO kinogo / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    },
+    {
+      "id": "nvo1~aniliberty~%2A~any",
+      "name": "NVO aniliberty / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    },
+    {
+      "id": "nvo1~animevost~%2A~any",
+      "name": "NVO animevost / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    },
+    {
+      "id": "nvo1~kodik~%2A~any",
+      "name": "NVO kodik / MANUAL",
+      "version": "0.1.0",
+      "filename": "nvo-mode.js",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "enabled": false,
+      "description": "Browse all voices. Disable same-group autoplay when using this profile."
+    }
+  ]
+}
